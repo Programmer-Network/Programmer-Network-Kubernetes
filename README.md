@@ -17,7 +17,6 @@
   - [Cluster](#cluster)
   - [Worker Node](#worker-node)
 - [Basic Deployments](#basic-deployments)
-- [Documentation & Wrap-Up](#documentation--wrap-up)
 
 ---
 
