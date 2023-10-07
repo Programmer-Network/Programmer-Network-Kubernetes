@@ -123,7 +123,7 @@ The setup illustrated here is not mandatory but reflects my personal choices bas
   curl -sfL https://get.k3s.io | sh -
 ```
 
-Verify that `/etc/rancher/k3s/k3s.yaml`` was created and the cluster is accessible:
+Verify that `/etc/rancher/k3s/k3s.yaml` was created and the cluster is accessible:
 
 ```bash
 kubectl --kubeconfig /etc/rancher/k3s/k3s.yaml get nodes
