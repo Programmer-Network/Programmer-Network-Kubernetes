@@ -205,43 +205,138 @@ ssh-copy-id pi@<Raspberry_Pi_IP>
 - Navigate to `Files` and create a backup.
 
 
+## Cluster Setup
 
-## Cluster
-### Tasks
-- Choose one Raspberry Pi to be the master node.
-- Install K3s on the master node using the following command:
+### Master Node
+
+#### Tasks
+
+1. **Choose a Master Node**: Select one Raspberry Pi to act as the master node.
+2. **Install K3s**: Use the following command to install K3s on the master node.
+
+    ```bash
+    curl -sfL https://get.k3s.io | sh -
+    ```
+
+3. **Verify Cluster**: Ensure that `/etc/rancher/k3s/k3s.yaml` was created and the cluster is accessible.
+
+    ```bash
+    kubectl --kubeconfig /etc/rancher/k3s/k3s.yaml get nodes
+    ```
+
+### Worker Nodes
+
+#### Tasks
+
+##### Ansible Automation for Cluster Setup
+
+Automating the setup of multiple Raspberry Pis can save time and ensure consistency. We'll use Ansible for this purpose.
+
+###### Pre-requisites
+
+### Pre-requisites
+
+#### Initial Minimal SSH Setup on Master Node
+
+1. **Enable SSH on the master Raspberry Pi if not already enabled:**
 
 ```bash
-  curl -sfL https://get.k3s.io | sh -
+sudo raspi-config
 ```
+Navigate to `Interface Options > SSH` and enable it.
 
-Verify that `/etc/rancher/k3s/k3s.yaml` was created and the cluster is accessible:
+#### Ansible Installation on Master Node
 
+1. **Update the package list and install prerequisites:**
 ```bash
-kubectl --kubeconfig /etc/rancher/k3s/k3s.yaml get nodes
+sudo apt update
+sudo apt install software-properties-common
 ```
 
-## Worker Node
-
-### Tasks
-
-Retrieve the join token from the master node:
-
+2. **Add the Ansible PPA and install Ansible:**
 ```bash
-cat /var/lib/rancher/k3s/server/token
+sudo apt-add-repository --yes --update ppa:ansible/ansible
+sudo apt install ansible
 ```
 
-Use the token to join each worker node to the master:
-
+3. **Verify Ansible installation:**
 ```bash
-curl -sfL https://get.k3s.io | K3S_URL=https://<master_node_ip>:6443 K3S_TOKEN=<token> sh -
+ansible --version
 ```
 
-Verify that all worker nodes have joined the cluster:
+#### Optionally, Install `sshpass` for Initial SSH Authentication
 
+1. **Install `sshpass`:**
 ```bash
-kubectl get nodes
+sudo apt install sshpass
 ```
+
+> **Note**: Detailed SSH setup, including copying public keys for password-less login, will be automated through Ansible.
+
+
+###### Steps
+
+1. **Generate an SSH Key on Master Node (Optional)**: This key can be used for password-less login to all worker nodes.
+
+    ```bash
+    ssh-keygen -t rsa
+    ```
+
+2. **Copy the Public Key to All Nodes (Optional)**: Replace `<worker_node_ip>` with the IP of each worker node.
+
+    ```bash
+    ssh-copy-id pi@<worker_node_ip>
+    ```
+
+3. **Create an Ansible Inventory File**: Create a `hosts.ini` file and populate it with your node details.
+
+    ```ini
+    [master]
+    master ansible_host=<master_node_ip> ansible_user=pi
+
+    [workers]
+    worker1 ansible_host=<worker1_node_ip> ansible_user=pi
+    worker2 ansible_host=<worker2_node_ip> ansible_user=pi
+    ```
+
+4. **Retrieve the K3s Join Token from Master Node**: Copy the token for use in the Ansible playbook.
+
+    ```bash
+    cat /var/lib/rancher/k3s/server/token
+    ```
+
+5. **Create an Ansible Playbook for Worker Node Setup**: Create a `setup-workers.yml` file.
+
+    ```yaml
+    ---
+    - name: Setup K3s Workers
+      hosts: workers
+      become: yes
+      vars:
+        k3s_token: "<your_k3s_token_here>"
+        k3s_master: "<master_node_ip_here>"
+      tasks:
+      - name: Add SSH key to authorized_keys
+        authorized_key:
+          user: pi
+          state: present
+          key: "{{ lookup('file', '/path/to/public/key/id_rsa.pub') }}"
+      - name: Join worker to K3s cluster
+        shell: |
+          curl -sfL https://get.k3s.io | K3S_URL=https://{{ k3s_master }}:6443 K3S_TOKEN={{ k3s_token }} sh -
+    ```
+
+6. **Run the Ansible Playbook**: Execute the playbook to join all worker nodes to the master node.
+
+    ```bash
+    ansible-playbook -i hosts.ini setup-workers.yml
+    ```
+
+7. **Verify Cluster**: Run the following command to make sure all nodes have joined the cluster.
+
+    ```bash
+    kubectl get nodes
+    ```
 
 ## Basic Deployments
 
