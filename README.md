@@ -13,7 +13,7 @@
   - [Why These Choices?](#why-these-choices)
 - [Setup](#setup)
   - [Raspberry Pi](#raspberry-pi)
-  - [Router](#network-level)
+  - [Router](#router)
   - [Cluster](#cluster)
   - [Worker Node](#worker-node)
 - [Basic Deployments](#basic-deployments)
@@ -116,12 +116,61 @@ The setup illustrated here is not mandatory but reflects my personal choices bas
 
 ## Raspberry Pi
 ### Tasks
-- Flash SD cards with the OS (Raspberry Pi OS).
-- Assign static IP addresses for each Raspberry Pi unit.
-- Enable SSH on each Raspberry Pi.
-- Optionally, set up SSH keys for password-less login.
 
-## Network Level
+#### 1. Flash SD Cards with Raspberry Pi OS
+- Download the latest version of the Raspberry Pi OS (formerly Raspbian) from the [official website](https://www.raspberrypi.com/software/operating-systems/).
+- Use a tool like [Balena Etcher](https://www.balena.io/etcher/) to flash the downloaded image onto the SD cards.
+  
+#### 2. Initial Boot and Setup
+- Insert the flashed SD card into the Raspberry Pi and power it on.
+- On the first boot, follow the on-screen setup steps if using a UI, or ssh into the Pi to perform initial configuration.
+  
+#### 3. Update and Upgrade
+- Run the following commands to update the package list and upgrade the installed packages:
+  ```bash
+  sudo apt update
+  sudo apt upgrade
+
+#### 4. Assign Static IP Addresses
+
+Edit the `dhcpcd.conf` file to assign a static IP:
+
+```bash
+sudo nano /etc/dhcpcd.conf
+```
+
+Add the following, adapting to your network configuration:
+
+```
+interface eth0
+static ip_address=192.168.1.XX/24
+static routers=192.168.1.1
+static domain_name_servers=192.168.1.1
+```
+
+#### 5. Enable SSH on Each Raspberry Pi
+
+```bash
+sudo systemctl enable ssh
+sudo systemctl start ssh
+```
+
+#### 6. Optional: Set Up SSH Keys for Password-less Login
+
+Generate SSH keys on your main machine (if you haven't already) using:
+
+```bash
+ssh-keygen
+```
+
+Copy the public key to each Raspberry Pi unit:
+
+```bash
+ssh-copy-id pi@<Raspberry_Pi_IP>
+```
+
+
+## Router
 ### Tasks
 
 #### 1. Assign Static IPs on MikroTik Router
