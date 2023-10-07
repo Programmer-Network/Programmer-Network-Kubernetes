@@ -210,6 +210,93 @@ ssh-copy-id pi@<Raspberry_Pi_IP>
 - Once all configurations are complete and tested, backup the router configuration.
 - Navigate to `Files` and create a backup.
 
+## Integrating Cloudflare Tunnel with K3S Kubernetes Cluster
+
+### Overview
+
+Using Cloudflare Tunnel with your K3S cluster allows you to expose your services to the internet securely. Cloudflare Tunnel routes your traffic through Cloudflare's global network, thereby adding an additional layer of security and network optimization.
+
+### Prerequisites
+
+- A K3S Kubernetes cluster up and running.
+- A Cloudflare account and a domain managed by Cloudflare.
+
+### Steps
+
+#### 1. Install `cloudflared` on a Node
+
+Install Cloudflare's `cloudflared` software on one of your Raspberry Pis. Here, we assume the master node for simplicity.
+
+```bash
+wget https://github.com/cloudflare/cloudflared/releases/download/.../cloudflared-linux-arm
+chmod +x cloudflared-linux-arm
+sudo mv cloudflared-linux-arm /usr/local/bin/cloudflared
+```
+
+#### 2. Authenticate cloudflared
+
+```bash
+cloudflared tunnel login
+```
+
+Follow the on-screen prompts to complete the authentication.
+
+#### 3. Create a Cloudflare Tunnel
+
+Create a new tunnel with your desired name.
+
+```bash
+cloudflared tunnel create <tunnel_name>
+```
+
+#### 4. Configure the Tunnel
+
+Edit the `cloudflared` configuration file to route traffic from the tunnel to your K3S Ingress controller. The configuration might look like the following:
+
+```yaml
+tunnel: <tunnel_id>
+credentials-file: /root/.cloudflared/<tunnel_id>.json
+
+ingress:
+  - hostname: your.domain.com
+    service: http://localhost:80  # Point this to your Ingress Controller
+  - service: http_status:404
+```
+
+#### 5. Run the Tunnel
+
+Start the Cloudflare tunnel.
+
+```bash
+cloudflared tunnel run <tunnel_name>
+```
+
+#### 6. Configure Cloudflare DNS
+
+Go to your Cloudflare dashboard and configure the DNS settings to point to the newly created tunnel.
+
+#### 7. Kubernetes Ingress Configuration
+
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: my-ingress
+spec:
+  rules:
+  - host: your.domain.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: my-service
+            port:
+              number: 80
+
+```
+
 
 ## Cluster Setup
 
@@ -321,11 +408,6 @@ sudo apt install sshpass
         k3s_token: "<your_k3s_token_here>"
         k3s_master: "<master_node_ip_here>"
       tasks:
-      - name: Add SSH key to authorized_keys
-        authorized_key:
-          user: pi
-          state: present
-          key: "{{ lookup('file', '/path/to/public/key/id_rsa.pub') }}"
       - name: Join worker to K3s cluster
         shell: |
           curl -sfL https://get.k3s.io | K3S_URL=https://{{ k3s_master }}:6443 K3S_TOKEN={{ k3s_token }} sh -
