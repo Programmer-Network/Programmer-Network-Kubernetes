@@ -234,7 +234,6 @@ Automating the setup of multiple Raspberry Pis can save time and ensure consiste
 
 ###### Pre-requisites
 
-### Pre-requisites
 
 #### Initial Minimal SSH Setup on Master Node
 
