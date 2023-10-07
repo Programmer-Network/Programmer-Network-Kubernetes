@@ -8,11 +8,24 @@
 
 ## Table of Contents
 - [Introduction & Theoretical Foundations](#introduction--theoretical-foundations)
+  - [What is Kubernetes](#1-what-is-kubernetes-🎥)
+  - [Kubernetes Components Explained](#kubernetes-components-explained)
+  - [Control Plane Components](#control-plane-components)
+  - [Worker Node Components](#worker-node-components)
+  - [Why Use Kubernetes](#2-why-use-kubernetes)
+  - [Core Components and Concepts](#3-core-components-and-concepts)
+  - [Read and Research](#5-read-and-research)
+  - [Architecture Overview](#4-architecture-overview)
+  - [Community and Ecosystem](#6-community-and-ecosystem)
 - [Hardware](#hardware)
   - [Hardware Components](#hardware-components)
   - [Why These Choices?](#why-these-choices)
 - [Setup](#setup)
   - [Raspberry Pi](#raspberry-pi)
+    - [1. Flash SD Cards with Raspberry Pi OS](#1-flash-sd-cards-with-raspberry-pi-os)
+    - [2. Initial Boot and Setup](#2-initial-boot-and-setup)
+    - [3. Update and Upgrade](#3-update-and-upgrade)
+    - [4. Assign Static IP Addresses](#1-assign-static-ips-on-mikrotik-router)
   - [Router](#router)
   - [Cluster](#cluster)
   - [Worker Node](#worker-node)
@@ -122,9 +135,15 @@ The setup illustrated here is not mandatory but reflects my personal choices bas
 ## Raspberry Pi
 ### Tasks
 
-#### 1. Flash SD Cards with Raspberry Pi OS
-- Download the latest version of the Raspberry Pi OS (formerly Raspbian) from the [official website](https://www.raspberrypi.com/software/operating-systems/).
-- Use a tool like [Balena Etcher](https://www.balena.io/etcher/) to flash the downloaded image onto the SD cards.
+
+#### 1. Flash SD Cards with Raspberry Pi OS Using Pi Imager
+- Open [Raspberry Pi Imager](https://www.raspberrypi.com/software/).
+  - Choose the 'OS' you want to install from the list. The tool will download the selected OS image for you.
+  - Insert your SD card and select it in the 'Storage' section.
+  - Before writing, click on the cog icon for advanced settings.
+    - Set the hostname to your desired value, e.g., `RP1`.
+    - Enable SSH and select the "allow public-key authorization only" option.
+  - Click on 'Write' to begin the flashing process.
   
 #### 2. Initial Boot and Setup
 - Insert the flashed SD card into the Raspberry Pi and power it on.
@@ -152,28 +171,6 @@ static ip_address=192.168.1.XX/24
 static routers=192.168.1.1
 static domain_name_servers=192.168.1.1
 ```
-
-#### 5. Enable SSH on Each Raspberry Pi
-
-```bash
-sudo systemctl enable ssh
-sudo systemctl start ssh
-```
-
-#### 6. Optional: Set Up SSH Keys for Password-less Login
-
-Generate SSH keys on your main machine (if you haven't already) using:
-
-```bash
-ssh-keygen
-```
-
-Copy the public key to each Raspberry Pi unit:
-
-```bash
-ssh-copy-id pi@<Raspberry_Pi_IP>
-```
-
 
 ## Router
 ### Tasks
