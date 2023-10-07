@@ -2,15 +2,20 @@
 
 ## Objective
 
-To establish a strong foundational knowledge of Kubernetes and to set up a K3s cluster on Raspberry Pi units. The focus is to learn Kubernetes thoroughly and experiment with its various features.
+**Why**: To establish a strong foundational knowledge of Kubernetes and to set up a K3s cluster on Raspberry Pi units. The focus is to learn Kubernetes thoroughly and experiment with its various features.
+
+**Goal**: By the end of this journey, aim to have the capability to rapidly instantiate new development environments and expose them to the external world with equal ease.
 
 ## Table of Contents
 - [Introduction & Theoretical Foundations](#introduction--theoretical-foundations)
-- [Hardware Setup & OS Configuration](#hardware-setup--os-configuration)
+- [Hardware](#hardware)
   - [Hardware Components](#hardware-components)
   - [Why These Choices?](#why-these-choices)
-- [Cluster Setup](#cluster-setup)
-- [Worker Node Setup](#worker-node-setup)
+- [Setup](#setup)
+  - [Raspberry Pi](#raspberry-pi)
+  - [Router](#network-level)
+  - [Cluster](#cluster)
+  - [Worker Node](#worker-node)
 - [Basic Deployments](#basic-deployments)
 - [Documentation & Wrap-Up](#documentation--wrap-up)
 
@@ -81,14 +86,7 @@ To establish a strong foundational knowledge of Kubernetes and to set up a K3s c
 
 ---
 
-## Hardware Setup & OS Configuration
-
-### Tasks
-- Flash SD cards with the OS (Raspberry Pi OS).
-- Assign static IP addresses for each Raspberry Pi unit.
-- Enable SSH on each Raspberry Pi.
-- Optionally, set up SSH keys for password-less login.
-
+## Hardware
 ### Hardware Components
 
 The setup illustrated here is not mandatory but reflects my personal choices based on both experience and specific requirements. I aimed for a setup that is not only robust but also relatively mobile. Therefore, I opted for a 4U Rack where all the components are neatly encapsulated, making it easy to plug and play. I plan to expand this cluster by adding another four Raspberry Pis once the prices are more accommodating.
@@ -114,7 +112,53 @@ The setup illustrated here is not mandatory but reflects my personal choices bas
 
 ---
 
-## Cluster Setup
+# Setup
+
+## Raspberry Pi
+### Tasks
+- Flash SD cards with the OS (Raspberry Pi OS).
+- Assign static IP addresses for each Raspberry Pi unit.
+- Enable SSH on each Raspberry Pi.
+- Optionally, set up SSH keys for password-less login.
+
+## Network Level
+### Tasks
+
+#### 1. Assign Static IPs on MikroTik Router
+- Open the MikroTik Web UI and navigate to `IP > DHCP Server`.
+- Locate the `Leases` tab and identify the MAC addresses of your Raspberry Pi units.
+- Click on the entry for each Raspberry Pi and change it from "dynamic" to "static".
+- Assign a static IP address that is within your local network range but outside of the DHCP pool.
+
+#### 2. Enable Port Forwarding for Master Node (Optional)
+- If you plan to access the Kubernetes API server from outside your network, you'll need to set up port forwarding.
+- Navigate to `IP > Firewall > NAT`.
+- Add a new rule to forward the external port (e.g., 6443) to the internal IP and port of your master node.
+
+#### 3. Configure Firewall Rules
+- To add an extra layer of security, explicitly allow only the necessary ports between nodes.
+- Navigate to `IP > Firewall > Filter Rules`.
+- Add rules to allow traffic only on the ports that Kubernetes and your applications will use.
+
+#### 4. VLAN Configuration (Advanced, Optional)
+- If you want to segregate your Kubernetes traffic from other network traffic, consider setting up a VLAN.
+- Navigate to `Interfaces > VLAN` and configure as needed.
+
+#### 5. DNS Configuration
+- If you plan to use domain names to access services in your cluster, add the DNS records in the MikroTik router.
+- Navigate to `IP > DNS` and add static DNS entries if needed.
+
+#### 6. Update Router Firmware
+- To ensure that you are running the most stable and secure version of RouterOS, check for firmware updates.
+- Navigate to `System > Packages` and update if necessary.
+
+#### 7. Backup Router Configuration
+- Once all configurations are complete and tested, backup the router configuration.
+- Navigate to `Files` and create a backup.
+
+
+
+## Cluster
 ### Tasks
 - Choose one Raspberry Pi to be the master node.
 - Install K3s on the master node using the following command:
@@ -129,7 +173,7 @@ Verify that `/etc/rancher/k3s/k3s.yaml` was created and the cluster is accessibl
 kubectl --kubeconfig /etc/rancher/k3s/k3s.yaml get nodes
 ```
 
-## Worker Node Setup
+## Worker Node
 
 ### Tasks
 
