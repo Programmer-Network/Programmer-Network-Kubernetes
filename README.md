@@ -157,7 +157,8 @@ The setup illustrated here is not mandatory but reflects my personal choices bas
 
 #### 4. Assign Static IP Addresses
 
-Edit the `dhcpcd.conf` file to assign a static IP:
+After SSHing into your Raspberry Pi, you can configure static IP by editing the `dhcpcd.conf` file:
+
 
 ```bash
 sudo nano /etc/dhcpcd.conf
@@ -171,6 +172,108 @@ static ip_address=192.168.1.XX/24
 static routers=192.168.1.1
 static domain_name_servers=192.168.1.1
 ```
+
+* static `ip_address`: The static IP you want to assign to the Raspberry Pi.
+* static `router`: The IP address of the default gateway (usually your router).
+* static `domain_name_servers`: The IP address of the DNS server (can be the same as the gateway).
+
+Save the file and exit, then restart the networking service:
+
+```bash
+sudo service dhcpcd restart
+```
+
+## Retrieve MAC Address of Raspberry Pi via SSH
+
+1. **SSH into your Raspberry Pi**
+```bash
+ssh username@rp_ip
+```
+
+2. **Run the following command to list all network interfaces and their details.**
+```bash
+ifconfig -a
+```
+
+Look for the `ether` entry under the `eth0` section for the MAC address.
+
+- or -
+
+**Run this command to directly view the MAC address of `eth0`:**
+```bash
+cat /sys/class/net/eth0/address
+```
+
+
+## Configuring MikroTik Router for Static IPs
+
+### DHCP Reservations
+
+1. **Navigate to DHCP Server settings**: Open the MikroTik interface and go to `IP > DHCP Server > Leases`.
+2. **Add New Lease**: Click on the `Add New` or `+` button.
+3. **Set Lease Details**: Fill in the `MAC Address` and `IP Address` fields.
+4. **Apply & Confirm**: Click on `Apply` and `OK`.
+
+### Using Address List (Optional)
+
+1. **Go to Address List**: Navigate to `IP > Firewall > Address Lists`.
+2. **Add New Entry**: Click `Add New` or `+`.
+3. **Specify Details**: Add the `IP Address` and set a `List` name.
+4. **Apply & Confirm**: Click `Apply` and `OK`.
+
+
+## SSH Aliases for Raspberry Pi Cluster
+
+Once you have assigned static IPs to your Raspberry Pis, you can simplify the SSH process by setting up SSH aliases. Here's how to do it:
+
+1. **Open the SSH config file on your local machine:**
+
+    ```bash
+    vi ~/.ssh/config
+    ```
+    
+2. **Add the following entries for each Raspberry Pi:**
+
+    ```plaintext
+    Host rp1
+      HostName <Master_IP>
+      User YOUR_USERNAME
+
+    Host rp2
+      HostName <Worker1_IP>
+      User YOUR_USERNAME
+
+    Host rpi-worker2
+      HostName <Worker2_IP>
+      User YOUR_USERNAME
+
+    Host rpi-worker3
+      HostName <Worker3_IP>
+      User YOUR_USERNAME
+    ```
+    
+    Replace `<Master_IP>`, `<Worker1_IP>`, `<Worker2_IP>`, and `<Worker3_IP>` with the actual static IP addresses of your Raspberry Pis.
+
+3. **Save and Close the File**
+
+4. **Apply Configurations**
+
+    ```bash
+    ssh-add -R rpi-master
+    ```
+
+    This removes all keys belonging to `rpi-master` from the known hosts files. Repeat for other aliases as needed. 
+
+5. **Test Your Aliases**
+
+    You should now be able to SSH into each Raspberry Pi using the alias:
+
+    ```bash
+    ssh rpi-master
+    ```
+
+That's it! You've set up SSH aliases for your Raspberry Pi cluster.
+
 
 ## Router
 ### Tasks
