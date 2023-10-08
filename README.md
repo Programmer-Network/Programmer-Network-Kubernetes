@@ -183,27 +183,34 @@ Save the file and exit, then restart the networking service:
 sudo service dhcpcd restart
 ```
 
-## Retrieve MAC Address of Raspberry Pi via SSH
 
-1. **SSH into your Raspberry Pi**
+
+## Retrieve IP and MAC Address of Raspberry Pi via SSH
+
+Retrieving both the IP and MAC addresses of each Raspberry Pi unit is essential for setting up your network configurations. You will need both of these for DHCP reservations in the Mikrotik router to ensure that each unit always receives the same IP address upon booting up.
+
+SSH into your Raspberry Pi and run the following command:
+
 ```bash
-ssh username@rp_ip
+ip addr show eth0 | awk '/inet / {print "IP: " $2} /ether/ {print "MAC: " $2}'
 ```
 
-2. **Run the following command to list all network interfaces and their details.**
-```bash
-ifconfig -a
-```
+- `ip addr show eth0`: This command retrieves the network configuration for the `eth0` interface.
+  - `ip`: This is the command to show and manipulate routing, devices, and tunnels.
+  - `addr`: Specifies that we're interested in the IP addresses associated with network interfaces.
+  - `show eth0`: Specifies that we only want information related to the `eth0` interface.
+  
+- `|`: The pipe command takes the output of the command on its left (`ip addr show eth0`) and uses it as input for the command on its right (the `awk` command).
 
-Look for the `ether` entry under the `eth0` section for the MAC address.
+- `awk '/inet / {print "IP: " $2} /ether/ {print "MAC: " $2}'`: This is an `awk` command that processes the input line-by-line.
+  - `/inet /`: This regular expression matches lines that contain the string "inet", which typically signifies the line with the IP address.
+    - `{print "IP: " $2}`: When a line matches, `awk` prints "IP: " followed by the second field (`$2`) on the line, which is usually the IP address.
+  - `/ether/`: This regular expression matches lines that contain the string "ether", which is where the MAC address is usually found.
+    - `{print "MAC: " $2}`: When a line matches, `awk` prints "MAC: " followed by the second field on the line, which is usually the MAC address.
 
-- or -
+Putting it all together, this command fetches the network information of `eth0`, pipes it into `awk`, which then extracts and prints out the IP and MAC addresses.
 
-**Run this command to directly view the MAC address of `eth0`:**
-```bash
-cat /sys/class/net/eth0/address
-```
-
+This will display the IP address on one line and the MAC address on another. Take note of these details, as you will be using them to configure static IPs and DHCP reservations in the Mikrotik router in the upcoming steps.
 
 ## Configuring MikroTik Router for Static IPs
 
