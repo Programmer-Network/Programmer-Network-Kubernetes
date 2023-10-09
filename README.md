@@ -26,15 +26,15 @@
     - [2. Initial Boot and Setup](#2-initial-boot-and-setup)
     - [3. Update and Upgrade](#3-update-and-upgrade)
     - [4. Assign Static IP Addresses](#4-assign-static-ip-addresses)
-  - [Router](#router)
-  - [Cluster](#cluster)
-  - [Worker Node](#worker-node)
+    - [5. Set SSH Aliases](#ssh-aliases)
+    - [6. K3S Setup](#k3s-setup)
+      - [Master Node](#master-node)
+      - [Worker Nodes](#worker-nodes)
 - [Basic Deployments](#basic-deployments)
 
 ---
 
 ## Introduction & Theoretical Foundations
-### Tasks
 
 #### [1. What is Kubernetes? 🎥](https://www.youtube.com/watch?v=TlHvYWVUZyc&ab_channel=ByteByteGo)
 - Kubernetes is an open-source container orchestration platform that automates the deployment, scaling, and management of containerized applications.
@@ -192,7 +192,7 @@ Save the file and exit, then restart the networking service:
 sudo service dhcpcd restart
 ```
 
-## SSH Aliases
+## Set SSH Aliases
 
 Once you have assigned static IPs to your Raspberry Pis, you can simplify the SSH process by setting up SSH aliases. Here's how to do it:
 
@@ -236,7 +236,7 @@ ssh rp1
 
 That's it! You've set up SSH aliases for your Raspberry Pi cluster.
 
-## Cluster Setup
+## K3S Setup
 
 ### Master Node
 
@@ -318,8 +318,7 @@ By doing this, you streamline your workflow, allowing you to simply run `kubectl
 scp pi@<master_node_ip>:/etc/rancher/k3s/k3s.yaml ~/.kube/config
 ```
 
-### Worker Node Setup
-#### Tasks:
+### Worker Nodes
 
 1. **Join Tokens**: On the master node, retrieve the join token from `/var/lib/rancher/k3s/server/token`.
 
@@ -342,7 +341,6 @@ kubectl get nodes
 
 ## Basic Deployments
 
-### Tasks
 
 Create a new Kubernetes namespace:
 
