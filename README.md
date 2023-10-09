@@ -31,7 +31,12 @@
       - [Master Node](#master-node)
       - [Worker Nodes](#worker-nodes)
       - [Kubectl on local machine](#setup-kubectl-on-your-local-machine)
-- [Basic Deployments](#basic-deployment)
+- [Basic Kubernetes Deployments](#basic-kubernetes-deployments)
+  - [Namespace Setup](#namespace-setup)
+  - [Basic Deployment](#basic-deployment)
+  - [Service Exposure](#service-exposure)
+  - [Verify Deployment](#verify-deployment)
+  - [Cleanup](#cleanup-wiping-everything-and-starting-over)
 
 ---
 
@@ -364,21 +369,6 @@ After completing these steps, you should be able to run `kubectl` commands from 
 
 ---
 Absolutely, here's how your deployment guide could look, complete with explanations for each step:
-
-Absolutely, preserving the depth is important for clarity. Here's an extended version of your guide, integrating the detailed explanations and the new cleanup section:
-
----
-
-## Basic Kubernetes Deployments
-
-### Namespace Setup
-
-1. **Create a new Kubernetes Namespace**: 
-   - A Namespace is essentially a partition of the Kubernetes cluster. It allows you to logically isolate different environments (like dev, staging, and prod) within the same cluster. You can remove a namespace, which will also delete all resources within it.
-   - _Command_:
-    ```bash
-    kubectl create namespace my-apps
-    ```
 
 Absolutely, preserving the depth is important for clarity. Here's an extended version of your guide, integrating the detailed explanations and the new cleanup section:
 
