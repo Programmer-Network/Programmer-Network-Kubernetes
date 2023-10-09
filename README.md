@@ -30,6 +30,7 @@
     - [6. K3S Setup](#k3s-setup)
       - [Master Node](#master-node)
       - [Worker Nodes](#worker-nodes)
+      - [Kubectl on local machine](#setup-kubectl-on-your-local-machine)
 - [Basic Deployments](#basic-deployments)
 
 ---
@@ -305,21 +306,30 @@ source ~/.bashrc
 
 By doing this, you streamline your workflow, allowing you to simply run `kubectl get nodes` instead of specifying the kubeconfig path each time.
 
-2. **Worker Nodes**: Once the master is up and running, you'll find a file `/etc/rancher/k3s/k3s.yaml` on it. This file contains the credentials to join the cluster. Use the `k3s` token from this file to join the worker nodes to the cluster.
+---
 
+### Worker Nodes
+
+1. **Join Tokens**: On the master node, retrieve the join token from `/var/lib/rancher/k3s/server/token`.
+
+```bash
+vi /var/lib/rancher/k3s/server/token
 ```
+2. **Worker Installation**: Use this token to join each worker node to the master.
+
+```bash
 curl -sfL https://get.k3s.io | K3S_URL=https://<master_node_ip>:6443 K3S_TOKEN=<token> sh -
 ```
 
-Sure, that makes sense. Here's the updated Post-Installation section:
+3. **Node Verification**: Check that all worker nodes have joined the cluster. On your master node, run:
+
+```bash
+kubectl get nodes
+```
 
 ---
 
-Sure, your updated Post-Installation section looks solid. Here it is with your changes incorporated:
-
----
-
-### Post-Installation
+### Setup kubectl on your local machine
 
 #### Kubeconfig
 
@@ -353,29 +363,6 @@ Replace `<master_node_ip>` with the IP address of your master node.
 After completing these steps, you should be able to run `kubectl` commands from your local machine to interact with your Kubernetes cluster. This avoids the need to SSH into the master node for cluster management tasks.
 
 ---
-
-Feel free to run through these steps and let me know if everything works as expected.
-### Worker Nodes
-
-1. **Join Tokens**: On the master node, retrieve the join token from `/var/lib/rancher/k3s/server/token`.
-
-```bash
-vi /var/lib/rancher/k3s/server/token
-```
-2. **Worker Installation**: Use this token to join each worker node to the master.
-
-```bash
-curl -sfL https://get.k3s.io | K3S_URL=https://<master_node_ip>:6443 K3S_TOKEN=<token> sh -
-```
-
-3. **Node Verification**: Check that all worker nodes have joined the cluster.
-
-```bash
-kubectl get nodes
-```
-
----
-
 ## Basic Deployments
 
 
