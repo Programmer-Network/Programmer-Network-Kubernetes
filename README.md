@@ -259,16 +259,19 @@ With a `"chore schedule"` (cgroups), you ensure everyone gets an allocated time 
 Before installing K3s, it's essential to enable memory cgroups on the Raspberry Pi for effective container resource management.
 
 1. Edit the `/boot/cmdline.txt` file on your Raspberry Pi.
+
 ```bash
 sudo vi /boot/cmdline.txt
 ```
     
 2. Append the following to enable memory cgroups.
+
 ```text
 cgroup_memory=1 cgroup_enable=memory
 ```
     
 3. Save the file and reboot your Raspberry Pi.
+
 ```bash
 sudo reboot
 ```
@@ -276,6 +279,7 @@ sudo reboot
 2. **Choose a Master Node**: Select one Raspberry Pi to act as the master node.
 
 3. **Install K3s**: Use the following command to install K3s on the master node.
+
 ```bash
 curl -sfL https://get.k3s.io | sh -
 ```
@@ -294,16 +298,18 @@ sudo chown $(id -u):$(id -g) ~/.kube/config
 ```
 
 4. **Verify Cluster**: Ensure that `/etc/rancher/k3s/k3s.yaml` was created and the cluster is accessible.
+
 ```bash
 kubectl --kubeconfig ~/.kube/config get nodes
 ```
+
 5. **Set KUBECONFIG Environment Variable**: To make it more convenient to run `kubectl` commands without having to specify the `--kubeconfig` flag every time, you can set an environment variable to automatically point to the kubeconfig file.
+
 ```bash
 export KUBECONFIG=~/.kube/config
 ```
 To make this setting permanent across shell sessions, add it to your shell profile:
     
-- For Bash:
 ```bash
 echo "export KUBECONFIG=~/.kube/config" >> ~/.bashrc
 source ~/.bashrc
