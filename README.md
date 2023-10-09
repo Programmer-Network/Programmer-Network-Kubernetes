@@ -307,17 +307,54 @@ By doing this, you streamline your workflow, allowing you to simply run `kubectl
 
 2. **Worker Nodes**: Once the master is up and running, you'll find a file `/etc/rancher/k3s/k3s.yaml` on it. This file contains the credentials to join the cluster. Use the `k3s` token from this file to join the worker nodes to the cluster.
 
-    ```
-    curl -sfL https://get.k3s.io | K3S_URL=https://<master_node_ip>:6443 K3S_TOKEN=<token> sh -
-    ```
-
-### Post-Installation
-**Kubeconfig**: After installation, you can copy the kubeconfig file from the master node to your local machine. This allows you to interact with the cluster using `kubectl`.
-
-```bash
-scp pi@<master_node_ip>:/etc/rancher/k3s/k3s.yaml ~/.kube/config
+```
+curl -sfL https://get.k3s.io | K3S_URL=https://<master_node_ip>:6443 K3S_TOKEN=<token> sh -
 ```
 
+Sure, that makes sense. Here's the updated Post-Installation section:
+
+---
+
+Sure, your updated Post-Installation section looks solid. Here it is with your changes incorporated:
+
+---
+
+### Post-Installation
+
+#### Kubeconfig
+
+After setting up your cluster, it's more convenient to manage it remotely from your local machine. Here's how to do that:
+
+1. **Create the `.kube` directory on your local machine if it doesn't already exist.**
+
+```bash
+mkdir -p ~/.kube
+```
+
+2. **Copy the kubeconfig from the master node to your local `.kube` directory.**
+
+```bash
+scp <user>@<master_node_ip>:~/.kube/config ~/.kube/config
+```
+Replace `<user>` with your username and `<master_node_ip>` with the IP address of your master node.
+
+**Note**: If you encounter a permissions issue while copying, ensure that the `~/.kube/config` on your master node is owned by your user and is accessible. You might have to adjust file permissions or ownership on the master node accordingly.
+
+3. **Update the kubeconfig server details (Optional)**
+
+Open your local `~/.kube/config` and make sure the `server` IP matches your master node's IP. If it's set to `127.0.0.1`, you'll need to update it.
+
+```yaml
+server: https://<master_node_ip>:6443
+```
+
+Replace `<master_node_ip>` with the IP address of your master node.
+
+After completing these steps, you should be able to run `kubectl` commands from your local machine to interact with your Kubernetes cluster. This avoids the need to SSH into the master node for cluster management tasks.
+
+---
+
+Feel free to run through these steps and let me know if everything works as expected.
 ### Worker Nodes
 
 1. **Join Tokens**: On the master node, retrieve the join token from `/var/lib/rancher/k3s/server/token`.
