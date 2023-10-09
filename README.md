@@ -4,7 +4,7 @@
 
 **Why**: To establish a strong foundational knowledge of Kubernetes and to set up a K3s cluster on Raspberry Pi units. The focus is to learn Kubernetes thoroughly and experiment with its various features.
 
-**Goal**: By the end of this journey, aim to have the capability to rapidly instantiate new development environments and expose them to the external world with equal ease.
+**Goal**: By the end of this journey, aim to have the capability to rapidly instantiate new development and production environments and expose them to the external world with equal ease.
 
 ## Table of Contents
 - [Introduction & Theoretical Foundations](#introduction--theoretical-foundations)
