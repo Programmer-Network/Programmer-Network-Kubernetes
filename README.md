@@ -368,11 +368,6 @@ Replace `<master_node_ip>` with the IP address of your master node.
 After completing these steps, you should be able to run `kubectl` commands from your local machine to interact with your Kubernetes cluster. This avoids the need to SSH into the master node for cluster management tasks.
 
 ---
-Absolutely, here's how your deployment guide could look, complete with explanations for each step:
-
-Absolutely, preserving the depth is important for clarity. Here's an extended version of your guide, integrating the detailed explanations and the new cleanup section:
-
----
 
 ## Basic Kubernetes Deployments
 
