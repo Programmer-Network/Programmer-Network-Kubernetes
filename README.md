@@ -91,8 +91,8 @@
 - **Top-Down View**: Start from the user's perspective, breaking down what you want to deploy into services, pods, and the underlying infrastructure.
 
 #### 5. Read and Research
-- Go through Kubernetes' official documentation.
-- Watch beginner-friendly YouTube tutorials or online courses.
+- Go through [Kubernetes' official documentation](https://kubernetes.io/docs/home/).
+- Watch [beginner-friendly YouTube tutorials](https://www.youtube.com/watch?v=d6WC5n9G_sM&ab_channel=freeCodeCamp.org) or online courses.
 
 #### 6. Community and Ecosystem
 - Get familiar with the wider Kubernetes ecosystem, including tooling, forums, and meetups.
