@@ -1,6 +1,8 @@
 # Kubernetes Learning Journey
 
-<img src="./assets/images/kubernetes.png">
+<div style="text-align: center;">
+  <img src="./assets/images/kubernetes.png" style="width: 760px; margin: auto;">
+</div>
 
 ## Objective
 
