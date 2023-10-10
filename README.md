@@ -379,35 +379,104 @@ After completing these steps, you should be able to run `kubectl` commands from 
 
 ### Namespace Setup
 
-1. **Create a new Kubernetes Namespace**: 
-- A Namespace is essentially a partition of the Kubernetes cluster. It allows you to logically isolate different environments (like dev, staging, and prod) within the same cluster. You can remove a namespace, which will also delete all resources within it.
+1. **Create a new Kubernetes Namespace**:
 
+**Command:**
 ```bash
 kubectl create namespace my-apps
+```
+
+**YAML Version**: `namespace.yaml`
+
+```yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: my-apps
+ ```
+**Apply with:**
+
+```bash
+kubectl apply -f namespace.yaml
 ```
 
 ### Basic Deployment
 
 2. **Deploy a Simple App**: 
-- This command deploys an Nginx web server container in the namespace `my-apps`. Kubernetes wraps this container in a Pod and schedules it to run on one of the nodes.
 
- ```bash
+**Command:**
+
+```bash
 kubectl create deployment hello-world --image=nginx --namespace=my-apps
- ```
+```
+
+**YAML Version**: `deployment.yaml`
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-world
+  namespace: my-apps
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hello-world
+  template:
+    metadata:
+      labels:
+        app: hello-world
+    spec:
+      containers:
+        - name: nginx
+          image: nginx
+          ports:
+            - containerPort: 80
+
+```
+**Apply with:**
+
+```bash
+kubectl apply -f deployment.yaml
+```
 
 ### Service Exposure
 
 3. **Expose the Deployment**: 
-- Exposing the deployment creates a service of type `ClusterIP`. This makes the app accessible within the cluster but not from your local machine. A service of type ClusterIP gets a virtual IP address within the cluster, enabling communication between different services.
+
+**Command:**
 
 ```bash
 kubectl expose deployment hello-world --type=ClusterIP --port=80 --namespace=my-apps
 ```
 
+**YAML Version**: `service.yaml`
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello-world
+  namespace: my-apps
+spec:
+  selector:
+    app: hello-world
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: ClusterIP
+
+```
+**Apply with:**
+```bash
+kubectl apply -f service.yaml
+```
+
 ### Verify Deployment
 
 4. **Verify Using Port-Forward**: 
-- The `port-forward` command forwards a local port to a port on the pod. The `8081:80` syntax maps local port 8081 to the pod's port 80. With this, you can access the application for testing directly from your local machine.
 
 ```bash
 kubectl port-forward deployment/hello-world 8081:80 --namespace=my-apps
@@ -415,10 +484,15 @@ kubectl port-forward deployment/hello-world 8081:80 --namespace=my-apps
 
 ### Cleanup: Wiping Everything and Starting Over
 
-- If you want to remove all the resources associated with this exercise for any reason (like wanting to start fresh), you can delete the namespace. This action will remove all resources within that namespace, including deployments, services, etc.
+**Remove All Resources**:
 
 ```bash
 kubectl delete namespace my-apps
+```
+**Or remove individual resources with:**
+
+```bash
+kubectl delete -f <filename>.yaml
 ```
 
 **Warning**: Deleting the namespace will remove all resources in that namespace. Ensure you're okay with that before running the command.
