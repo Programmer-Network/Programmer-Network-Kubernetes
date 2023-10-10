@@ -1,5 +1,7 @@
 # Kubernetes Learning Journey
 
+<img src="./assets/images/kubernetes.png">
+
 ## Objective
 
 **Why**: To establish a strong foundational knowledge of Kubernetes and to set up a K3s cluster on Raspberry Pi units. The focus is to learn Kubernetes thoroughly and experiment with its various features.
