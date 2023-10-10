@@ -393,9 +393,11 @@ kubectl create namespace my-apps
 **YAML Version**: `namespace.yaml`
 
 ```yaml
+# Define the API version and the kind of resource
 apiVersion: v1
 kind: Namespace
 metadata:
+  # The name of the Namespace
   name: my-apps
  ```
 **Apply with:**
@@ -417,18 +419,24 @@ kubectl create deployment hello-world --image=nginx --namespace=my-apps
 **YAML Version**: `deployment.yaml`
 
 ```yaml
+# Define the API version and the kind of resource
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  # The name of the Deployment
   name: hello-world
+  # Namespace to deploy into
   namespace: my-apps
 spec:
+  # Number of replica Pods to maintain
   replicas: 1
   selector:
+    # Labels to match against when selecting Pods for this Deployment
     matchLabels:
       app: hello-world
   template:
     metadata:
+      # Labels to assign to the Pods spawned by this Deployment
       labels:
         app: hello-world
     spec:
@@ -436,6 +444,7 @@ spec:
         - name: nginx
           image: nginx
           ports:
+            # Container port that needs to be exposed
             - containerPort: 80
 
 ```
@@ -458,18 +467,25 @@ kubectl expose deployment hello-world --type=ClusterIP --port=80 --namespace=my-
 **YAML Version**: `service.yaml`
 
 ```yaml
+# Define the API version and the kind of resource
 apiVersion: v1
 kind: Service
 metadata:
+  # Name of the Service
   name: hello-world
+   # Namespace to create the service in
   namespace: my-apps
 spec:
+  # Select Pods with this label to expose via the Service
   selector:
     app: hello-world
   ports:
     - protocol: TCP
+      # Expose the Service on this port
       port: 80
+      # Map the Service port to the target Port on the Pod
       targetPort: 80
+  # The type of Service; ClusterIP makes it reachable only within the cluster
   type: ClusterIP
 
 ```
