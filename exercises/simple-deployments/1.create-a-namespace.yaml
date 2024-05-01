@@ -1,0 +1,6 @@
+# Define the API version and the kind of resource
+apiVersion: v1
+kind: Namespace
+metadata:
+  # The name of the Namespace
+  name: my-apps

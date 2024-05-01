@@ -1,0 +1,27 @@
+# Define the API version and the kind of resource
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  # The name of the Deployment
+  name: hello-world
+  # Namespace to deploy into
+  namespace: my-apps
+spec:
+  # Number of replica Pods to maintain
+  replicas: 1
+  selector:
+    # Labels to match against when selecting Pods for this Deployment
+    matchLabels:
+      app: hello-world
+  template:
+    metadata:
+      # Labels to assign to the Pods spawned by this Deployment
+      labels:
+        app: hello-world
+    spec:
+      containers:
+        - name: nginx
+          image: nginx
+          ports:
+            # Container port that needs to be exposed
+            - containerPort: 80

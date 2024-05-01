@@ -516,3 +516,90 @@ kubectl delete -f <filename>.yaml
 ```
 
 **Warning**: Deleting the namespace will remove all resources in that namespace. Ensure you're okay with that before running the command.
+
+---
+
+## Exercises
+
+### Exercise 1: Create and Examine a Pod
+
+1. Create a simple Pod running Nginx.
+
+```bash
+kubectl run nginx-pod --image=nginx --restart=Never
+```
+    
+2. Examine the Pod.
+
+```bash
+kubectl describe pod nginx-pod
+```
+    
+3. Delete the Pod.
+
+```bash
+kubectl delete pod nginx-pod
+```
+
+**Objective**: Familiarize yourself with the Pod lifecycle.
+
+---
+
+### Exercise 2: Create a Deployment
+
+1. Create a Deployment for a simple Node.js app (You can use a Docker image like `node:20`).
+
+```bash
+kubectl create deployment node-app --image=node:20
+```
+
+2. Scale the Deployment.
+
+```bash
+kubectl scale deployment node-app --replicas=3
+```
+
+3. Rollback the Deployment.
+
+```bash
+kubectl rollout undo deployment node-app
+```
+
+**Objective**: Learn how to manage application instances declaratively using Deployments.
+
+---
+
+### Exercise 3: Expose the Deployment as a Service
+
+1. Expose the Deployment as a ClusterIP service.
+
+```bash
+kubectl expose deployment node-app --type=ClusterIP --port=80
+```
+
+2. Access the service within the cluster.
+
+```bash
+kubectl get svc
+```
+   
+Use `kubectl port-forward` to test the service.
+   
+```bash
+kubectl port-forward svc/node-app 8080:80
+```
+
+**Objective**: Learn how Services allow you to abstract and access your Pods.
+
+---
+
+### Exercise 4: Cleanup
+
+1. Remove the service and deployment.
+
+```bash
+kubectl delete svc node-app
+kubectl delete deployment node-app
+```
+
+**Objective**: Understand cleanup and resource management.

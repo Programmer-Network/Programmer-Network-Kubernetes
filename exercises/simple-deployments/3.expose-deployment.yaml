@@ -1,0 +1,20 @@
+# Define the API version and the kind of resource
+apiVersion: v1
+kind: Service
+metadata:
+  # Name of the Service
+  name: hello-world
+   # Namespace to create the service in
+  namespace: my-apps
+spec:
+  # Select Pods with this label to expose via the Service
+  selector:
+    app: hello-world
+  ports:
+    - protocol: TCP
+      # Expose the Service on this port
+      port: 80
+      # Map the Service port to the target Port on the Pod
+      targetPort: 80
+  # The type of Service; ClusterIP makes it reachable only within the cluster
+  type: ClusterIP
