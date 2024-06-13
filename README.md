@@ -12,7 +12,7 @@
 
 ## Table of Contents
 - [Introduction & Theoretical Foundations](#introduction--theoretical-foundations)
-  - [What is Kubernetes](#1-what-is-kubernetes-🎥)
+  - [What is Kubernetes](#1-what-is-kubernetes-)
   - [Kubernetes Components Explained](#kubernetes-components-explained)
   - [Control Plane Components](#control-plane-components)
   - [Worker Node Components](#worker-node-components)
