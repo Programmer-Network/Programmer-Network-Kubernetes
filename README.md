@@ -47,7 +47,9 @@
 
 ## Introduction & Theoretical Foundations
 
-#### [1. What is Kubernetes? 🎥](https://www.youtube.com/watch?v=TlHvYWVUZyc&ab_channel=ByteByteGo)
+#### 1. What is Kubernetes? 🎥
+- [Kubernetes Explained in 6 Minutes | k8s Architecture](https://www.youtube.com/watch?v=TlHvYWVUZyc&ab_channel=ByteByteGo)
+- [Kubernetes Explained in 15 Minutes](https://www.youtube.com/watch?v=r2zuL9MW6wc)
 - Kubernetes is an open-source container orchestration platform that automates the deployment, scaling, and management of containerized applications.
 
 ## Kubernetes Components Explained
