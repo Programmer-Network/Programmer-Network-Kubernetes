@@ -167,7 +167,54 @@ The setup illustrated here is not mandatory but reflects my personal choices bas
 sudo apt update
 sudo apt upgrade
 ```
-#### 4. Assign Static IP Addresses
+
+#### 4. Disable Wi-Fi
+
+```sh
+sudo vi /etc/wpa_supplicant/wpa_supplicant.conf
+```
+
+Add the following lines to the file:
+
+```sh
+network={
+    ssid=""
+    key_mgmt=NONE
+}
+```
+
+Disable the Wi-Fi interface:
+
+```sh
+sudo ifconfig wlan0 down
+```
+
+Block the Wi-Fi module using `rfkill`:
+
+```sh
+sudo rfkill block wifi
+```
+
+Prevent the Wi-Fi module from loading at boot:
+
+```sh
+sudo nano /etc/modprobe.d/raspi-blacklist.conf
+```
+
+Add the following line:
+
+```sh
+blacklist brcmfmac
+```
+
+Reboot your Raspberry Pi:
+
+```sh
+sudo reboot
+```
+
+
+#### 5. Assign Static IP Addresses
 
 ##### MikroTik Router
 
