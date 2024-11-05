@@ -11,7 +11,20 @@
 **Goal**: By the end of this journey, aim to have the capability to rapidly instantiate new development and production environments and expose them to the external world with equal ease.
 
 ## Table of Contents
-- [Introduction & Theoretical Foundations](#introduction--theoretical-foundations)
+- [Hardware](#hardware)
+  - [Hardware Components](#hardware-components)
+  - [Why These Choices?](#why-these-choices)
+- [Raspberry Pi's Setup](#raspberry-pis-setup)
+  - [Flash SD Cards with Raspberry Pi OS](#flash-sd-cards-with-raspberry-pi-os-using-pi-imager)
+  - [Initial Boot and Setup](#initial-boot-and-setup)
+  - [Update and Upgrade](#update-and-upgrade---ansible-playbook)
+  - [Disable Wi-Fi](#disable-wi-fi-ansible-playbook)
+  - [Disable Swap](#disable-swap-ansible-playbook)
+  - [Disable Bluetooth](#disable-bluetooth)
+  - [Assign Static IP Addresses](#assign-static-ip-addresses)
+  - [Set SSH Aliases](#set-ssh-aliases)
+
+- [Kubernetes](#kubernetes)
   - [What is Kubernetes](#1-what-is-kubernetes-)
   - [Kubernetes Components Explained](#kubernetes-components-explained)
   - [Control Plane Components](#control-plane-components)
@@ -21,95 +34,23 @@
   - [Read and Research](#5-read-and-research)
   - [Architecture Overview](#4-architecture-overview)
   - [Community and Ecosystem](#6-community-and-ecosystem)
-- [Hardware](#hardware)
-  - [Hardware Components](#hardware-components)
-  - [Why These Choices?](#why-these-choices)
-- [Setup](#setup)
-  - [Raspberry Pi](#raspberry-pi)
-    - [1. Flash SD Cards with Raspberry Pi OS](#1-flash-sd-cards-with-raspberry-pi-os)
-    - [2. Initial Boot and Setup](#2-initial-boot-and-setup)
-    - [3. Update and Upgrade](#3-update-and-upgrade)
-    - [4. Disable Wi-Fi](#4-disable-wi-fi)
-    - [5. Assign Static IP Addresses](#5-assign-static-ip-addresses)
-    - [5. Set SSH Aliases](#ssh-aliases)
-    - [6. K3S Setup](#k3s-setup)
-      - [Master Node](#master-node)
-      - [Worker Nodes](#worker-nodes)
-      - [Kubectl on local machine](#setup-kubectl-on-your-local-machine)
-- [Basic Kubernetes Deployments](#basic-kubernetes-deployments)
+  
+- [K3S Setup](#k3s-setup)
+  - [Enable Memory CGroups](#enable-memory-cgroups-ansible-playbook)
+  - [Master Node](#setup-the-master-node)
+  - [Worker Nodes](#setup-worker-nodes)
+  - [Kubectl on local machine](#setup-kubectl-on-your-local-machine)
+
+- [Getting Started with Kubernetes](#gettting-started-with-kubernetes)
   - [Namespace Setup](#namespace-setup)
   - [Basic Deployment](#basic-deployment)
   - [Service Exposure](#service-exposure)
   - [Verify Deployment](#verify-deployment)
   - [Cleanup](#cleanup-wiping-everything-and-starting-over)
+  - [Basic Kubernetes Deployments](#basic-kubernetes-deployments)
 
 ---
 
-## Introduction & Theoretical Foundations
-
-#### 1. What is Kubernetes? 🎥
-- [Kubernetes Explained in 6 Minutes | k8s Architecture](https://www.youtube.com/watch?v=TlHvYWVUZyc&ab_channel=ByteByteGo)
-- [Kubernetes Explained in 15 Minutes](https://www.youtube.com/watch?v=r2zuL9MW6wc)
-- Kubernetes is an open-source container orchestration platform that automates the deployment, scaling, and management of containerized applications.
-
-## Kubernetes Components Explained
-
-### Control Plane Components
-
-- **API Server**: 
-  - Acts as the front-end for the Kubernetes control plane.
-
-- **etcd**: 
-  - Consistent and highly-available key-value store used as Kubernetes' backing store for all cluster data.
-
-- **Scheduler**: 
-  - Responsible for scheduling pods onto nodes.
-
-- **Controller Manager**: 
-  - Runs controllers, which are background threads that handle routine tasks in the cluster.
-
-### Worker Node Components
-
-- **Worker Node**: 
-  - Machines, VMs, or physical computers that run your applications.
-
-- **Pods**: 
-  - The smallest deployable units of computing that can be created and managed in Kubernetes.
-
-- **kubelet**: 
-  - An agent that runs on each worker node in the cluster and ensures that containers are running in a pod.
-
-- **kube-proxy**: 
-  - Maintains network rules on nodes, allowing network communication to your Pods from network sessions inside or outside of your cluster.
-
-
-
-#### 2. Why Use Kubernetes?
-- **Scaling**: Easily scale applications up or down as needed.
-- **High Availability**: Ensure that your applications are fault-tolerant and highly available.
-- **Portability**: Move workloads across different cloud providers or on-premises environments.
-- **Declarative Configuration**: Describe what you want, and Kubernetes makes it happen.
-
-#### 3. Core Components and Concepts
-- **Control Plane**: The set of components that manage the overall state of the cluster.
-- **Nodes**: The worker machines that run containers.
-- **Pods**: The smallest deployable units that can contain one or more containers.
-- **Services**: A way to expose Pods to the network.
-- **Ingress**: Manages external access to services within a cluster.
-- **ConfigMaps and Secrets**: Manage configuration data and secrets separately from container images.
-
-#### 4. Architecture Overview
-- **Bottom-Up View**: Understand Kubernetes from the infrastructure (Nodes) to Pods, to Services, and upwards.
-- **Top-Down View**: Start from the user's perspective, breaking down what you want to deploy into services, pods, and the underlying infrastructure.
-
-#### 5. Read and Research
-- Go through [Kubernetes' official documentation](https://kubernetes.io/docs/home/).
-- Watch [beginner-friendly YouTube tutorials](https://www.youtube.com/watch?v=d6WC5n9G_sM&ab_channel=freeCodeCamp.org) or online courses.
-
-#### 6. Community and Ecosystem
-- Get familiar with the wider Kubernetes ecosystem, including tooling, forums, and meetups.
-
----
 
 ## Hardware
 ### Hardware Components
@@ -134,24 +75,31 @@ The setup illustrated here is not mandatory but reflects my personal choices bas
 
 - **[CSL CAT.8 Network Cable 40 Gigabit](https://www.amazon.de/-/en/gp/product/B08FCLHTH5/ref=ppx_yo_dt_b_search_asin_title?ie=UTF8&th=1)**: CSL CAT.8 Network Cable 40 Gigabit
 
+- **[2x Verbatim Vi550 S3 SSD](https://www.amazon.de/dp/B07LGKQLT5?ref=ppx_yo2ov_dt_b_fed_asin_title&th=1)**
+
+- **[2x JSAUX USB 3.0 to SATA Adapter](https://www.amazon.de/dp/B086W944YT?ref=ppx_yo2ov_dt_b_fed_asin_title)**
+
+
+
 ### Why These Choices?
 
-- **Mobility**: The 4U Rack allows me to move the entire setup easily, making it convenient for different scenarios, from a home office to a small business environment.
+**Mobility**: The 4U Rack allows me to move the entire setup easily, making it convenient for different scenarios, from a home office to a small business environment.
   
-- **Professional-Grade Networking**: The Mikrotik router provides a rich feature set generally found in enterprise-grade hardware, offering me a sandbox to experiment with advanced networking configurations.
+**Professional-Grade Networking**: The Mikrotik router provides a rich feature set generally found in enterprise-grade hardware, offering me a sandbox to experiment with advanced networking configurations.
   
-- **Scalability**: The Raspberry Pi units and the Rack setup are easily scalable. I can effortlessly add more Pis to the cluster, enhancing its capabilities.
+**Scalability**: The Raspberry Pi units and the Rack setup are easily scalable. I can effortlessly add more Pis to the cluster, enhancing its capabilities.
 
-- **Affordability**: This setup provides a balance between cost and performance, giving me a powerful Kubernetes cluster without breaking the bank.
+**Affordability**: This setup provides a balance between cost and performance, giving me a powerful Kubernetes cluster without breaking the bank.
 
 
 ---
 
-# Setup
 
-## Raspberry Pi
+# Raspberry Pi's Setup
 
-#### 1. Flash SD Cards with Raspberry Pi OS Using Pi Imager
+For most steps, an [Ansible playbook](./ansible/playbooks/) is available. However, I strongly recommend that you initially set up the first Raspberry Pi manually. This hands-on approach will help you understand each step more deeply and gain practical experience. Once you've completed the manual setup, you can then use the [Ansible playbook](./ansible/playbooks/) to automate the same tasks across the other devices.
+
+#### Flash SD Cards with Raspberry Pi OS Using Pi Imager
 - Open [Raspberry Pi Imager](https://www.raspberrypi.com/software/).
   - Choose the 'OS' you want to install from the list. The tool will download the selected OS image for you.
   - Insert your SD card and select it in the 'Storage' section.
@@ -160,18 +108,19 @@ The setup illustrated here is not mandatory but reflects my personal choices bas
     - Enable SSH and select the "allow public-key authorization only" option.
   - Click on 'Write' to begin the flashing process.
   
-#### 2. Initial Boot and Setup
+#### Initial Boot and Setup
 - Insert the flashed SD card into the Raspberry Pi and power it on.
 - On the first boot, ssh into the Pi to perform initial configuration
   
-#### 3. Update and Upgrade
+#### Update and Upgrade - ([Ansible Playbook](./ansible/playbooks/apt-update.yml))
 - Run the following commands to update the package list and upgrade the installed packages:
+
 ```bash
 sudo apt update
 sudo apt upgrade
 ```
 
-#### 4. Disable Wi-Fi
+#### Disable Wi-Fi ([Ansible Playbook](./ansible/playbooks/disable-wifi.yml))
 
 ```sh
 sudo vi /etc/wpa_supplicant/wpa_supplicant.conf
@@ -216,8 +165,177 @@ Reboot your Raspberry Pi:
 sudo reboot
 ```
 
+#### Disable Swap ([Ansible Playbook](./ansible/playbooks/disable-swap.yml))
 
-#### 5. Assign Static IP Addresses
+Disabling swap in a K3s cluster is crucial because Kubernetes relies on precise memory management to allocate resources, schedule workloads, and handle potential memory limits. When swap is enabled, it introduces unpredictability in how memory is used. The Linux kernel may move inactive memory to disk (swap), giving the impression that there is available memory when, in reality, the node might be under significant memory pressure. This can lead to performance degradation for applications, as accessing memory from the swap space (on disk) is significantly slower than accessing it from RAM. In addition, Kubernetes, by default, expects swap to be off and prevents the kubelet from running unless explicitly overridden, as swap complicates memory monitoring and scheduling.
+
+Beyond performance, swap interferes with Kubernetes' ability to react to out-of-memory (OOM) conditions. With swap enabled, a node might avoid crashing but at the cost of drastically reduced performance, disk I/O bottlenecks, and inconsistent resource allocation. In contrast, with swap disabled, Kubernetes can correctly identify memory shortages and kill misbehaving pods in a controlled way, allowing the system to recover predictably. For edge cases like K3s, which often operate on lightweight and resource-constrained systems (e.g., Raspberry Pis or IoT devices), disabling swap ensures efficient and stable operation without unnecessary disk wear and performance hits.
+
+- Open a terminal.
+- Run the following command to turn off swap for the current session:
+
+```bash
+sudo swapoff -a
+```
+
+This command disables the swap immediately, but it will be re-enabled after a reboot unless further steps are taken.
+
+##### Modify `/etc/dphys-swapfile` to Disable Swap Permanently
+
+Open the swap configuration file `/etc/dphys-swapfile` in a text editor:
+
+```bash
+sudo nano /etc/dphys-swapfile
+```
+
+Search for the line starting with `CONF_SWAPSIZE=`.
+Modify that line to read:
+
+```bash
+CONF_SWAPSIZE=0
+```
+
+Save (Ctrl+O in `nano`) and exit the editor (Ctrl+X in `nano`).
+
+#####  Remove the Existing Swap File
+
+Run the following command to remove the current swap file (`/var/swap`):
+
+```bash
+sudo rm /var/swap
+```
+
+##### Stop the `dphys-swapfile` service immediately
+
+Stop the `dphys-swapfile` service, which manages swap:
+```bash
+sudo systemctl stop dphys-swapfile
+```
+
+##### Disable the `dphys-swapfile` service to prevent it from running on boot
+
+Prevent the `dphys-swapfile` service from starting during system boot by disabling it:
+
+```bash
+sudo systemctl disable dphys-swapfile
+```
+
+---
+
+##### Verify swap is turned off
+
+Run the following command to verify that swap is no longer in use:
+
+```bash
+free -m
+```
+
+In the output, ensure that the "Swap" line shows `0` for total, used, and free space:
+
+```
+total used free shared buffers cached
+Mem: 2003 322 1681 18 12 129
+-/+ buffers/cache: 180 1822
+Swap: 0 0 0
+```
+
+---
+
+##### Reboot the system
+
+Finally, reboot the system in order to apply all changes fully and ensure swap remains permanently disabled:
+
+```bash
+sudo reboot
+```
+
+After the system comes back online, run `free -m` again to confirm that swap is still disabled.
+
+
+#### Disable Bluetooth
+
+When using Raspberry Pi devices in a Kubernetes-based environment like K3s, any unused hardware features, such as Bluetooth, can consume system resources or introduce potential security risks. Disabling Bluetooth on each Raspberry Pi optimizes performance by reducing background services and freeing up resources like CPU and memory. Additionally, by disabling an unused service, you reduce the attack surface of your Raspberry Pi-based K3s cluster, providing a more secure and streamlined operating environment.
+
+
+##### Stop and disable the bluetooth service
+
+**Stop the Bluetooth service** that might be currently running on your Raspberry Pi:
+
+```bash
+sudo systemctl stop bluetooth
+```
+   
+**Disable the service** so it doesn't start automatically during system boot:
+
+```bash
+sudo systemctl disable bluetooth
+```
+
+This ensures that the Bluetooth service is not running in the background, conserving system resources.
+
+##### Blacklist bluetooth kernel modules
+
+To prevent the operating system from loading Bluetooth modules at boot time, you'll need to blacklist specific modules.
+
+**Open the blacklist configuration file for editing (or create it)**:
+
+```bash
+sudo nano /etc/modprobe.d/raspi-blacklist.conf
+```
+
+**Add the following lines to disable Bluetooth modules**:
+
+```bash
+blacklist btbcm      # Disables Broadcom Bluetooth module
+blacklist hci_uart   # Disables hci_uart module specific to Raspberry Pi Bluetooth
+```
+
+**Save the file** (Ctrl+O in `nano`) and **exit** the editor (Ctrl+X in `nano`).
+
+By blacklisting these modules, they won’t be loaded during boot, effectively preventing Bluetooth from running.
+
+##### Disable bluetooth in the system configuration
+
+Bluetooth can be disabled directly at the device level by editing specific Raspberry Pi system configurations.
+
+**Open the boot configuration file for editing**:
+
+```bash
+sudo nano /boot/config.txt
+```
+
+**Add the following line to disable Bluetooth**:
+
+```bash
+dtoverlay=disable-bt
+```
+
+Ensure no Bluetooth device can wake up your Raspberry Pi by ensuring the line is not commented out.
+
+**Save the changes** (Ctrl+O in `nano`) and **exit** the editor (Ctrl+X in `nano`).
+
+This command ensures that the Raspberry Pi doesn’t enable Bluetooth at boot by making system-wide firmware adjustments.
+
+**Reboot the Raspberry Pi**
+
+To fully apply the changes (stopping the service, blacklisting modules, and adjusting system configuration), it’s recommended to reboot the system.
+
+**Reboot the Raspberry Pi**:
+
+```bash
+sudo reboot
+```
+
+After rebooting, you can verify that Bluetooth has been disabled by checking the status of the service:
+   
+```bash
+sudo systemctl status bluetooth
+```
+
+It should indicate that the Bluetooth service is inactive or dead.
+
+
+#### Assign Static IP Addresses
 
 ##### MikroTik Router
 
@@ -269,13 +387,77 @@ ssh rp1
 
 That's it! You've set up SSH aliases for your Raspberry Pi cluster.
 
+# Kubernetes
+
+## What is Kubernetes? 🎥
+- [Kubernetes Explained in 6 Minutes | k8s Architecture](https://www.youtube.com/watch?v=TlHvYWVUZyc&ab_channel=ByteByteGo)
+- [Kubernetes Explained in 15 Minutes](https://www.youtube.com/watch?v=r2zuL9MW6wc)
+- Kubernetes is an open-source container orchestration platform that automates the deployment, scaling, and management of containerized applications.
+
+### Kubernetes Components Explained
+
+#### Control Plane Components
+
+- **API Server**: 
+  - Acts as the front-end for the Kubernetes control plane.
+
+- **etcd**: 
+  - Consistent and highly-available key-value store used as Kubernetes' backing store for all cluster data.
+
+- **Scheduler**: 
+  - Responsible for scheduling pods onto nodes.
+
+- **Controller Manager**: 
+  - Runs controllers, which are background threads that handle routine tasks in the cluster.
+
+#### Worker Node Components
+
+- **Worker Node**: 
+  - Machines, VMs, or physical computers that run your applications.
+
+- **Pods**: 
+  - The smallest deployable units of computing that can be created and managed in Kubernetes.
+
+- **kubelet**: 
+  - An agent that runs on each worker node in the cluster and ensures that containers are running in a pod.
+
+- **kube-proxy**: 
+  - Maintains network rules on nodes, allowing network communication to your Pods from network sessions inside or outside of your cluster.
+
+
+
+#### 2. Why Use Kubernetes?
+- **Scaling**: Easily scale applications up or down as needed.
+- **High Availability**: Ensure that your applications are fault-tolerant and highly available.
+- **Portability**: Move workloads across different cloud providers or on-premises environments.
+- **Declarative Configuration**: Describe what you want, and Kubernetes makes it happen.
+
+#### 3. Core Components and Concepts
+- **Control Plane**: The set of components that manage the overall state of the cluster.
+- **Nodes**: The worker machines that run containers.
+- **Pods**: The smallest deployable units that can contain one or more containers.
+- **Services**: A way to expose Pods to the network.
+- **Ingress**: Manages external access to services within a cluster.
+- **ConfigMaps and Secrets**: Manage configuration data and secrets separately from container images.
+
+#### 4. Architecture Overview
+- **Bottom-Up View**: Understand Kubernetes from the infrastructure (Nodes) to Pods, to Services, and upwards.
+- **Top-Down View**: Start from the user's perspective, breaking down what you want to deploy into services, pods, and the underlying infrastructure.
+
+#### 5. Read and Research
+- Go through [Kubernetes' official documentation](https://kubernetes.io/docs/home/).
+- Watch [beginner-friendly YouTube tutorials](https://www.youtube.com/watch?v=d6WC5n9G_sM&ab_channel=freeCodeCamp.org) or online courses.
+
+#### 6. Community and Ecosystem
+- Get familiar with the wider Kubernetes ecosystem, including tooling, forums, and meetups.
+
+---
+
 ## K3S Setup
 
-### Master Node
+### Enable Memory Cgroups ([Ansible Playbook](./ansible/playbooks/enable-memory-groups.yml))
 
-1. **Enable Memory Cgroups**: 
-
-```
+```txt
 Control Groups (Cgroups) are a Linux kernel feature that allows you to allocate resources such as CPU time, system memory, and more among user-defined groups of tasks (processes). K3s requires memory cgroups to be enabled to better manage and restrict the resources that each container can use. This is crucial in a multi-container environment where resource allocation needs to be as efficient as possible.
 
 Simple Analogy: Imagine you live in a house with multiple people (processes), and there are limited resources like time (CPU), space (memory), and tools (I/O). Without a system in place, one person might hog the vacuum cleaner all day (CPU time), while someone else fills the fridge with their stuff (memory).
@@ -285,33 +467,33 @@ With a `"chore schedule"` (cgroups), you ensure everyone gets an allocated time 
 
 Before installing K3s, it's essential to enable memory cgroups on the Raspberry Pi for effective container resource management.
 
-1. Edit the `/boot/cmdline.txt` file on your Raspberry Pi.
+Edit the `/boot/firmware/cmdline.txt` file on your Raspberry Pi.
 
 ```bash
-sudo vi /boot/cmdline.txt
+sudo vi /boot/firmware/cmdline.txt
 ```
     
-2. Append the following to enable memory cgroups.
+Append the following to enable memory cgroups.
 
 ```text
 cgroup_memory=1 cgroup_enable=memory
 ```
     
-3. Save the file and reboot your Raspberry Pi.
+Save the file and reboot your Raspberry Pi.
 
 ```bash
 sudo reboot
 ```
 
-2. **Choose a Master Node**: Select one Raspberry Pi to act as the master node.
+### Setup the Master Node 
 
-3. **Install K3s**: Use the following command to install K3s on the master node.
+Select one Raspberry Pi to act as the master node, and install K3S:
 
 ```bash
 curl -sfL https://get.k3s.io | sh -
 ```
 
-3. **Copy and Set Permissions for Kubeconfig**: To avoid permission issues when using kubectl, copy the generated Kubeconfig to your home directory and update its ownership.
+**Copy and Set Permissions for Kubeconfig**: To avoid permission issues when using kubectl, copy the generated Kubeconfig to your home directory and update its ownership.
 
 ```bash
 # Create the .kube directory in the user's home directory if it doesn't already exist
@@ -324,17 +506,18 @@ sudo cp /etc/rancher/k3s/k3s.yaml ~/.kube/config
 sudo chown $(id -u):$(id -g) ~/.kube/config
 ```
 
-4. **Verify Cluster**: Ensure that `/etc/rancher/k3s/k3s.yaml` was created and the cluster is accessible.
+**Verify Cluster**: Ensure that `/etc/rancher/k3s/k3s.yaml` was created and the cluster is accessible.
 
 ```bash
 kubectl --kubeconfig ~/.kube/config get nodes
 ```
 
-5. **Set KUBECONFIG Environment Variable**: To make it more convenient to run `kubectl` commands without having to specify the `--kubeconfig` flag every time, you can set an environment variable to automatically point to the kubeconfig file.
+**Set KUBECONFIG Environment Variable**: To make it more convenient to run `kubectl` commands without having to specify the `--kubeconfig` flag every time, you can set an environment variable to automatically point to the kubeconfig file.
 
 ```bash
 export KUBECONFIG=~/.kube/config
 ```
+
 To make this setting permanent across shell sessions, add it to your shell profile:
     
 ```bash
@@ -346,20 +529,21 @@ By doing this, you streamline your workflow, allowing you to simply run `kubectl
 
 ---
 
-### Worker Nodes
+### Setup Worker Nodes
 
-1. **Join Tokens**: On the master node, retrieve the join token from `/var/lib/rancher/k3s/server/token`.
+**Join Tokens**: On the master node, retrieve the join token from `/var/lib/rancher/k3s/server/token`.
 
 ```bash
 vi /var/lib/rancher/k3s/server/token
 ```
-2. **Worker Installation**: Use this token to join each worker node to the master.
+
+**Worker Installation**: Use this token to join each worker node to the master.
 
 ```bash
 curl -sfL https://get.k3s.io | K3S_URL=https://<master_node_ip>:6443 K3S_TOKEN=<token> sh -
 ```
 
-3. **Node Verification**: Check that all worker nodes have joined the cluster. On your master node, run:
+**Node Verification**: Check that all worker nodes have joined the cluster. On your master node, run:
 
 ```bash
 kubectl get nodes
@@ -371,15 +555,17 @@ kubectl get nodes
 
 #### Kubeconfig
 
-After setting up your cluster, it's more convenient to manage it remotely from your local machine. Here's how to do that:
+After setting up your cluster, it's more convenient to manage it remotely from your local machine. 
 
-1. **Create the `.kube` directory on your local machine if it doesn't already exist.**
+Here's how to do that:
+
+**Create the `.kube` directory on your local machine if it doesn't already exist.**
 
 ```bash
 mkdir -p ~/.kube
 ```
 
-2. **Copy the kubeconfig from the master node to your local `.kube` directory.**
+**Copy the kubeconfig from the master node to your local `.kube` directory.**
 
 ```bash
 scp <user>@<master_node_ip>:~/.kube/config ~/.kube/config
@@ -388,7 +574,7 @@ Replace `<user>` with your username and `<master_node_ip>` with the IP address o
 
 **Note**: If you encounter a permissions issue while copying, ensure that the `~/.kube/config` on your master node is owned by your user and is accessible. You might have to adjust file permissions or ownership on the master node accordingly.
 
-3. **Update the kubeconfig server details (Optional)**
+**Update the kubeconfig server details (Optional)**
 
 Open your local `~/.kube/config` and make sure the `server` IP matches your master node's IP. If it's set to `127.0.0.1`, you'll need to update it.
 
@@ -402,9 +588,9 @@ After completing these steps, you should be able to run `kubectl` commands from 
 
 ---
 
-## Basic Kubernetes Deployments
+# Gettting Started with Kubernetes
 
-### Namespace Setup
+## Namespace Setup
 
 1. **Create a new Kubernetes Namespace**:
 
@@ -429,7 +615,7 @@ metadata:
 kubectl apply -f namespace.yaml
 ```
 
-### Basic Deployment
+## Basic Deployment
 
 2. **Deploy a Simple App**: 
 
@@ -477,7 +663,7 @@ spec:
 kubectl apply -f deployment.yaml
 ```
 
-### Service Exposure
+## Service Exposure
 
 3. **Expose the Deployment**: 
 
@@ -517,7 +703,7 @@ spec:
 kubectl apply -f service.yaml
 ```
 
-### Verify Deployment
+## Verify Deployment
 
 4. **Verify Using Port-Forward**: 
 
@@ -526,7 +712,7 @@ kubectl apply -f service.yaml
 kubectl port-forward deployment/hello-world 8081:80 --namespace=my-apps
 ```
 
-### Cleanup: Wiping Everything and Starting Over
+## Cleanup: Wiping Everything and Starting Over
 
 **Remove All Resources**:
 
