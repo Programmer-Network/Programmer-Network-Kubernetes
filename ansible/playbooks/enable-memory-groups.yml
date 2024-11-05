@@ -1,0 +1,18 @@
+---
+- name: Enable Memory Cgroups on Raspberry Pi
+  hosts: all_nodes
+  become: true
+  tasks:
+    - name: Ensure memory cgroups are enabled in /boot/firmware/cmdline.txt
+      lineinfile:
+        path: /boot/firmware/cmdline.txt
+        regexp: '(^.*$)'   # Match the entire existing line (everything in the file)
+        line: '\1 cgroup_memory=1 cgroup_enable=memory'   # Append these parameters to the matched line
+        backrefs: yes      # Use backreference to ensure existing content is preserved
+      notify: Reboot Raspberry Pi
+
+  handlers:
+    - name: Reboot Raspberry Pi
+      reboot:
+        msg: "Rebooting to enable memory cgroups."
+        connect_timeout: 5

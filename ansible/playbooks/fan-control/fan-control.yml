@@ -1,0 +1,63 @@
+---
+- name: Setup fan control on Raspberry Pis
+  hosts: rpi-cluster
+  become: yes
+  gather_facts: yes
+
+  tasks:
+    - name: Ensure Python3 and required packages are installed
+      apt:
+        name:
+          - python3
+          - python3-gpiozero
+          - python3-psutil
+        state: present
+        update_cache: yes
+
+    - name: Create directory for fan control script
+      file:
+        path: /home/{{ ansible_user }}/fan_control
+        state: directory
+        mode: '0755'
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+
+    - name: Deploy fan control Python script
+      copy:
+        src: fan_control.py
+        dest: /home/{{ ansible_user }}/fan_control/fan_control.py
+        mode: '0755'
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+
+    - name: Create systemd service file for fan control
+      copy:
+        content: |
+          [Unit]
+          Description=Fan Control Service
+          After=multi-user.target
+
+          [Service]
+          ExecStart=/usr/bin/python3 /home/{{ ansible_user }}/fan_control/fan_control.py
+          Restart=always
+          User={{ ansible_user }}
+
+          [Install]
+          WantedBy=multi-user.target
+        dest: /etc/systemd/system/fan_control.service
+        mode: '0644'
+
+    - name: Reload systemd to apply new service
+      systemd:
+        daemon_reload: true
+
+    - name: Enable and start fan control service
+      systemd:
+        name: fan_control.service
+        enabled: yes
+        state: started
+
+    - name: Ensure fan control service is running
+      systemd:
+        name: fan_control.service
+        state: started

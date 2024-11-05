@@ -1,0 +1,50 @@
+---
+- name: Disable and turn off Bluetooth on Raspberry Pi
+  hosts: all_nodes
+  become: yes
+
+  tasks:
+  
+    # 1. Stop the Bluetooth service immediately
+    - name: Stop Bluetooth service
+      systemd:
+        name: bluetooth
+        state: stopped
+        enabled: false
+  
+    # 2. Disable Bluetooth modules in the configuration
+    - name: Disable Bluetooth by blacklisting the module
+      ansible.builtin.lineinfile:
+        path: /etc/modprobe.d/raspi-blacklist.conf    # Create or modify blacklist file
+        line: "blacklist btbcm"
+        create: yes
+        state: present
+  
+    - name: Add blacklist for the hci_uart module (Raspberry Pi specific Bluetooth module)
+      ansible.builtin.lineinfile:
+        path: /etc/modprobe.d/raspi-blacklist.conf
+        line: "blacklist hci_uart"
+        create: yes
+        state: present
+  
+    # 3. Disable Bluetooth  services in system configuration (optional)
+    - name: Disable Bluetooth in /boot/config.txt (Raspberry Pi specific)
+      ansible.builtin.lineinfile:
+        path: /boot/config.txt
+        regexp: "^#?dtoverlay=disable-bt"
+        line: "dtoverlay=disable-bt"
+        state: present
+
+    - name: Ensure no Bluetooth devices can wake up the Raspberry Pi
+      ansible.builtin.lineinfile:
+        path: /boot/config.txt
+        regexp: "^#?dtoverlay=disable-bt"
+        line: "dtoverlay=disable-bt"
+        state: present
+
+    # 4. Reboot the system to apply the changes (recommended)
+    - name: Reboot the system to apply the disabling of Bluetooth modules
+      ansible.builtin.reboot:
+        msg: "Rebooting to fully apply Bluetooth disable changes."
+        connect_timeout: 5
+        reboot_timeout: 300

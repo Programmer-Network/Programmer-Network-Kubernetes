@@ -1,0 +1,37 @@
+---
+- name: Join Worker Nodes to K3s Cluster
+  hosts: all_nodes
+  become: true
+  vars:
+    k3s_token: ""
+    # Identify your master node
+    k3s_master_node: rp_1
+
+  tasks:
+
+    - name: Retrieve join token from the master node
+      shell: cat /var/lib/rancher/k3s/server/token
+      register: join_token
+      delegate_to: "{{ k3s_master_node }}"
+      run_once: true  # Retrieve the token only once on the master node
+
+    - name: Set K3S_TOKEN variable with the join token
+      set_fact:
+        k3s_token: "{{ join_token.stdout }}"  # Directly access stdout of token retrieval
+
+    - name: Install K3s and join the cluster
+      shell: |
+        curl -sfL https://get.k3s.io | K3S_URL=https://192.168.88.242:6443 K3S_TOKEN={{ k3s_token }} sh -
+      args:
+        executable: /bin/bash
+
+    - name: Verify that the node has joined the cluster
+      command: kubectl get nodes
+      register: node_status
+      retries: 5
+      delay: 10
+      until: node_status.stdout is search(ansible_hostname)
+
+    - name: Show the status of the nodes
+      debug:
+        var: node_status.stdout

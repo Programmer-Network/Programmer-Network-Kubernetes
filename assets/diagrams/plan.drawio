@@ -1,0 +1,135 @@
+<mxfile host="65bd71144e">
+    <diagram id="xSF78wGyMEVJKY8dEps5" name="Page-1">
+        <mxGraphModel dx="274" dy="1428" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="2" value="MikroTik Router&amp;nbsp;" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="140" y="130" width="550" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="12" style="edgeStyle=none;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" parent="1" source="3" target="7" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="3" value="RP1&lt;br&gt;Master Node" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="140" y="210" width="130" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="13" style="edgeStyle=none;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" parent="1" source="4" target="8" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="45" style="edgeStyle=none;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="4" target="43" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="4" value="RP2&lt;br&gt;Worker + Postgres" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="280" y="210" width="130" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="14" style="edgeStyle=none;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" parent="1" source="5" target="9" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="5" value="RP3&lt;br&gt;Worker" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="420" y="210" width="130" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="15" style="edgeStyle=none;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" parent="1" source="6" target="10" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="6" value="RP4&lt;br&gt;Worker" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="560" y="210" width="130" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="7" value="irp1" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="160" y="150" width="30" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="8" value="irp2" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="200" y="150" width="30" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="9" value="irp3" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="240" y="150" width="30" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="10" value="irp4" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="280" y="150" width="30" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="16" value="" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" parent="1" vertex="1">
+                    <mxGeometry x="210" y="320" width="60" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="17" value="" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" parent="1" vertex="1">
+                    <mxGeometry x="550" y="320" width="60" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="22" style="edgeStyle=none;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;startArrow=classic;startFill=1;endArrow=classic;endFill=1;" parent="1" source="18" target="20" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="24" value="Mirror" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="22" vertex="1" connectable="0">
+                    <mxGeometry x="0.357" y="-1" relative="1" as="geometry">
+                        <mxPoint x="-25" y="-1" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="18" value="Postgres&lt;br&gt;Redis" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="250" y="290" width="80" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="20" value="Postgres&lt;br&gt;Redis" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="500" y="290" width="80" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="25" value="Ansible&lt;br&gt;(Automation)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d80073;fontColor=#ffffff;strokeColor=#A50040;" parent="1" vertex="1">
+                    <mxGeometry x="570" y="20" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="26" value="Desktop&lt;br&gt;(Stream)" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="10" y="30" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="27" value="Laptop&lt;br&gt;(Terminal)" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="140" y="30" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="28" value="Why?" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#6a00ff;fontColor=#ffffff;strokeColor=#3700CC;" parent="1" vertex="1">
+                    <mxGeometry x="340" y="540" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="29" value="1. Learning&lt;br&gt;2. Being able to create infrastructures in minutes&lt;br&gt;3. Career (CTO, Team Lead, Engineer Director)&lt;br&gt;4...." style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="251.25" y="620" width="308.75" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="30" value="What do we need/have to do?" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#008a00;fontColor=#ffffff;strokeColor=#005700;" parent="1" vertex="1">
+                    <mxGeometry x="340" y="730" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="31" value="K3S Template&lt;br&gt;&lt;br&gt;Once I apply the template&lt;br&gt;&lt;br&gt;I want:&lt;br&gt;&lt;br&gt;1. Services defined in the template to be running&lt;br&gt;2. I want to hit Cloudflare CDN adn generate a CNAME Record dinamically or a name provided inside of the Template&lt;br&gt;3. SSL Certificate needs to be issued automatically&lt;br&gt;4. Create databases e.g. Postgres/Redis&lt;br&gt;4. Setup NAT on my Mikrotik Router - API" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="241.96" y="820" width="316.09" height="230" as="geometry"/>
+                </mxCell>
+                <mxCell id="32" value="Cloudflare CDN" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="345" y="1100" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="33" value="Cloudflare SSL (Security" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="470" y="1180" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="34" value="Mikrotik API&lt;br&gt;&lt;br&gt;(Router API)" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="210" y="1180" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="35" value="Databases" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="345" y="1270" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="36" value="Terraform&lt;br&gt;IaC" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d80073;fontColor=#ffffff;strokeColor=#A50040;" parent="1" vertex="1">
+                    <mxGeometry x="440" y="20" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="37" value="docker image&lt;br&gt;publish docker hub" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d80073;fontColor=#ffffff;strokeColor=#A50040;" parent="1" vertex="1">
+                    <mxGeometry x="680" y="10" width="100" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="40" value="https://tilt.dev/" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d80073;fontColor=#ffffff;strokeColor=#A50040;" parent="1" vertex="1">
+                    <mxGeometry x="310" y="20" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="41" value="Control Node&lt;br&gt;&lt;br&gt;My own computer (Terminal)" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="870" y="690" width="220" height="110" as="geometry"/>
+                </mxCell>
+                <mxCell id="43" value="SSD1" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="350" y="350" width="60" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="47" value="Regular RP Backup" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="305" y="-90" width="130" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="55" style="edgeStyle=none;html=1;" parent="1" source="53" target="54" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="53" value="Cluster (4 RP's)" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="340" y="1510" width="140" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="56" style="edgeStyle=none;html=1;exitX=0;exitY=0;exitDx=0;exitDy=75;exitPerimeter=0;entryX=1;entryY=0.75;entryDx=0;entryDy=0;" parent="1" source="54" target="53" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="54" value="DB&lt;br&gt;PG&lt;br&gt;Redis" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" parent="1" vertex="1">
+                    <mxGeometry x="570" y="1490" width="90" height="110" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

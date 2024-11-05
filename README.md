@@ -225,36 +225,9 @@ sudo reboot
 - Locate the `Leases` tab and identify the MAC addresses of your Raspberry Pi units.
 - Click on the entry for each Raspberry Pi and change it from "dynamic" to "static".
 
-##### Rasperry Pi
-
-SSH into each Rasperry Pi to configure static IP by editing the `dhcpcd.conf` file:
-
-```bash
-sudo vi /etc/dhcpcd.conf
-```
-
-Add the following, adapting to your network configuration:
-
-```bash
-interface eth0
-static ip_address=192.168.1.XX/24
-static routers=192.168.1.1
-static domain_name_servers=192.168.1.1
-```
-
-* static `ip_address`: The static IP you want to assign to the Raspberry Pi.
-* static `router`: The IP address of the default gateway (usually your router).
-* static `domain_name_servers`: The IP address of the DNS server (can be the same as the gateway).
-
-Save the file and exit, then restart the networking service:
-
-```bash
-sudo service dhcpcd restart
-```
-
 ## Set SSH Aliases
 
-Once you have assigned static IPs to your Raspberry Pis, you can simplify the SSH process by setting up SSH aliases. Here's how to do it:
+Once you have assigned static IPs on your router, you can simplify the SSH process by setting up SSH aliases. Here's how to do it:
 
 1. **Open the SSH config file on your local machine:**
 
@@ -549,6 +522,7 @@ kubectl apply -f service.yaml
 4. **Verify Using Port-Forward**: 
 
 ```bash
+# This is only needed if service type is ClusterIP
 kubectl port-forward deployment/hello-world 8081:80 --namespace=my-apps
 ```
 
