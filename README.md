@@ -24,6 +24,8 @@
   - [Assign Static IP Addresses](#assign-static-ip-addresses)
   - [Set SSH Aliases](#set-ssh-aliases)
 
+- [Automation with Ansible](./SETTING_UP_ANSIBLE.md)
+
 - [Kubernetes](#kubernetes)
   - [What is Kubernetes](#1-what-is-kubernetes-)
   - [Kubernetes Components Explained](#kubernetes-components-explained)
