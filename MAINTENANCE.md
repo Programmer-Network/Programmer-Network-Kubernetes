@@ -12,39 +12,39 @@ To update k3s on your Raspberry Pis, you can follow these steps:
 
 2. **Drain the node**: If you're updating one node at a time in a cluster, drain the node to safely remove it from the cluster during the update.
 
-   ```bash
-   kubectl drain <node-name> --ignore-daemonsets --delete-emptydir-data
-   ```
+```bash
+kubectl drain <node-name> --ignore-daemonsets --delete-emptydir-data
+```
 
 3. **Stop k3s service**: Before updating, stop the k3s service on the node.
 
-   ```bash
-   sudo systemctl stop k3s
-   ```
+```bash
+sudo systemctl stop k3s
+```
 
 4. **Update k3s**: Download and install the latest version of k3s on the Raspberry Pi. You can use the installation script provided by k3s for updating it as well.
 
-   ```bash
-   curl -sfL https://get.k3s.io | sh -
-   ```
+```bash
+curl -sfL https://get.k3s.io | sh -
+```
 
 5. **Start k3s service**: After the update, start the k3s service again.
 
-   ```bash
-   sudo systemctl start k3s
-   ```
+```bash
+sudo systemctl start k3s
+```
 
 6. **Uncordon the node**: If you drained the node earlier, make it schedulable again by uncordoning it.
 
-   ```bash
-   kubectl uncordon <node-name>
-   ```
+```bash
+kubectl uncordon <node-name>
+```
 
 7. **Verify the update**: Check the version of k3s to confirm the update was successful.
 
-   ```bash
-   k3s --version
-   ```
+```bash
+k3s --version
+```
 
 8. **Repeat for other nodes**: If you have multiple Raspberry Pis, repeat these steps for each node.
 
