@@ -2,7 +2,7 @@
 
 For most steps, an [Ansible playbook](../ansible/playbooks/) is available. However, I strongly recommend that you initially set up the first Raspberry Pi manually. This hands-on approach will help you understand each step more deeply and gain practical experience. Once you've completed the manual setup, you can then use the [Ansible playbook](../ansible/playbooks/) to automate the same tasks across the other devices.
 
-#### Flash SD Cards with Raspberry Pi OS Using Pi Imager
+## Flash SD Cards with Raspberry Pi OS Using Pi Imager
 - Open [Raspberry Pi Imager](https://www.raspberrypi.com/software/).
   - Choose the 'OS' you want to install from the list. The tool will download the selected OS image for you.
   - Insert your SD card and select it in the 'Storage' section.
@@ -11,11 +11,11 @@ For most steps, an [Ansible playbook](../ansible/playbooks/) is available. Howev
     - Enable SSH and select the "allow public-key authorization only" option.
   - Click on 'Write' to begin the flashing process.
   
-#### Initial Boot and Setup
+### Initial Boot and Setup
 - Insert the flashed SD card into the Raspberry Pi and power it on.
 - On the first boot, ssh into the Pi to perform initial configuration
   
-#### Update and Upgrade - ([Ansible Playbook](../ansible/playbooks/apt-update.yml))
+### Update and Upgrade - ([Ansible Playbook](../ansible/playbooks/apt-update.yml))
 - Run the following commands to update the package list and upgrade the installed packages:
 
 ```bash
@@ -23,7 +23,7 @@ sudo apt update
 sudo apt upgrade
 ```
 
-#### Disable Wi-Fi ([Ansible Playbook](../ansible/playbooks/disable-wifi.yml))
+## Disable Wi-Fi ([Ansible Playbook](../ansible/playbooks/disable-wifi.yml))
 
 ```sh
 sudo vi /etc/wpa_supplicant/wpa_supplicant.conf
@@ -68,7 +68,7 @@ Reboot your Raspberry Pi:
 sudo reboot
 ```
 
-#### Disable Swap ([Ansible Playbook](../ansible/playbooks/disable-swap.yml))
+## Disable Swap ([Ansible Playbook](../ansible/playbooks/disable-swap.yml))
 
 Disabling swap in a K3s cluster is crucial because Kubernetes relies on precise memory management to allocate resources, schedule workloads, and handle potential memory limits. When swap is enabled, it introduces unpredictability in how memory is used. The Linux kernel may move inactive memory to disk (swap), giving the impression that there is available memory when, in reality, the node might be under significant memory pressure. This can lead to performance degradation for applications, as accessing memory from the swap space (on disk) is significantly slower than accessing it from RAM. In addition, Kubernetes, by default, expects swap to be off and prevents the kubelet from running unless explicitly overridden, as swap complicates memory monitoring and scheduling.
 
@@ -83,7 +83,7 @@ sudo swapoff -a
 
 This command disables the swap immediately, but it will be re-enabled after a reboot unless further steps are taken.
 
-##### Modify `/etc/dphys-swapfile` to Disable Swap Permanently
+Modify `/etc/dphys-swapfile` to Disable Swap Permanently
 
 Open the swap configuration file `/etc/dphys-swapfile` in a text editor:
 
@@ -100,32 +100,23 @@ CONF_SWAPSIZE=0
 
 Save (Ctrl+O in `nano`) and exit the editor (Ctrl+X in `nano`).
 
-#####  Remove the Existing Swap File
-
 Run the following command to remove the current swap file (`/var/swap`):
 
 ```bash
 sudo rm /var/swap
 ```
 
-##### Stop the `dphys-swapfile` service immediately
-
 Stop the `dphys-swapfile` service, which manages swap:
+
 ```bash
 sudo systemctl stop dphys-swapfile
 ```
-
-##### Disable the `dphys-swapfile` service to prevent it from running on boot
 
 Prevent the `dphys-swapfile` service from starting during system boot by disabling it:
 
 ```bash
 sudo systemctl disable dphys-swapfile
 ```
-
----
-
-##### Verify swap is turned off
 
 Run the following command to verify that swap is no longer in use:
 
@@ -142,10 +133,6 @@ Mem: 2003 322 1681 18 12 129
 Swap: 0 0 0
 ```
 
----
-
-##### Reboot the system
-
 Finally, reboot the system in order to apply all changes fully and ensure swap remains permanently disabled:
 
 ```bash
@@ -155,12 +142,10 @@ sudo reboot
 After the system comes back online, run `free -m` again to confirm that swap is still disabled.
 
 
-#### Disable Bluetooth
+## Disable Bluetooth
 
 When using Raspberry Pi devices in a Kubernetes-based environment like K3s, any unused hardware features, such as Bluetooth, can consume system resources or introduce potential security risks. Disabling Bluetooth on each Raspberry Pi optimizes performance by reducing background services and freeing up resources like CPU and memory. Additionally, by disabling an unused service, you reduce the attack surface of your Raspberry Pi-based K3s cluster, providing a more secure and streamlined operating environment.
 
-
-##### Stop and disable the bluetooth service
 
 **Stop the Bluetooth service** that might be currently running on your Raspberry Pi:
 
@@ -176,17 +161,15 @@ sudo systemctl disable bluetooth
 
 This ensures that the Bluetooth service is not running in the background, conserving system resources.
 
-##### Blacklist bluetooth kernel modules
-
 To prevent the operating system from loading Bluetooth modules at boot time, you'll need to blacklist specific modules.
 
-**Open the blacklist configuration file for editing (or create it)**:
+Open the blacklist configuration file for editing (or create it)
 
 ```bash
 sudo nano /etc/modprobe.d/raspi-blacklist.conf
 ```
 
-**Add the following lines to disable Bluetooth modules**:
+Add the following lines to disable Bluetooth modules:
 
 ```bash
 blacklist btbcm      # Disables Broadcom Bluetooth module
@@ -197,17 +180,16 @@ blacklist hci_uart   # Disables hci_uart module specific to Raspberry Pi Bluetoo
 
 By blacklisting these modules, they won’t be loaded during boot, effectively preventing Bluetooth from running.
 
-##### Disable bluetooth in the system configuration
 
 Bluetooth can be disabled directly at the device level by editing specific Raspberry Pi system configurations.
 
-**Open the boot configuration file for editing**:
+Open the boot configuration file for editing:
 
 ```bash
 sudo nano /boot/config.txt
 ```
 
-**Add the following line to disable Bluetooth**:
+Add the following line to disable Bluetooth:
 
 ```bash
 dtoverlay=disable-bt
@@ -219,11 +201,8 @@ Ensure no Bluetooth device can wake up your Raspberry Pi by ensuring the line is
 
 This command ensures that the Raspberry Pi doesn’t enable Bluetooth at boot by making system-wide firmware adjustments.
 
-**Reboot the Raspberry Pi**
-
 To fully apply the changes (stopping the service, blacklisting modules, and adjusting system configuration), it’s recommended to reboot the system.
 
-**Reboot the Raspberry Pi**:
 
 ```bash
 sudo reboot
@@ -238,9 +217,9 @@ sudo systemctl status bluetooth
 It should indicate that the Bluetooth service is inactive or dead.
 
 
-#### Assign Static IP Addresses
+## Assign Static IP Addresses
 
-##### MikroTik Router
+### MikroTik Router
 
 - Open the MikroTik Web UI and navigate to `IP > DHCP Server`.
 - Locate the `Leases` tab and identify the MAC addresses of your Raspberry Pi units.
@@ -250,13 +229,13 @@ It should indicate that the Bluetooth service is inactive or dead.
 
 Once you have assigned static IPs on your router, you can simplify the SSH process by setting up SSH aliases. Here's how to do it:
 
-1. **Open the SSH config file on your local machine:**
+Open the SSH config file on your local machine:
 
 ```bash
 vi ~/.ssh/config
 ```
     
-2. **Add the following entries for each Raspberry Pi:**
+Add the following entries for each Raspberry Pi:
 
 ```bash
 Host rp1
@@ -276,11 +255,7 @@ Host rp4
   User YOUR_USERNAME
 ```
 
-Replace `<Master_IP>`, `<Worker1_IP>`, `<Worker2_IP>`, and `<Worker3_IP>` with the actual static IP addresses of your Raspberry Pis.
-
-3. **Save and Close the File**
-
-5. **Test Your Aliases**
+Replace `<Master_IP>`, `<Worker1_IP>`, `<Worker2_IP>`, and `<Worker3_IP>` with the actual static IP addresses of your Raspberry Pis. Save and close the file.
 
 You should now be able to SSH into each Raspberry Pi using the alias:
 
