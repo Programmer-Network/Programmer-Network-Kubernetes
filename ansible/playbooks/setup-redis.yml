@@ -1,0 +1,41 @@
+---
+- name: Setup Redis Docker Container
+  hosts: postgres_and_redis
+  become: true
+  vars:
+    redis_container_name: test-redis
+    docker_network: test-redis-network
+    redis_password: test_password
+
+  tasks:
+    - name: Ensure Docker is installed
+      apt:
+        name: docker.io
+        state: present
+      when: ansible_os_family == "Debian"
+
+    - name: Start and enable Docker
+      systemd:
+        name: docker
+        state: started
+        enabled: true
+
+    - name: Ensure Docker network exists for Redis
+      docker_network:
+        name: "{{ docker_network }}"
+        state: present  # This ensures the network is created if it doesn't exist
+
+    - name: Remove existing Redis container (if present)
+      docker_container:
+        name: "{{ redis_container_name }}"
+        state: absent
+      ignore_errors: true  # Ignore if the container doesn't exist
+
+    - name: Run Redis container
+      command: >
+        docker run --restart always --name {{ redis_container_name }} -d
+        --network {{ docker_network }} -p 6379:6379
+        -e REDIS_PASSWORD={{ redis_password }} 
+        redis:alpine redis-server --requirepass {{ redis_password }}
+      args:
+        creates: "/var/lib/docker/containers/{{ redis_container_name }}"

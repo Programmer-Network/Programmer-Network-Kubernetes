@@ -1,0 +1,16 @@
+all_nodes:  
+  hosts:
+    rp_1: 
+    rp_2:
+    rp_3:
+    rp_4:
+
+worker_nodes:  # A group for all worker nodes
+  hosts:
+    rp_2:
+    rp_3:
+    rp_4:
+
+postgres_and_redis:  # A group for the PostgreSQL and Redis servers
+  hosts:
+    rp_2:

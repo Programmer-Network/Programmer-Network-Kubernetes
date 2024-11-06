@@ -1,0 +1,38 @@
+---
+- name: Disable Wi-Fi on Raspberry Pi
+  hosts: all_nodes
+  become: true
+  tasks:
+    - name: Disable Wi-Fi network in wpa_supplicant.conf
+      lineinfile:
+        path: /etc/wpa_supplicant/wpa_supplicant.conf
+        line: |
+          network={
+            ssid=""
+            key_mgmt=NONE
+          }
+        state: present
+
+    - name: Bring down the wlan0 interface
+      command: ifconfig wlan0 down
+      ignore_errors: true  # Ignore errors if wlan0 does not exist
+
+    - name: Block Wi-Fi using rfkill
+      command: rfkill block wifi
+      ignore_errors: true  # Ignore errors if rfkill is unavailable
+
+    - name: Create raspi-blacklist.conf if it does not exist
+      file:
+        path: /etc/modprobe.d/raspi-blacklist.conf
+        state: touch
+
+    - name: Blacklist Wi-Fi module in raspi-blacklist.conf
+      lineinfile:
+        path: /etc/modprobe.d/raspi-blacklist.conf
+        line: "blacklist brcmfmac"
+        state: present
+
+    - name: Reboot the Raspberry Pi to apply changes
+      reboot:
+        msg: "Rebooting to apply Wi-Fi disable settings."
+        connect_timeout: 5

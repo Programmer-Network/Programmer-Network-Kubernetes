@@ -1,0 +1,3 @@
+ansible_host: 192.168.88.242
+ansible_user: aleksandar
+k3s_master_node: true

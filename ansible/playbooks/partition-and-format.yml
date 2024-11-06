@@ -1,0 +1,65 @@
+# Use - ansible-playbook -e "disk_device=/dev/sda mount_point=/mnt/storage filesystem_type=ext4" -l rp_2 -i ansible/inventory.yml ansible/playbooks/partition-and-format.yml
+---
+- hosts: all
+  become: yes
+  vars:
+    disk_device: "{{ disk_device }}"         # The disk device (e.g., /dev/sda)
+    mount_point: "{{ mount_point }}"         # The mount point (e.g., /mnt/mydisk)
+    filesystem_type: "{{ filesystem_type }}" # File system type (e.g., ext4)
+  
+  tasks:
+    
+    # 1. Unmount any existing partition associated with the disk (ignore errors if unmounted)
+    - name: Unmount any existing partitions if mounted
+      ansible.builtin.command:
+        cmd: "umount {{ disk_device }}1"   # Using the default partition number 1 for the single partition
+      ignore_errors: true                  # Avoid fail if it's already unmounted
+
+    # 2. Recreate partition table with a single partition using fdisk
+    - name: Recreate partition table and create new single partition using fdisk
+      ansible.builtin.shell: |
+        (echo o; echo n; echo p; echo 1; echo ; echo; echo w) | fdisk {{ disk_device }}
+      args:
+        warn: false
+
+    # 3. Create and format the partition using the defined filesystem (e.g., ext4)
+    - name: Create ext4 (or chosen) filesystem on the new partition
+      ansible.builtin.filesystem:
+        fstype: "{{ filesystem_type }}"
+        dev: "{{ disk_device }}1"  # Format the single partition (e.g., /dev/sda1)
+
+    # 4. Create a mount point if it doesn't exist
+    - name: Ensure mount point directory exists
+      ansible.builtin.file:
+        path: "{{ mount_point }}"
+        state: directory
+        owner: root
+        group: root
+        mode: '0755'
+
+    # 5. Mount the newly created partition to the mount point
+    - name: Mount the partition
+      ansible.builtin.mount:
+        path: "{{ mount_point }}"
+        src: "{{ disk_device }}1"
+        fstype: "{{ filesystem_type }}"
+        state: mounted
+
+    # 6. Fetch UUID of the newly created partition (not PARTUUID) using blkid
+    - name: Fetch UUID of the partition
+      ansible.builtin.command: "blkid -s UUID -o value {{ disk_device }}1"
+      register: blkid_output
+
+    # 7. Add /etc/fstab entry to ensure the partition is automatically mounted on reboot
+    - name: Add entry to /etc/fstab for auto-mounting using UUID
+      ansible.builtin.lineinfile:
+        path: /etc/fstab
+        insertafter: EOF
+        line: "UUID={{ blkid_output.stdout }} {{ mount_point }} {{ filesystem_type }} defaults 0 0"
+        state: present
+      notify: Remount partitions
+
+
+  handlers:
+    - name: Remount partitions
+      ansible.builtin.command: mount -a

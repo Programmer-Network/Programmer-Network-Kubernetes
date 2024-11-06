@@ -1,0 +1,55 @@
+---
+- name: Disable swap temporarily and configure permanently
+  hosts: all_nodes  # Target all nodes by default
+  become: yes       # Ensure the tasks are executed with sudo privileges
+
+  tasks:
+
+    # Step 1: Turn off swap temporarily (disable it for the current session)
+    - name: Disable swap temporarily
+      ansible.builtin.command: swapoff -a
+      ignore_errors: true  # Continue even if swap is already off
+
+    # Step 2: Set CONF_SWAPSIZE to 0 in /etc/dphys-swapfile to disable swap permanently
+    - name: Set CONF_SWAPSIZE to 0 in /etc/dphys-swapfile
+      ansible.builtin.lineinfile:
+        path: /etc/dphys-swapfile
+        regexp: '^CONF_SWAPSIZE='
+        line: 'CONF_SWAPSIZE=0'
+        state: present  # Ensure the line is present
+
+    # Step 3: Delete the existing swap file as it is no longer needed
+    - name: Remove existing /var/swap file
+      ansible.builtin.file:
+        path: /var/swap
+        state: absent  # Remove the file if it exists
+
+    # Step 4: Stop the dphys-swapfile service immediately
+    - name: Stop dphys-swapfile service
+      ansible.builtin.service:
+        name: dphys-swapfile
+        state: stopped
+
+    # Step 5: Disable dphys-swapfile service to prevent it from running on boot
+    - name: Disable dphys-swapfile service
+      ansible.builtin.service:
+        name: dphys-swapfile
+        enabled: no
+
+    # Step 6: Verify swap is turned off and the removal has been successful
+    - name: Verify swap is turned off
+      ansible.builtin.command: free -m
+      register: memory_status
+      changed_when: false  # This won't change any system state, just checking command output
+
+    # Step 7: Display the memory status to confirm swap is turned off
+    - name: Display memory status (to verify swap is disabled)
+      ansible.builtin.debug:
+        var: memory_status.stdout_lines
+
+    # Step 8: Reboot the machine to apply changes fully
+    - name: Reboot the machines to complete swap disabling
+      ansible.builtin.reboot:
+        reboot_timeout: 600  # Give the node 10 minutes to reboot and come back online
+        msg: "Rebooting the node to apply permanent swap configuration changes"
+        pre_reboot_delay: 5  # Delay 5 seconds before issuing the reboot command
