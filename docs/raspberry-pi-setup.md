@@ -1,6 +1,6 @@
 # Raspberry Pi's Setup
 
-For most steps, an [Ansible playbook](./ansible/playbooks/) is available. However, I strongly recommend that you initially set up the first Raspberry Pi manually. This hands-on approach will help you understand each step more deeply and gain practical experience. Once you've completed the manual setup, you can then use the [Ansible playbook](./ansible/playbooks/) to automate the same tasks across the other devices.
+For most steps, an [Ansible playbook](../ansible/playbooks/) is available. However, I strongly recommend that you initially set up the first Raspberry Pi manually. This hands-on approach will help you understand each step more deeply and gain practical experience. Once you've completed the manual setup, you can then use the [Ansible playbook](../ansible/playbooks/) to automate the same tasks across the other devices.
 
 #### Flash SD Cards with Raspberry Pi OS Using Pi Imager
 - Open [Raspberry Pi Imager](https://www.raspberrypi.com/software/).
@@ -15,7 +15,7 @@ For most steps, an [Ansible playbook](./ansible/playbooks/) is available. Howeve
 - Insert the flashed SD card into the Raspberry Pi and power it on.
 - On the first boot, ssh into the Pi to perform initial configuration
   
-#### Update and Upgrade - ([Ansible Playbook](./ansible/playbooks/apt-update.yml))
+#### Update and Upgrade - ([Ansible Playbook](../ansible/playbooks/apt-update.yml))
 - Run the following commands to update the package list and upgrade the installed packages:
 
 ```bash
@@ -23,7 +23,7 @@ sudo apt update
 sudo apt upgrade
 ```
 
-#### Disable Wi-Fi ([Ansible Playbook](./ansible/playbooks/disable-wifi.yml))
+#### Disable Wi-Fi ([Ansible Playbook](../ansible/playbooks/disable-wifi.yml))
 
 ```sh
 sudo vi /etc/wpa_supplicant/wpa_supplicant.conf
@@ -68,7 +68,7 @@ Reboot your Raspberry Pi:
 sudo reboot
 ```
 
-#### Disable Swap ([Ansible Playbook](./ansible/playbooks/disable-swap.yml))
+#### Disable Swap ([Ansible Playbook](../ansible/playbooks/disable-swap.yml))
 
 Disabling swap in a K3s cluster is crucial because Kubernetes relies on precise memory management to allocate resources, schedule workloads, and handle potential memory limits. When swap is enabled, it introduces unpredictability in how memory is used. The Linux kernel may move inactive memory to disk (swap), giving the impression that there is available memory when, in reality, the node might be under significant memory pressure. This can lead to performance degradation for applications, as accessing memory from the swap space (on disk) is significantly slower than accessing it from RAM. In addition, Kubernetes, by default, expects swap to be off and prevents the kubelet from running unless explicitly overridden, as swap complicates memory monitoring and scheduling.
 

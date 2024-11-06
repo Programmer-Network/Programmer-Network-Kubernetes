@@ -1,6 +1,6 @@
 ## K3S Setup
 
-### Enable Memory Cgroups ([Ansible Playbook](./ansible/playbooks/enable-memory-groups.yml))
+### Enable Memory Cgroups ([Ansible Playbook](../ansible/playbooks/enable-memory-groups.yml))
 
 ```txt
 Control Groups (Cgroups) are a Linux kernel feature that allows you to allocate resources such as CPU time, system memory, and more among user-defined groups of tasks (processes). K3s requires memory cgroups to be enabled to better manage and restrict the resources that each container can use. This is crucial in a multi-container environment where resource allocation needs to be as efficient as possible.
