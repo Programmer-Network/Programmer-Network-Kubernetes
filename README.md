@@ -24,7 +24,7 @@
   - [Assign Static IP Addresses](./docs/raspberry-pi-setup.md#assign-static-ip-addresses)
   - [Set SSH Aliases](./docs/raspberry-pi-setup.md#set-ssh-aliases)
 
-- [Automation with Ansible](./SETTING_UP_ANSIBLE.md)
+- [Automation with Ansible](./docs/getting-started-with-ansible.md)
 
 - [K3S Setup](./docs/k3s-setup.md#k3s-setup)
   - [Enable Memory CGroups](./docs/k3s-setup.md#enable-memory-cgroups-ansible-playbook)
@@ -50,3 +50,4 @@
   - [Verify Deployment](./docs/getting-started-with-kubernetes.md#verify-deployment)
   - [Cleanup](./docs/getting-started-with-kubernetes.md#cleanup-wiping-everything-and-starting-over)
   - [Basic Kubernetes Deployments](./docs/getting-started-with-kubernetes.md#basic-kubernetes-deployments)
+  - [K3S Maintenance](./docs/k3s-maintenance.md)
