@@ -11,7 +11,7 @@
 **Goal**: By the end of this journey, aim to have the capability to rapidly instantiate new development and production environments and expose them to the external world with equal ease.
 
 ## Table of Contents
-- [Hardware](#hardware)
+- [Hardware](./docs/hardware-components.md#hardware)
   - [Hardware Components](./docs/hardware-components.md#hardware)
   - [Why These Choices?](./docs/hardware-components.md#why-these-choices)
 - [Raspberry Pi's Setup](./docs/raspberry-pi-setup.md#raspberry-pis-setup)
