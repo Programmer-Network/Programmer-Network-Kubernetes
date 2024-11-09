@@ -1,3 +1,7 @@
+master_node:  
+  hosts:
+    rp_1: 
+
 all_nodes:  
   hosts:
     rp_1: 

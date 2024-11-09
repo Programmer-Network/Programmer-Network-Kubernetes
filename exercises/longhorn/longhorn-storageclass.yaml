@@ -1,0 +1,11 @@
+apiVersion: storage.k8s.io/v1  # Specifies the API version for the StorageClass resource
+kind: StorageClass             # Defines the kind of resource, which is StorageClass
+metadata:
+  name: my-first-storage-class   # The name of the StorageClass, which is 'longhorn'
+provisioner: driver.longhorn.io  # The provisioner that will be used to provision volumes, in this case, Longhorn
+parameters:
+  numberOfReplicas: "3"        # The number of replicas to be created for each volume
+  staleReplicaTimeout: "30"    # The timeout in minutes for a replica to be considered stale
+allowVolumeExpansion: true     # Allows the volume to be expanded after creation
+reclaimPolicy: Retain          # Specifies the reclaim policy, which determines what happens to the volume after it is released; 'Retain' keeps the volume
+volumeBindingMode: Immediate   # Specifies when the volume should be bound to a PVC; 'Immediate' means binding happens as soon as the PVC is created

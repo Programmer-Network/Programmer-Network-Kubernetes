@@ -51,3 +51,4 @@
   - [Cleanup](./docs/getting-started-with-kubernetes.md#cleanup-wiping-everything-and-starting-over)
   - [Basic Kubernetes Deployments](./docs/getting-started-with-kubernetes.md#basic-kubernetes-deployments)
   - [K3S Maintenance](./docs/k3s-maintenance.md)
+  - [Common Commands](./docs/common-kubernetes-commands.md)

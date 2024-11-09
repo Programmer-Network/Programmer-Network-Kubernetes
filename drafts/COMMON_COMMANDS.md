@@ -1,3 +1,4 @@
-df -h - Check mount points
-utop - system activity
-lsblk
+- https://explainshell.com/explain?cmd=df+-hT
+- https://explainshell.com/explain/8/lsblk
+- https://explainshell.com/explain/1/htop
+- https://explainshell.com/explain/8/lsblk

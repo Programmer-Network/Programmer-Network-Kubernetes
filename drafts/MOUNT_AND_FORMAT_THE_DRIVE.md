@@ -3,7 +3,9 @@ To **reformat and recreate a partition** (in your case, **`sda1`**) using **`fdi
 Since you're working with an external device and the partition appears to be large (**931.5GB**), I assume it's an external hard drive or SSD attached via USB.
 
 ### ⚠️ **Important!** Before proceeding:
+
 1. **Backup Data**: Formatting and deleting the partition will erase all data on it, so ensure you have backed up any important data currently stored on **`sda1`**.
+
 2. **Unmount the Partition**: If the partition is currently mounted, you’ll need to unmount it before working on it.
 
 ---
@@ -11,12 +13,15 @@ Since you're working with an external device and the partition appears to be lar
 ### Steps to Format and Recreate **`sda1`** Using `fdisk`:
 
 #### **1. Unmount the Partition**
+
 Before modifying the partition, unmount it if it's mounted:
+
 ```bash
 sudo umount /dev/sda1
 ```
 
 #### **2. Launch `fdisk` to Edit the Partition Table**
+
 Run `fdisk` for the target device (`/dev/sda` in your case):
 ```bash
 sudo fdisk /dev/sda
@@ -25,6 +30,7 @@ sudo fdisk /dev/sda
 This will start the interactive **`fdisk`** utility on the entire **`/dev/sda`** disk.
 
 #### **3. Delete the Existing Partition**
+
 Once inside the `fdisk` tool, list the partitions to verify:
 ```bash
 p
@@ -39,6 +45,7 @@ To delete the existing partition **`sda1`**:
 Confirm that **`/dev/sda1`** has been deleted by pressing `p` again to view the partition table—it should now list no partitions.
 
 #### **4. Create a New Partition**
+
 Now, create a new partition by doing the following:
 
 - Type `n` (to create a new partition).
@@ -48,6 +55,7 @@ Now, create a new partition by doing the following:
   - You will be asked for the last sector — press `Enter` to choose the default and use the rest of the available space from the starting sector, effectively recreating a partition that spans the entire disk.
 
 #### **5. Set the Partition's Filesystem (Optional)**
+
 If you're partitioning for normal use (e.g., formatting to **ext4**), you can skip this step. But if you want to set a specific partition type (like Linux filesystem (`83`)), you'll be prompted to choose it. By default, **`fdisk`** will set it to **`83` (Linux Filesystem)** for most Linux machines.
 
 To explicitly set it:
@@ -55,6 +63,7 @@ To explicitly set it:
 - Type `83` for Linux filesystem.
 
 #### **6. Write the Partition Table**  
+
 Once satisfied with the changes, write the new partition table to the disk by typing:
 ```bash
 w
@@ -82,19 +91,21 @@ This will begin formatting the newly created partition `sda1` as an **ext4** vol
 Once the partition is formatted, you can mount it back for use:
 
 1. Create a mount point (if it doesn’t exist yet):
-   ```bash
-   sudo mkdir -p /mnt/mydisk
-   ```
+
+```bash
+sudo mkdir -p /mnt/mydisk
+```
 
 2. Mount the partition:
-   ```bash
-   sudo mount /dev/sda1 /mnt/mydisk
-   ```
+```bash
+sudo mount /dev/sda1 /mnt/mydisk
+```
 
 3. Verify the mount:
-   ```bash
-   df -h
-   ```
+
+```bash
+df -h
+```
 
 You should now see the newly mounted **`sda1`** partition, and it should be available in **`/mnt/mydisk`**.
 
@@ -105,24 +116,28 @@ You should now see the newly mounted **`sda1`** partition, and it should be avai
 If you want this disk to mount automatically at boot, add an entry to **`/etc/fstab`**:
 
 1. Find the **UUID** of the partition:
-   ```bash
-   sudo blkid /dev/sda1
-   ```
 
-   You will see an output that looks something like this:
-   ```bash
-   /dev/sda1: UUID="xxxx-xxxx-xxxx-xxxx" TYPE="ext4"
-   ```
+```bash
+sudo blkid /dev/sda1
+```
+
+You will see an output that looks something like this:
+
+```bash
+/dev/sda1: UUID="xxxx-xxxx-xxxx-xxxx" TYPE="ext4"
+```
 
 2. Open `/etc/fstab` in an editor:
-   ```bash
-   sudo nano /etc/fstab
-   ```
+
+```bash
+sudo nano /etc/fstab
+```
 
 3. Add the following line to the end of the file to make the partition auto-mount at `/mnt/mydisk` on boot:
-   ```bash
-   UUID=xxxx-xxxx-xxxx-xxxx /mnt/mydisk ext4 defaults 0 0
-   ```
+
+```bash
+UUID=xxxx-xxxx-xxxx-xxxx /mnt/mydisk ext4 defaults 0 0
+```
 
 4. Save (`Ctrl + O`) and exit (`Ctrl + X`).
 

@@ -1,0 +1,11 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: my-postgres-cluster
+  namespace: postgres-db
+spec:
+  instances: 3                         # Number of database instances
+  primaryUpdateMethod: switchover       # Update strategy for the primary node
+  storage:
+    size: 1Gi                          # Storage size for persistent volumes
+    storageClass: my-first-storage-class

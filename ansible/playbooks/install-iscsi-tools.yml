@@ -1,0 +1,20 @@
+- name: Install iSCSI initiator tools on all worker nodes
+  hosts: all_nodes  # Or specify your Longhorn manager nodes, e.g., longhorn_manager_nodes, worker_nodes, etc.
+  become: yes  # Ensures the tasks run with sudo/root privileges
+  tasks:
+    - name: Install open-iscsi on Ubuntu/Debian
+      apt:
+        name: open-iscsi
+        state: present
+        update_cache: yes
+      when: ansible_facts['os_family'] == "Debian"
+
+    - name: Verify iSCSI installation (check if iscsiadm is accessible)
+      command: which iscsiadm
+      register: iscsiadm_check
+      changed_when: false
+
+    - name: Display error if iscsiadm is not found
+      fail:
+        msg: "iscsiadm not found on the host after installation!"
+      when: iscsiadm_check.stdout == ""

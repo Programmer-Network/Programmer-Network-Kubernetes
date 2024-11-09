@@ -1,0 +1,92 @@
+# https://forums.raspberrypi.com/viewtopic.php?t=243567
+
+- name: Run comprehensive benchmarks on Raspberry Pi cluster
+  hosts: raspberry_pis
+  become: yes
+  vars:
+    sysbench_threads: 4
+    sysbench_max_prime: 20000
+    memory_block_size: 1K
+    memory_total_size: 1G
+    file_total_size: 1G
+    file_test_mode: rndrw
+  tasks:
+
+    - name: Install sysbench and iperf3
+      ansible.builtin.apt:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - sysbench
+        - iperf3
+      tags: install_tools
+
+    - name: Run sysbench CPU test
+      ansible.builtin.command: >
+        sysbench --num-threads={{ sysbench_threads }}
+                 --test=cpu
+                 --cpu-max-prime={{ sysbench_max_prime }}
+                 run
+      register: cpu_test_output
+      ignore_errors: yes
+
+    - name: Display CPU test results
+      ansible.builtin.debug:
+        msg: "CPU Test Result on {{ inventory_hostname }}: {{ cpu_test_output.stdout }}"
+
+    - name: Run sysbench Memory test
+      ansible.builtin.command: >
+        sysbench --test=memory
+                 --memory-block-size={{ memory_block_size }}
+                 --memory-total-size={{ memory_total_size }}
+                 run
+      register: memory_test_output
+      ignore_errors: yes
+
+    - name: Display Memory test results
+      ansible.builtin.debug:
+        msg: "Memory Test Result on {{ inventory_hostname }}: {{ memory_test_output.stdout }}"
+
+    - name: Prepare files for Disk I/O test
+      ansible.builtin.command: >
+        sysbench --test=fileio --file-total-size={{ file_total_size }}
+                 --file-test-mode={{ file_test_mode }} prepare
+      ignore_errors: yes
+
+    - name: Run sysbench Disk I/O test
+      ansible.builtin.command: >
+        sysbench --test=fileio
+                 --file-total-size={{ file_total_size }}
+                 --file-test-mode={{ file_test_mode }}
+                 run
+      register: disk_test_output
+      ignore_errors: yes
+
+    - name: Cleanup files after Disk I/O test
+      ansible.builtin.command: >
+        sysbench --test=fileio --file-total-size={{ file_total_size }}
+                 --file-test-mode={{ file_test_mode }} cleanup
+      ignore_errors: yes
+
+    - name: Display Disk I/O test results
+      ansible.builtin.debug:
+        msg: "Disk I/O Test Result on {{ inventory_hostname }}: {{ disk_test_output.stdout }}"
+
+    - name: Run Network test with iperf3 as server on primary node
+      when: inventory_hostname == groups['raspberry_pis'][0]
+      ansible.builtin.command: iperf3 -s
+      async: 30
+      poll: 0
+      register: iperf_server_output
+      ignore_errors: yes
+
+    - name: Run Network test with iperf3 as client on secondary node
+      when: inventory_hostname == groups['raspberry_pis'][1]
+      ansible.builtin.command: iperf3 -c {{ hostvars[groups['raspberry_pis'][0]].ansible_host }}
+      register: network_test_output
+      ignore_errors: yes
+
+    - name: Display Network test results
+      when: inventory_hostname == groups['raspberry_pis'][1]
+      ansible.builtin.debug:
+        msg: "Network Test Result on {{ inventory_hostname }}: {{ network_test_output.stdout }}"
