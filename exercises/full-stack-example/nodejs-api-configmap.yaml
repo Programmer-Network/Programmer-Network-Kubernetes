@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nodejs-api-configmap
+data:
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: password123
+  POSTGRES_DB: mydb
+  POSTGRES_HOST: pg-cluster
+  POSTGRES_PORT: "5432"

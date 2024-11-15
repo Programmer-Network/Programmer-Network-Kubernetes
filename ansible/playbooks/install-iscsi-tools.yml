@@ -1,6 +1,6 @@
 - name: Install iSCSI initiator tools on all worker nodes
   hosts: all_nodes  # Or specify your Longhorn manager nodes, e.g., longhorn_manager_nodes, worker_nodes, etc.
-  become: yes  # Ensures the tasks run with sudo/root privileges
+  become: true  # Ensures the tasks run with sudo/root privileges
   tasks:
     - name: Install open-iscsi on Ubuntu/Debian
       apt:

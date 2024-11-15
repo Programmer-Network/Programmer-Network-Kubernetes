@@ -1,7 +1,7 @@
 ---
 - name: Disable and turn off Bluetooth on Raspberry Pi
   hosts: all_nodes
-  become: yes
+  become: true
 
   tasks:
   

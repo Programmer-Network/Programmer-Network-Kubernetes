@@ -4,8 +4,13 @@ metadata:
   name: my-postgres-cluster
   namespace: postgres-db
 spec:
-  instances: 3                         # Number of database instances
-  primaryUpdateMethod: switchover       # Update strategy for the primary node
+  instances: 3
+  primaryUpdateMethod: switchover
   storage:
-    size: 1Gi                          # Storage size for persistent volumes
+    size: 1Gi
     storageClass: my-first-storage-class
+  bootstrap:
+    initdb:
+      # Avoid creating the default app database
+      postInitSQL:
+        - CREATE USER appuser WITH PASSWORD 'appuser_password';

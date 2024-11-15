@@ -1,0 +1,15 @@
+apiVersion: metallb.io/v1beta1  # Specifies the API version for the MetalLB resource
+kind: IPAddressPool  # Defines the kind of resource, which is IPAddressPool
+metadata:
+  namespace: metallb-system  # The namespace where the IPAddressPool is created
+  name: mikrotik-address-pool  # The name of the IPAddressPool
+spec:
+  addresses:  # The list of IP addresses in the pool
+  - 192.168.88.10-192.168.88.99  # A range of IP addresses in the pool
+---
+apiVersion: metallb.io/v1beta1  # Specifies the API version for the MetalLB resource
+kind: L2Advertisement  # Defines the kind of resource, which is L2Advertisement
+metadata:
+  namespace: metallb-system  # The namespace where the L2Advertisement is created
+  name: config  # The name of the L2Advertisement
+spec: {}  # An empty spec, indicating default settings for L2Advertisement

@@ -1,0 +1,36 @@
+---
+- name: Ensure dm_crypt kernel module is loaded on target nodes
+  hosts: all
+  become: true
+  tasks:
+  
+    - name: Load dm_crypt kernel module if it's not already loaded
+      command: modprobe dm_crypt
+      args:
+        warn: false
+
+    - name: Ensure dm_crypt module is configured to load at boot
+      lineinfile:
+        path: /etc/modules-load.d/modules.conf
+        line: "dm_crypt"
+        create: yes
+
+    - name: Ensure dmsetup is installed (device mapper support)
+      apt:
+        name: dmsetup
+        state: present
+      when: ansible_os_family == "Debian"
+
+    - name: Ensure cryptsetup is installed
+      apt:
+        name: cryptsetup
+        state: present
+      when: ansible_os_family == "Debian"
+
+    - name: Reboot the server if needed
+      reboot:
+        msg: "Rebooting to ensure dm_crypt module is loaded"
+        connect_timeout: 5
+        reboot_timeout: 600
+        pre_reboot_delay: 0
+        post_reboot_delay: 30

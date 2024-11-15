@@ -1,0 +1,90 @@
+- name: Join Worker Nodes to K3s Cluster and Set Up Kubectl Access
+  hosts: worker_nodes
+  become: true
+  vars:
+    k3s_token: ""
+    k3s_master_node: rp_1
+    kubeconfig_file_path: "/home/aleksandar/.kube/config"
+    api_server_url: "https://192.168.88.242:6443"
+
+  tasks:
+    - name: Retrieve join token from the master node
+      shell: cat /var/lib/rancher/k3s/server/token
+      register: join_token
+      delegate_to: "{{ k3s_master_node }}"
+      run_once: true  # Retrieve the token only once on the master node
+
+    - name: Set K3S_TOKEN variable with the join token
+      set_fact:
+        k3s_token: "{{ join_token.stdout }}"  # Directly access stdout of token retrieval
+
+    - name: Install K3s and join the cluster
+      shell: |
+        curl -sfL https://get.k3s.io | K3S_URL={{ api_server_url }} K3S_TOKEN={{ k3s_token }} sh -
+      args:
+        executable: /bin/bash
+
+- name: Fetch kubeconfig from master node to the control node (or whatever you use)
+  hosts: master_node
+  become: true
+  tasks:
+
+    - name: Fetch kubeconfig file from master node
+      fetch:
+        src: "/etc/rancher/k3s/k3s.yaml"
+        dest: "/tmp/kubeconfig_master"
+        flat: yes
+        validate_checksum: no
+
+
+- name: Install kubeconfig on worker nodes
+  hosts: worker_nodes
+  become: true
+  vars:
+    kubeconfig_file_path: "/home/aleksandar/.kube/config"
+    api_server_url: "https://192.168.88.242:6443"
+  tasks:
+
+    - name: Ensure .kube directory exists on worker node
+      file:
+        path: "/home/aleksandar/.kube"
+        state: directory
+        owner: "aleksandar"
+        group: "aleksandar"
+        mode: '0755'
+
+    - name: Copy kubeconfig to worker node
+      copy:
+        src: "/tmp/kubeconfig_master"
+        dest: "{{ kubeconfig_file_path }}"
+        owner: "aleksandar"
+        group: "aleksandar"
+        mode: '0644'
+
+    - name: Ensure the kubeconfig server IP is set correctly
+      lineinfile:
+        path: "{{ kubeconfig_file_path }}"
+        regexp: '^    server:'
+        line: "    server: {{ api_server_url }}"
+        backrefs: yes
+      when: update_server_ip | default(True)
+
+    - name: Clean up temporary kubeconfig_master file
+      file:
+        path: "/tmp/kubeconfig_master"
+        state: absent
+
+- name: Verify worker nodes using kubectl (from master node)
+  hosts: master_node
+  become: true
+  tasks:
+
+    - name: Run kubectl get nodes from the master node to check status
+      command: kubectl get nodes
+      register: master_node_status
+      retries: 5
+      delay: 10
+
+    - name: Display the status of nodes from the master node's perspective
+      debug:
+        var: master_node_status.stdout

@@ -2,7 +2,7 @@
 
 - name: Run comprehensive benchmarks on Raspberry Pi cluster
   hosts: raspberry_pis
-  become: yes
+  become: true
   vars:
     sysbench_threads: 4
     sysbench_max_prime: 20000
@@ -28,7 +28,7 @@
                  --cpu-max-prime={{ sysbench_max_prime }}
                  run
       register: cpu_test_output
-      ignore_errors: yes
+      ignore_errors: true
 
     - name: Display CPU test results
       ansible.builtin.debug:
@@ -41,7 +41,7 @@
                  --memory-total-size={{ memory_total_size }}
                  run
       register: memory_test_output
-      ignore_errors: yes
+      ignore_errors: true
 
     - name: Display Memory test results
       ansible.builtin.debug:
@@ -51,7 +51,7 @@
       ansible.builtin.command: >
         sysbench --test=fileio --file-total-size={{ file_total_size }}
                  --file-test-mode={{ file_test_mode }} prepare
-      ignore_errors: yes
+      ignore_errors: true
 
     - name: Run sysbench Disk I/O test
       ansible.builtin.command: >
@@ -60,13 +60,13 @@
                  --file-test-mode={{ file_test_mode }}
                  run
       register: disk_test_output
-      ignore_errors: yes
+      ignore_errors: true
 
     - name: Cleanup files after Disk I/O test
       ansible.builtin.command: >
         sysbench --test=fileio --file-total-size={{ file_total_size }}
                  --file-test-mode={{ file_test_mode }} cleanup
-      ignore_errors: yes
+      ignore_errors: true
 
     - name: Display Disk I/O test results
       ansible.builtin.debug:
@@ -78,13 +78,13 @@
       async: 30
       poll: 0
       register: iperf_server_output
-      ignore_errors: yes
+      ignore_errors: true
 
     - name: Run Network test with iperf3 as client on secondary node
       when: inventory_hostname == groups['raspberry_pis'][1]
       ansible.builtin.command: iperf3 -c {{ hostvars[groups['raspberry_pis'][0]].ansible_host }}
       register: network_test_output
-      ignore_errors: yes
+      ignore_errors: true
 
     - name: Display Network test results
       when: inventory_hostname == groups['raspberry_pis'][1]
