@@ -5,7 +5,7 @@ title: Raspberry Pi Setup
 
 # Raspberry Pi's Setup
 
-For most steps, an [Ansible playbook](/ansible/playbooks/) is available. However, I strongly recommend that you initially set up the first Raspberry Pi manually. This hands-on approach will help you understand each step more deeply and gain practical experience. Once you've completed the manual setup, you can then use the [Ansible playbook](/ansible/playbooks/) to automate the same tasks across the other devices.
+For most steps, an Ansible playbook is available. However, I strongly recommend that you initially set up the first Raspberry Pi manually. This hands-on approach will help you understand each step more deeply and gain practical experience. Once you've completed the manual setup, you can then use the Ansible playbook to automate the same tasks across the other devices.
 
 ## Before We Start
 
