@@ -1,21 +1,37 @@
+---
+sidebar_position: 3
+title: Raspberry Pi Setup
+---
+
 # Raspberry Pi's Setup
 
 For most steps, an [Ansible playbook](../ansible/playbooks/) is available. However, I strongly recommend that you initially set up the first Raspberry Pi manually. This hands-on approach will help you understand each step more deeply and gain practical experience. Once you've completed the manual setup, you can then use the [Ansible playbook](../ansible/playbooks/) to automate the same tasks across the other devices.
 
-## Flash SD Cards with Raspberry Pi OS Using Pi Imager
+## Before We Start
+
+Before we begin, I want to mention that I've provided an Ansible playbook for most of the setup tasks. While I encourage you to use it, I also recommend doing things manually at first. Experience the process, let frustration build, and allow yourself to feel the annoyance. 
+
+Just as I did, I want you to truly understand why we use certain tools. You'll only internalize this by initially experiencing the challenges and then resolving them by introducing the right tools.
+
+### Install the OS Using Pi Imager
 - Open [Raspberry Pi Imager](https://www.raspberrypi.com/software/).
-  - Choose the 'OS' you want to install from the list. The tool will download the selected OS image for you.
-  - Insert your SD card and select it in the 'Storage' section.
+  - Choose the `Raspberry Pi OS (other)` > `Raspberry Pi OS Lite (64-bit)`
+  - The tool will download the selected OS image for you.
+  - Plug in your SSD and select it in the 'Storage' section.
+  - - *Note*: If you're just unpacking brand new SSDs, there's a good chance you'll need to use a Disk Management tool on your operating system to initialize and allocate the available space. Otherwise, they might not appear in the Pi Imager.
   - Before writing, click on the cog icon for advanced settings.
     - Set the hostname to your desired value, e.g., `RP1`.
     - Enable SSH and select the "allow public-key authorization only" option.
   - Click on 'Write' to begin the flashing process.
   
 ### Initial Boot and Setup
-- Insert the flashed SD card into the Raspberry Pi and power it on.
+- Insert the flashed SSD into the USB 3 port on your Raspberry Pi and power it on
 - On the first boot, ssh into the Pi to perform initial configuration
-  
-### Update and Upgrade - ([Ansible Playbook](../ansible/playbooks/apt-update.yml))
+
+### Update and Upgrade
+
+[Ansible Playbook](../ansible/playbooks/apt-update.yml)
+
 - Run the following commands to update the package list and upgrade the installed packages:
 
 ```bash
@@ -23,7 +39,13 @@ sudo apt update
 sudo apt upgrade
 ```
 
-## Disable Wi-Fi ([Ansible Playbook](../ansible/playbooks/disable-wifi.yml))
+## Optimize our Pi's
+
+Since our Raspberry Pis are nodes in our cluster and will consistently be used when plugged into our Ethernet switch or router, we can optimize them by disabling unnecessary components. This reduces the number of services running on them, naturally lowering CPU and memory usage. More importantly, it reduces power consumption, leading to lower electricity bills.
+
+### Disable Wi-Fi
+
+[Ansible Playbook](../ansible/playbooks/disable-wifi.yml)
 
 ```sh
 sudo vi /etc/wpa_supplicant/wpa_supplicant.conf
@@ -68,7 +90,9 @@ Reboot your Raspberry Pi:
 sudo reboot
 ```
 
-## Disable Swap ([Ansible Playbook](../ansible/playbooks/disable-swap.yml))
+### Disable Swap
+
+[Ansible Playbook](../ansible/playbooks/disable-swap.yml)
 
 Disabling swap in a K3s cluster is crucial because Kubernetes relies on precise memory management to allocate resources, schedule workloads, and handle potential memory limits. When swap is enabled, it introduces unpredictability in how memory is used. The Linux kernel may move inactive memory to disk (swap), giving the impression that there is available memory when, in reality, the node might be under significant memory pressure. This can lead to performance degradation for applications, as accessing memory from the swap space (on disk) is significantly slower than accessing it from RAM. In addition, Kubernetes, by default, expects swap to be off and prevents the kubelet from running unless explicitly overridden, as swap complicates memory monitoring and scheduling.
 
@@ -142,7 +166,9 @@ sudo reboot
 After the system comes back online, run `free -m` again to confirm that swap is still disabled.
 
 
-## Disable Bluetooth
+### Disable Bluetooth
+
+[Ansible Playbook](../ansible/playbooks/disable-bluetooth.md)
 
 When using Raspberry Pi devices in a Kubernetes-based environment like K3s, any unused hardware features, such as Bluetooth, can consume system resources or introduce potential security risks. Disabling Bluetooth on each Raspberry Pi optimizes performance by reducing background services and freeing up resources like CPU and memory. Additionally, by disabling an unused service, you reduce the attack surface of your Raspberry Pi-based K3s cluster, providing a more secure and streamlined operating environment.
 
@@ -216,6 +242,9 @@ sudo systemctl status bluetooth
 
 It should indicate that the Bluetooth service is inactive or dead.
 
+### Fan Control
+
+Unfortunately, due to the limitations of the [GeeekPi 1U Rack Kit for Raspberry Pi 4B, 19" 1U Rack Mount](https://www.amazon.de/-/en/gp/product/B0972928CN/ref=ppx_yo_dt_b_search_asin_title?ie=UTF8&psc=1), I couldn't optimize the fans for each Raspberry Pi. The fans included with this kit lack [PWM](https://en.wikipedia.org/wiki/Pulse-width_modulation) control and only come with a 2-pin cable. If you're using different fans that you can control, I highly recommend setting them to remain off below certain temperature thresholds. This will not only make your setup completely silent but also reduce power consumption.
 
 ## Assign Static IP Addresses
 
@@ -223,7 +252,9 @@ It should indicate that the Bluetooth service is inactive or dead.
 
 - Open the MikroTik Web UI and navigate to `IP > DHCP Server`.
 - Locate the `Leases` tab and identify the MAC addresses of your Raspberry Pi units.
-- Click on the entry for each Raspberry Pi and change it from "dynamic" to "static".
+- Click on the entry for each Raspberry Pi and change it from `Dynamic` to `Static`.
+
+If you're using a different router, the process should be similar. The only possible limitation is if you're using a consumer-grade router that doesn't offer these features. In that case, you'll need to set up a DHCP server.
 
 ## Set SSH Aliases
 

@@ -1,8 +1,11 @@
-# Kubernetes Theory
+---
+sidebar_position: 5
+title: What is Kubernetes? 🎥
+---
 
-## What is Kubernetes? 🎥
 - [Kubernetes Explained in 6 Minutes | k8s Architecture](https://www.youtube.com/watch?v=TlHvYWVUZyc&ab_channel=ByteByteGo)
 - [Kubernetes Explained in 15 Minutes](https://www.youtube.com/watch?v=r2zuL9MW6wc)
+- [Docker Mastery: with Kubernetes +Swarm from a Docker Captain](https://www.udemy.com/course/docker-mastery)
 - Kubernetes is an open-source container orchestration platform that automates the deployment, scaling, and management of containerized applications.
 
 ### Kubernetes Components Explained
@@ -12,7 +15,7 @@
 - **API Server**: 
   - Acts as the front-end for the Kubernetes control plane.
 
-- **etcd**: 
+- **[etcd](https://etcd.io/)**: 
   - Consistent and highly-available key-value store used as Kubernetes' backing store for all cluster data.
 
 - **Scheduler**: 

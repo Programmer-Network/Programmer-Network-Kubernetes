@@ -1,4 +1,7 @@
-# Getting Started with Ansible
+---
+sidebar_position: 4
+title: Automation with Ansible
+---
 
 After setting up one of our Raspberry Pi devices, it's easy to see how tedious it would be to SSH into the other three devices and manually repeat each step. This process is not only time-consuming but also error-prone, given that each step is done manually.
 

@@ -1,4 +1,8 @@
-#### 1. Download the Longhorn Manifest YAMLs
+---
+title: Setup Longhorn
+---
+
+#### Download the Longhorn Manifest YAMLs
 
 Longhorn's manifest files are available in their GitHub repository. You can apply them directly to the Kubernetes cluster:
 
@@ -8,7 +12,7 @@ kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/master/depl
 
 This command will pull the entire Longhorn deployment YAML, which configures everything Longhorn requires inside the `longhorn-system` namespace.
 
-#### 2. Monitor the Deployment Progress
+#### Monitor the Deployment Progress
 
 After applying the manifest, you'll see various Kubernetes objects like Pods, Services, DaemonSets, and CRDs being created. You can monitor them with the following command:
 
@@ -20,7 +24,7 @@ Especially watch the status of the Pods.
 
 It will take a couple of minutes for all required components to pull the images from the Docker registry, configure themselves, and become ready.
 
-#### 3. Verify Custom Resource Definitions (CRDs)
+#### Verify Custom Resource Definitions (CRDs)
 
 Longhorn uses Custom Resource Definitions (CRDs) for managing and storing information about volumes, nodes, and engines.
 
@@ -40,7 +44,7 @@ You should see a list of Longhorn-related CRDs like:
 
 These CRDs are the foundation of Longhorn's integration into your Kubernetes cluster.
 
-#### 4. Verify Longhorn Components (Pods, DaemonSet)
+#### Verify Longhorn Components (Pods, DaemonSet)
 
 Ensure that all Longhorn components are running (Pods and DaemonSet) using:
 
@@ -63,11 +67,11 @@ kubectl get ds -n longhorn-system
 
 Check that the DaemonSet has `Desired` pods on all your nodes, and `Current` matches the desired pod count.
 
-### Step 2: Accessing the Longhorn UI
+### Accessing the Longhorn UI
 
 Longhorn provides a web-based UI for managing your storage. To access it, you will need to expose its service.
 
-#### 1. Port Forwarding for Local UI Access
+#### Port Forwarding for Local UI Access
 
 You can use `kubectl port-forward` to access the Longhorn UI on localhost:
 
@@ -77,7 +81,7 @@ kubectl -n longhorn-system port-forward svc/longhorn-frontend 8080:80
 
 Then navigate to `http://localhost:8080` in your browser to see the Longhorn web UI.
 
-#### 2. Expose the Service with NodePort (Optional)
+#### Expose the Service with NodePort (Optional)
 
 Alternatively, you may expose the UI service at the `NodePort` or use `Ingress` for more convenient access from a browser on your local network.
 
@@ -104,7 +108,7 @@ longhorn-frontend NodePort   10.43.31.44   <none>        80:32009/TCP   30m
 
 You can now access Longhorn UI by visiting `http://<node-ip>:32009` from any device on the network.
 
-### Step 3: Configure Nodes for Longhorn Storage
+### Configure Nodes for Longhorn Storage
 
 Longhorn automatically recognizes your Kubernetes nodes, but you may want to configure how disks on your nodes are used for storage.
 
@@ -114,11 +118,11 @@ You can do this through the **Longhorn UI** under the **Node & Disk** section. H
 - Specify custom directories for disk storage (e.g., `/mnt/disk` instead of default paths).
 - Set replication factors (i.e., how many copies of a volume will be stored across nodes).
 
-### Step 4: Test Longhorn - Creating a PVC
+### Test Longhorn - Creating a PVC
 
 Let’s verify that Longhorn is working by creating a test Persistent Volume Claim (PVC). Here’s how you can create a StorageClass and a sample PVC.
 
-#### 1. Create the Longhorn StorageClass
+#### Create the Longhorn StorageClass
 
 To create a `StorageClass` for Longhorn, you need to define one so that Longhorn can dynamically provision volumes. You can use the default settings, but feel free to customize, especially the number of replicas depending on how many nodes you have.
 
@@ -144,7 +148,7 @@ Then apply this StorageClass:
 kubectl apply -f longhorn-storageclass.yaml
 ```
 
-#### 2. Create a PVC Using Longhorn
+#### Create a PVC Using Longhorn
 
 Now create a sample Persistent Volume Claim (PVC) to test that Longhorn can provision volumes:
 
@@ -178,7 +182,7 @@ kubectl get pvc
 
 Once it’s `Bound`, you know Longhorn successfully provisioned your storage.
 
-#### 3. Optionally Deploy a Pod Using the PVC
+#### Optionally Deploy a Pod Using the PVC
 
 To further verify the PVC is working, you can deploy a simple pod (for example, the NGINX web server) that mounts the Longhorn volume:
 
@@ -210,18 +214,10 @@ kubectl apply -f nginx-pod.yaml
 
 Once the pod is running, Longhorn storage is working as expected.
 
-### Step 5: Monitor Longhorn
+### Monitor Longhorn
 
 Longhorn offers monitoring and management tools (both in the UI and via the CLI) to track the status of volumes, nodes, and replicas.
 
 Key areas to check:
 - **Volumes**: Make sure volumes are healthy and properly replicated.
 - **Replicas**: Ensure replicas are collaborating across your cluster nodes to ensure data redundancy.
-
-### Conclusion
-
-By now, you have installed Longhorn **without Helm**, manually applying the Kubernetes manifests, and have successfully configured and tested Longhorn on your Raspberry Pi 4 cluster with K3s.
-
-This method ensures you get hands-on with the complete Kubernetes-native approach, and you can now tune and control Longhorn within your K8s environment — **no package manager necessary**.
-
-Let me know if you need further assistance or have any questions!

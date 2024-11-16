@@ -1,6 +1,6 @@
 <mxfile host="65bd71144e">
     <diagram id="xSF78wGyMEVJKY8dEps5" name="Page-1">
-        <mxGraphModel dx="274" dy="1428" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+        <mxGraphModel dx="1433" dy="1467" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -128,6 +128,51 @@
                 </mxCell>
                 <mxCell id="54" value="DB&lt;br&gt;PG&lt;br&gt;Redis" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" parent="1" vertex="1">
                     <mxGeometry x="570" y="1490" width="90" height="110" as="geometry"/>
+                </mxCell>
+                <mxCell id="57" value="Install PG Native Operator" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="330" y="1880" width="210" height="120" as="geometry"/>
+                </mxCell>
+                <mxCell id="58" value="Setup a PG Cluster&lt;br&gt;&lt;br&gt;HA (Replicas)" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="330" y="2020" width="210" height="120" as="geometry"/>
+                </mxCell>
+                <mxCell id="59" value="StorageClass / PCV" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="330" y="2160" width="210" height="120" as="geometry"/>
+                </mxCell>
+                <mxCell id="60" value="POD&lt;br&gt;&lt;br&gt;I want this much space from this volume&lt;br&gt;&lt;br&gt;Create a database" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="330" y="2430" width="210" height="120" as="geometry"/>
+                </mxCell>
+                <mxCell id="61" value="YAML file where I define a database that I want to create, credentials, user access" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="330" y="2290" width="210" height="120" as="geometry"/>
+                </mxCell>
+                <mxCell id="62" value="Hey K3S, I want a Node API with Postgres DB" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="210" y="2770" width="190" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="63" value="Create PostgresDB Job&lt;br&gt;&lt;br&gt;&lt;br&gt;args:&lt;br&gt;&lt;br&gt;databaseName&lt;br&gt;databaseUser&lt;br&gt;dbpassword" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="245" y="2870" width="175" height="110" as="geometry"/>
+                </mxCell>
+                <mxCell id="68" style="edgeStyle=none;html=1;" edge="1" parent="1" source="64" target="67">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="64" value="Generate snapshot" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="-120" y="1020" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="65" value="rclone to e.g. google drive" style="whiteSpace=wrap;html=1;rounded=0;" vertex="1" parent="1">
+                    <mxGeometry x="-120" y="1180" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="69" style="edgeStyle=none;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="67" target="65">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="67" value="cron" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="-120" y="1100" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="72" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="70" target="71">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="70" value="Get file from GDrive" style="whiteSpace=wrap;html=1;rounded=0;" vertex="1" parent="1">
+                    <mxGeometry x="20" y="1020" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="71" value="Restore" style="whiteSpace=wrap;html=1;rounded=0;" vertex="1" parent="1">
+                    <mxGeometry x="20" y="1100" width="120" height="60" as="geometry"/>
                 </mxCell>
             </root>
         </mxGraphModel>

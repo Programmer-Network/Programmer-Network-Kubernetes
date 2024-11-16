@@ -1,26 +1,26 @@
-### Step 1: Install the CloudNativePG Operator
+### Install the CloudNativePG Operator
 
-1. **Create the CloudNativePG Namespace**
+**Create the [CloudNativePG](https://cloudnative-pg.io) Namespace**
 First, create a namespace for CloudNativePG. You don't have to do this, but it's good practice to separate operators into their own namespaces.
 
 ```bash
 kubectl create namespace cnpg-system
 ```
 
-2. **Install the CloudNativePG Operator using kubectl**
+**Install the [CloudNativePG](https://cloudnative-pg.io) Operator using kubectl**
 
 The CloudNativePG team provides a manifest file that’s hosted publicly. You can fetch it using `kubectl` directly from their GitHub repository and apply it to your cluster.
 
 ```bash
-kubectl apply -n cnpg-system -f https://raw.githubusercontent.com/cloudnative-pg/cloudnative-pg/release-1.17/releases/cnpg-1.17.1.yaml
-```
+# Take the latest version from: https://cloudnative-pg.io/documentation/current/installation_upgrade/
 
-Alternatively:
-Instead of `1.17.1`, feel free to replace that URL version with the most recent one indicated [here](https://cloudnative-pg.io/docs/latest/quickstart/#deploy-cloudnativepg).
+kubectl apply --server-side -f \
+  https://raw.githubusercontent.com/cloudnative-pg/cloudnative-pg/release-1.24/releases/cnpg-1.24.1.yaml
+```
 
 This command applies all necessary resources such as CRDs, RBAC permissions, and the operator's Deployment.
 
-3. **Verify the Deployment**
+**Verify the Deployment**
 
 You can check if the CloudNativePG operator pod is running correctly in its namespace:
 
@@ -38,11 +38,11 @@ cloudnative-pg-controller-manager   1/1     Running   0          1m
 At this point, the CloudNativePG operator is installed, and you’re ready to create PostgreSQL clusters.
 
 
-### Step 2: Deploy a PostgreSQL Cluster
+### Deploy a PostgreSQL Cluster
 
 Now that CloudNativePG is running, let's set up a simple PostgreSQL database cluster.
 
-1. **Create a Namespace for Your PostgreSQL Database**
+**Create a Namespace for Your PostgreSQL Database**
 
 For better organization, create a namespace for your PostgreSQL cluster if needed:
 
@@ -50,7 +50,7 @@ For better organization, create a namespace for your PostgreSQL cluster if neede
 kubectl create namespace postgres-db
 ```
 
-2. **Create a PostgreSQL Cluster YAML Definition**
+**Create a PostgreSQL Cluster YAML Definition**
 
 Save the following YAML into a file called `postgres-cluster.yaml`:
 
@@ -72,7 +72,7 @@ This YAML creates a PostgreSQL cluster with 3 instances managed by CloudNativePG
 
 3 replicas of PostgreSQL pods will be created, providing High Availability.
 
-3. **Apply the PostgreSQL Cluster YAML**
+**Apply the PostgreSQL Cluster YAML**
 
 Run the following command to deploy the PostgreSQL cluster to your Kubernetes cluster:
 
@@ -80,7 +80,7 @@ Run the following command to deploy the PostgreSQL cluster to your Kubernetes cl
 kubectl apply -f postgres-cluster.yaml
 ```
 
-4. **Verify Running PostgreSQL Pods**
+**Verify Running PostgreSQL Pods**
 
 After creating the cluster, confirm that the pods for your PostgreSQL cluster are created and running:
 
@@ -97,7 +97,7 @@ my-postgres-cluster-2                1/1     Running   0          1m
 my-postgres-cluster-3                1/1     Running   0          1m
 ```
 
-5. **Access PostgreSQL**
+**Access PostgreSQL**
 
 To access PostgreSQL, you’ll want to port-forward from your local machine to one of the PostgreSQL pods. Run the following command:
 

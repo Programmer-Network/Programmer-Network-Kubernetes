@@ -1,4 +1,8 @@
-### 1. **StorageClass** - What is it?
+---
+title: Kubernetes Storage
+---
+
+### StorageClass - What is it?
 
 Think of a **StorageClass** in Kubernetes as a **"recipe"** or **blueprint** that dictates **how to create storage** for your application. 
 
@@ -21,7 +25,7 @@ The kitchen (in this case, Kubernetes) **knows how to create** the pizza based o
 
 In the Kubernetes world, the **"crust and cheese options"** represent different types of storage like Longhorn, AWS EBS, Google Persistent Disks, SSDs, etc.
 
-### 2. **PersistentVolumeClaim (PVC)** - What does it do?
+### PersistentVolumeClaim (PVC) - What does it do?
 
 A **PersistentVolumeClaim (PVC)** is your way of asking for a specific amount of storage from Kubernetes. It’s kind of like saying, "**Hey, I need 10 GB of storage that I can use reliably and persistently**."
 
@@ -48,7 +52,7 @@ So, whenever you create a **PVC**, it will “claim” a matching **PersistantVo
 
 ---
 
-### Putting It Together:
+### Putting It Together
 
 1. **StorageClass** == A **blueprint (recipe)** that defines how to provision a specific type of storage (e.g., fast disk, replicated storage, etc.).
   

@@ -1,16 +1,19 @@
-## K3S Setup
+---
+title: K3S Installation
+---
 
-### Enable Memory Cgroups ([Ansible Playbook](../ansible/playbooks/enable-memory-groups.yml))
+### Enable Memory Cgroups
 
-```txt
-Control Groups (Cgroups) are a Linux kernel feature that allows you to allocate resources such as CPU time, system memory, and more among user-defined groups of tasks (processes). K3s requires memory cgroups to be enabled to better manage and restrict the resources that each container can use. This is crucial in a multi-container environment where resource allocation needs to be as efficient as possible.
+[Ansible Playbook](../../../ansible/playbooks/enable-memory-groups.yml)
 
-Simple Analogy: Imagine you live in a house with multiple people (processes), and there are limited resources like time (CPU), space (memory), and tools (I/O). Without a system in place, one person might hog the vacuum cleaner all day (CPU time), while someone else fills the fridge with their stuff (memory).
+Before installing K3s, it's essential to enable memory cgroups on the Raspberry Pi for container resource management.
 
-With a `"chore schedule"` (cgroups), you ensure everyone gets an allocated time with the vacuum cleaner, some space in the fridge, and so on. This schedule ensures that everyone can do their chores without stepping on each other's toes, much like how cgroups allocate system resources to multiple processes.
-```
 
-Before installing K3s, it's essential to enable memory cgroups on the Raspberry Pi for effective container resource management.
+[Control Groups (Cgroups)](https://en.wikipedia.org/wiki/Cgroups) are a Linux kernel feature that allows you to allocate resources such as CPU time, system memory, and more among user-defined groups of tasks (processes). 
+
+K3s requires memory cgroups to be enabled to better manage and restrict the resources that each container can use. This is crucial in a multi-container environment where resource allocation needs to be as efficient as possible.
+
+**Simple Analogy**: Imagine you live in a house with multiple people (processes), and there are limited resources like time (CPU), space (memory), and tools (I/O). Without a system in place, one person might hog the vacuum cleaner all day (CPU time), while someone else fills the fridge with their stuff (memory). With a `"chore schedule"` (cgroups), you ensure everyone gets an allocated time with the vacuum cleaner, some space in the fridge, and so on. This schedule ensures that everyone can do their chores without stepping on each other's toes, much like how cgroups allocate system resources to multiple processes.
 
 Edit the `/boot/firmware/cmdline.txt` file on your Raspberry Pi.
 
@@ -72,9 +75,9 @@ source ~/.bashrc
 
 By doing this, you streamline your workflow, allowing you to simply run `kubectl get nodes` instead of specifying the kubeconfig path each time.
 
----
-
 ### Setup Worker Nodes
+
+[Ansible Playbook](../../../ansible/playbooks/join-worker-nodes-and-setup-kube-config.yml)
 
 **Join Tokens**: On the master node, retrieve the join token from `/var/lib/rancher/k3s/server/token`.
 
@@ -93,8 +96,6 @@ curl -sfL https://get.k3s.io | K3S_URL=https://<master_node_ip>:6443 K3S_TOKEN=<
 ```bash
 kubectl get nodes
 ```
-
----
 
 ### Setup kubectl on your local machine
 
