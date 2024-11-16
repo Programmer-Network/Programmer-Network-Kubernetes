@@ -2,7 +2,9 @@
 title: Why?
 ---
 
-Answering this question honestly, for each of us individually, is fundamental because it will determine the outcome and likelihood of success or failure. If you're learning something just because you heard about it from the latest content creator, or because "everyone seems to be using it," you’re already off to a poor start.
+Answering this question honestly, for each of us individually, is fundamental because it will determine the outcome and likelihood of success or failure. If you're learning something just because you heard about it from the latest content creator, or because "everyone seems to be using it," you’re already off to a poor start. 
+
+What I’ve learned over the last two decades of my career is that if you’re wondering whether you need something, you probably don’t. These things usually come naturally as a result of the problems you encounter. The problem itself often guides you to the right tools, just like this one.
 
 Rather than getting too deep into philosophy, I’ll share my personal reasons for learning Kubernetes, and more generally, hosting a bare-metal server:
 
