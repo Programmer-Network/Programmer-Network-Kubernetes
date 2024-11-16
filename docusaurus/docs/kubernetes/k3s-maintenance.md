@@ -15,6 +15,10 @@ When performing maintenance (such as updating K3S), it’s important to **"drain
 - **Draining** safely evicts all non-essential pods from the node, allowing Kubernetes to reschedule them on other nodes.
 - It also makes the node "unschedulable," ensuring no new pods can be assigned to the node while it’s offline.
 
+#### What does "evicting" a Pod Mean?
+
+- In Kubernetes, "evicts" refers to the process of safely terminating Pods on a node, typically to free up resources or for maintenance, allowing them to be rescheduled on other nodes.
+
 #### How to Drain a Node:
 To drain a node, run the following command replacing `<node-name>` with the name of the node you want to update:
 
