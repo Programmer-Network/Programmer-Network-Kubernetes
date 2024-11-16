@@ -32,7 +32,7 @@ Maintaining a bare-metal server forces me to regularly **maintain** it, which he
 
 #### I see the future of infrastructure leaning towards bare metal
 
-As hardware becomes more efficient and cheaper to acquire, I predict that the future of infrastructure won't be `cloud-only` as it may seem now. While cloud solutions like GCP, AWS, and Azure are incredibly powerful, they come with high costs (even though they often save your engineers time) and may raise privacy concerns for some companies. As fiber-optic internet becomes more globally accessible and hardware costs continue to decrease, I believe that more companies will be confident enough to shift back to hosting on their own infrastructure—especially since technologies like Kubernetes make it significantly easier to manage and scale.
+As hardware becomes more efficient and cheaper to acquire, I predict that the future of infrastructure won't be `cloud-only` as it may seem now. While cloud solutions like GCP, AWS, and Azure are incredibly powerful, they come with high costs (even though they often save your engineers time) and may raise privacy concerns for some companies. As fiber-optic internet becomes more globally accessible and hardware costs continue to decrease, I believe that more companies will be confident enough to shift back to hosting on their own infrastructure, especially since technologies like Kubernetes make it significantly easier to manage and scale.
 
 ### What Are Yours?
 

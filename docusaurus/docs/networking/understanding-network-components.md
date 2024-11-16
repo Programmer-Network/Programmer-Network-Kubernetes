@@ -41,7 +41,7 @@ A load balancer operates as a [gateway](https://en.wikipedia.org/wiki/Gateway_(t
 
 ### Kubernetes ClusterIP vs NodePort vs LoadBalancer vs Ingress?
 
-Let's explore Kubernetes service types—ClusterIP, NodePort, LoadBalancer, and Ingress—and explain when to use each one and how they can work together.
+Let's explore Kubernetes service types, ClusterIP, NodePort, LoadBalancer, and Ingress, and explain when to use each one and how they can work together.
 
 #### ClusterIP
 

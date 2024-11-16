@@ -42,7 +42,7 @@ To delete the existing partition **`sda1`**:
 1. Press `d` (to delete a partition).
 2. If there is only one partition (`sda1`), it will automatically choose `1`. Otherwise, you may be asked to specify the partition number (enter `1` to select **`sda1`**).
 
-Confirm that **`/dev/sda1`** has been deleted by pressing `p` again to view the partition table—it should now list no partitions.
+Confirm that **`/dev/sda1`** has been deleted by pressing `p` again to view the partition table, it should now list no partitions.
 
 #### **4. Create a New Partition**
 
@@ -52,7 +52,7 @@ Now, create a new partition by doing the following:
   - When asked for the partition type, press `p` to create a **primary partition**.
   - When asked for the partition number, press `1` (to recreate it as **`sda1`**).
   - Choose the **default starting sector** by just pressing `Enter` (this will typically start at sector 2048 if you're using a GPT or MBR partition scheme).
-  - You will be asked for the last sector — press `Enter` to choose the default and use the rest of the available space from the starting sector, effectively recreating a partition that spans the entire disk.
+  - You will be asked for the last sector, press `Enter` to choose the default and use the rest of the available space from the starting sector, effectively recreating a partition that spans the entire disk.
 
 #### **5. Set the Partition's Filesystem (Optional)**
 

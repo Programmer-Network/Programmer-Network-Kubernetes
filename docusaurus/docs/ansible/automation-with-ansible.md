@@ -5,7 +5,7 @@ title: Automation with Ansible
 
 After setting up one of our Raspberry Pi devices, it's easy to see how tedious it would be to SSH into the other three devices and manually repeat each step. This process is not only time-consuming but also error-prone, given that each step is done manually.
 
-To make things more efficient, we can turn to **Ansible**—a tool that allows us to automate tasks across multiple machines. To get started, refer to the official [Getting Started](https://docs.ansible.com/ansible/latest/getting_started/index.html) guide.
+To make things more efficient, we can turn to **Ansible**, a tool that allows us to automate tasks across multiple machines. To get started, refer to the official [Getting Started](https://docs.ansible.com/ansible/latest/getting_started/index.html) guide.
 
 ## Installation and PATH Configuration
 
@@ -39,7 +39,7 @@ Ansible Vault is a tool that allows you to securely store sensitive information 
 ansible-vault create secrets.yml
 ```
 
-When prompted, set a password—this password will be required every time you access or modify the vault file. After you’ve set the password, you can include sensitive data in the `secrets.yml` file using YAML format. For example, you might include the IP addresses and credentials for each Raspberry Pi:
+When prompted, set a password, this password will be required every time you access or modify the vault file. After you’ve set the password, you can include sensitive data in the `secrets.yml` file using YAML format. For example, you might include the IP addresses and credentials for each Raspberry Pi:
 
 ```yaml
 all:

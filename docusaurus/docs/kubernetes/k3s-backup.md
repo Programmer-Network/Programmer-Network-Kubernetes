@@ -10,7 +10,7 @@ However, there will come a time when you've learned enough that some tasks no lo
 
 Backups become absolutely essential when you're confident enough to run your setup in production. While we often think of High Availability (HA) configurations as the pinnacle of system reliability, things will inevitably still fail. Your hardware can fail, SSDs may die or become corrupted, and unforeseen issues will arise. In these scenarios, backups are the safety net you can rely on to quickly bring systems back online.
 
-So, whether you’re running a learning environment on Raspberry Pis or a full production setup, backups are not just an option—they're a critical part of ensuring stability and business continuity. Systems will fail, but with proper backups, recovery doesn't have to be painful.
+So, whether you’re running a learning environment on Raspberry Pis or a full production setup, backups are not just an option, they're a critical part of ensuring stability and business continuity. Systems will fail, but with proper backups, recovery doesn't have to be painful.
 
 ### How to Fully Backup a K3S Cluster
 

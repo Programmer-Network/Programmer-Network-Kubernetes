@@ -51,7 +51,7 @@ flowchart LR
 
 ```
 
-This setup isn't set in stone—it's just my personal choice based on what I've experienced and needed. I wanted something sturdy yet portable, so I went with a 4U Rack to keep everything tidy and easy to connect. I'm planning to expand my cluster with four more Raspberry Pis once the prices drop.
+This setup isn't set in stone, it's just my personal choice based on what I've experienced and needed. I wanted something sturdy yet portable, so I went with a 4U Rack to keep everything tidy and easy to connect. I'm planning to expand my cluster with four more Raspberry Pis once the prices drop.
 
 ### Raspberry Pi's
 
@@ -61,7 +61,7 @@ This setup isn't set in stone—it's just my personal choice based on what I've 
 
 ### Network
 
-**[Mikrotik RB3011UiAS-RM](https://mikrotik.com/product/RB3011UiAS-RM)**: I chose Mikrotik's router as it offers a professional-grade, feature-rich solution at an affordable price. This router allows for a myriad of configurations and functionalities that you'd typically find in higher-end solutions like Cisco. Its features like robust firewall options, VPN support, and advanced routing capabilities made it a compelling choice.
+**[Mikrotik RB3011UiAS-RM](https://mikrotik.com/product/RB3011UiAS-RM)**: I went with a MikroTik router because it offers professional-grade features at a price that’s hard to beat. It’s packed with options you’d usually only find in high-end gear like Cisco, but without the hefty price tag. The advanced routing, solid firewall, and built-in VPN support made it an easy choice for what I needed.
 
 **[deleyCON 5 x 0.25 m CAT8.1](https://www.amazon.de/-/en/gp/product/B08WPJVGHR/ref=ppx_yo_dt_b_search_asin_title?ie=UTF8&th=1)**: deleyCON CAT 8.1 patch cable network cable as set // 2x RJ45 plug // S/FTP PIMF shielding
 
