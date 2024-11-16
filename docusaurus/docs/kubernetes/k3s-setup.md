@@ -4,7 +4,7 @@ title: K3S Installation
 
 ### Enable Memory Cgroups
 
-[Ansible Playbook](../../../ansible/playbooks/enable-memory-groups.yml)
+[Ansible Playbook](/ansible/playbooks/enable-memory-groups.yml)
 
 Before installing K3s, it's essential to enable memory cgroups on the Raspberry Pi for container resource management.
 
@@ -77,7 +77,7 @@ By doing this, you streamline your workflow, allowing you to simply run `kubectl
 
 ### Setup Worker Nodes
 
-[Ansible Playbook](../../../ansible/playbooks/join-worker-nodes-and-setup-kube-config.yml)
+[Ansible Playbook](/ansible/playbooks/join-worker-nodes-and-setup-kube-config.yml)
 
 **Join Tokens**: On the master node, retrieve the join token from `/var/lib/rancher/k3s/server/token`.
 
