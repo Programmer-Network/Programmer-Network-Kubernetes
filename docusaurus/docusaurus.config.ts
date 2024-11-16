@@ -63,14 +63,18 @@ const config: Config = {
       },
       items: [
         {
-          type: 'docSidebar',
-          sidebarId: 'tutorialSidebar',
-          position: 'left',
-          label: 'Tutorial',
+          href: 'https://github.com/agjs',
+          label: 'GitHub',
+          position: 'right',
         },
         {
-          href: 'https://github.com/facebook/docusaurus',
-          label: 'GitHub',
+          href: 'https://www.twitch.tv/programmer_network',
+          label: 'Twitch',
+          position: 'right',
+        },
+        {
+          href: 'https://www.youtube.com/@programmer-network',
+          label: 'YouTube',
           position: 'right',
         },
       ],
