@@ -62,18 +62,10 @@ const config: Config = {
       theme: prismThemes.github,
       darkTheme: prismThemes.dracula,
     },
-    mermaid: {
-      options: {
-        theme: 'default', // or 'dark' for dark mode
-        layout: {
-          name: 'elk', // Enable the ELK layout engine
-          options: {
-            'elk.direction': 'RIGHT', // Customize direction (e.g., RIGHT, DOWN)
-            'elk.spacing.nodeNode': 150, // Node spacing
-            'elk.spacing.edgeNode': 220, // Edge spacing
-          },
-        },
-      },
+    colorMode: {
+      defaultMode: 'dark', // Set dark mode as the default
+      disableSwitch: false, // Keep the theme switcher toggle (optional)
+      respectPrefersColorScheme: false, // Ignore the user's system preference
     },
   } satisfies Preset.ThemeConfig,
 };
