@@ -6,24 +6,22 @@ title: Preface
   <img src="/img/kubernetes.png" />
 </p>
 
+**Welcome! I’m glad you’re here. Hail to the SEO overlords!**  
 
+If we haven’t met yet, my name is Alexander. I’ve been in IT for over 20 years and professionally active since 2007. Over the years, I’ve worked as a CISCO engineer, a senior full-stack developer, a startup co-founder, and, for the past few years, a team and tech lead. You can check out my [LinkedIn profile](https://www.linkedin.com/in/aleksandar-grbic-74670263/) if you want to know more about my background.  
 
-**Welcome! I’m glad you found your way here. Hail to the SEO overlords!**
+I think it’s important to share a bit about myself so you can decide if I’m the right person to guide you.  
 
-If we haven’t met yet, my name is Alexander, and I’ve been an IT nerd for over 20 years. I’ve been [professionally active](https://www.linkedin.com/in/aleksandar-grbic-74670263/) since 2007, working in a variety of roles over the years, from CISCO engineer, senior full-stack developer, startup co-founded, and past couple of years, as a team and tech lead.
+I hope this K3s guide is helpful. If you have any questions or suggestions, feel free to reach out on GitHub or join me on one of my live streams.  
 
-I believe it’s important for you to know a bit about me so you can decide if I’m the right person to learn from.
+Now, let’s get started.  
 
-I hope you find my K3S guide helpful! 
+With so much information available today, it’s worth asking yourself, *"Why am I learning this?"*  
 
-If you have any questions or suggestions, feel free to share them on GitHub or join me on my live streams.
+Why choose this skill when there are so many other things you could focus on? How will it help your career? Will it solve any real problems you’re facing, or are you just learning it because it seems popular or trendy? These are the kinds of questions you should think about before committing to something new.  
 
----
+Many of you might know me from [Twitch](https://www.twitch.tv/programmer_network) or [YouTube](https://www.youtube.com/@programmer-network). I prefer to keep things practical and honest. I’m not a fan of the influencer mindset where people recommend things just to fit their content strategy, especially when they don’t actually use the tools or techniques they’re promoting.  
 
-With access to nearly unlimited information today, you have to ask yourself, **"Why the heck am I learning this?"**
+So, when someone asks, *"Why should I learn Kubernetes?"*, it’s a valid question. I could give you plenty of reasons, but not all of them might matter to you. Maybe this isn’t the right time for you to learn Kubernetes. Maybe there are other skills that would be more useful for where you are in your career right now.  
 
-Why would I choose this when there are 18 billion other things I can learn right now? How will this skill help me in my career? Will it solve any problems I experience daily? Do I even experience these problems? These are exactly the kinds of questions you should be asking, and more importantly, make sure you truly have answers to these questions before you embark on a journey like this.
-
-Many of you know me from [Twitch](https://www.twitch.tv/programmer_network) or [YouTube](https://www.youtube.com/@programmer-network), I’m a realist, and I can’t stand bullshit. I dislike influencers because they often talk about things just to fit their content agenda, rather than having real knowledge of the subject, let alone using the solutions they promote to solve their own problems.
-
-So, the question **“Why should I learn Kubernetes?”** is absolutely one you should ask yourself, regardless of what I write in the next section. I might give you no reason, or I might give you 15, but maybe none of them will be relevant to you at this moment. Maybe there are other skills that would benefit you more right now, whether it’s landing your first job or advancing your current career. There’s a big difference between things that are "cool to play with" and things that are actually "nice to have" in your skillset. We each have unique needs at specific points in time, so I’d urge you to seriously consider whether learning Kubernetes is what you truly need **right now**.
+It’s important to understand the difference between things that are interesting to explore and things that are genuinely valuable to learn. Everyone has different needs depending on their goals, so take the time to think about whether Kubernetes is what you need at this moment.

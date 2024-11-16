@@ -50,15 +50,11 @@ When you make this request (PVC), the restaurant (Kubernetes) will:
 
 So, whenever you create a **PVC**, it will “claim” a matching **PersistantVolume** from Kubernetes, ensuring that your "requested storage" is available and bound to you for the data needs for your app.
 
----
-
 ### Putting It Together
 
 1. **StorageClass** == A **blueprint (recipe)** that defines how to provision a specific type of storage (e.g., fast disk, replicated storage, etc.).
   
 2. **PersistentVolumeClaim (PVC)** == **A request** for storage. It says, "*I need X amount of storage handled in Y way*", and then Kubernetes matches it with the right type of storage based on the **StorageClass**.
-
----
 
 ### Real Example
 
@@ -97,8 +93,6 @@ Let's say you're deploying a **MySQL database** in your Kubernetes cluster. It's
    ```
 
 Once the PVC is created, Kubernetes finds storage according to the `longhorn` recipe and gives you **5 GB** of storage. Now your MySQL pod can use that storage to save data files or your database.
-
----
 
 #### Summary:
 
