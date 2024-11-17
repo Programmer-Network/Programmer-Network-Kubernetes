@@ -16,6 +16,8 @@ Common examples include:
 - `apiVersion: apps/v1` for objects like Deployments.
 - Other versions might be `networking.k8s.io/v1` for Ingress.
 
+---
+
 **Kind (`kind`)**:
 - This represents the type of Kubernetes resource you're defining. 
 
@@ -26,6 +28,8 @@ Some common kinds are:
 - `Deployment`
 - `Ingress`
 
+---
+
 **Metadata (`metadata`)**:
 
 This section includes basic metadata about the object, such as:
@@ -34,20 +38,27 @@ This section includes basic metadata about the object, such as:
     - `namespace`: (Optional) Defines the namespace where the object should be created or managed.
     - `labels`: (Optional) Key-value pairs to organize and select groups of objects.
 
+---
+
 **Spec (`spec`)**:
 
-This section contains the specifications of the object. It varies significantly between different kinds, but here are some general guidelines:
+This section contains the specifications of the object. 
+
+It varies significantly between different kinds, but here are some general guidelines:
 
 **For Deployments**:
+    - Define `replicas` to set the desired number of pod copies.
+    - Use `selector` to match Pods with labels.
+    - Define a `template` for the Pod specification.
 
-- Define `replicas` to set the desired number of pod copies.
-- Use `selector` to match Pods with labels.
-- Define a `template` for the Pod specification.
-- **For Services**:
-- Define `selector` to route traffic to the right Pods.
-- Set `ports` to map incoming traffic to the target Pods.
-- **For Ingress**:
-- Define rules for routing external HTTP/S traffic to internal services.
+**For Services**:
+    - Define `selector` to route traffic to the right Pods.
+    - Set `ports` to map incoming traffic to the target Pods.
+
+**For Ingress**:
+    - Define rules for routing external HTTP/S traffic to internal services.
+
+---
 
 ### Logical Steps to Write a k3s YAML File
 
