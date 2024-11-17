@@ -17,56 +17,121 @@ kubectl get pods -n kube-system
 
 We’ll look for a pod with a name like `traefik-...`. If it’s there and running, we’re good to go. If not, we might need to revisit the K3s installation settings.
 
-### Enable the Traefik Dashboard
+## Objective
 
-By default, the dashboard might not be set up, so we can create an `IngressRoute` for it.
+You will be creating the required Kubernetes resources:
 
-Let’s start by creating a YAML file with the following configuration:
+1. A `ClusterIP` service to expose the Traefik dashboard.
+2. An `Ingress` rule to route traffic to the dashboard service.
+
+## Create the Traefik Dashboard Service
+
+We'll create a `ClusterIP` Service to expose the Traefik dashboard. This service will make the Traefik dashboard's HTTP API, running on port `9000`, available to the cluster.
+
+Create a YAML file named `traefik-dashboard-service.yaml` with the following contents:
 
 ```yaml
-apiVersion: traefik.containo.us/v1alpha1
-kind: IngressRoute
+apiVersion: v1
+kind: Service
 metadata:
   name: traefik-dashboard
   namespace: kube-system
+  labels:
+    app.kubernetes.io/instance: traefik
+    app.kubernetes.io/name: traefik-dashboard
 spec:
-  entryPoints:
-    - web
-  routes:
-    - match: Host(`traefik.localhost`)
-      kind: Rule
-      services:
-        - name: api@internal
-          kind: TraefikService
+  type: ClusterIP
+  ports:
+    - name: traefik
+      port: 9000             # Dashboard listens on port 9000
+      targetPort: 9000       # Forward traffic to this port on Traefik pods
+      protocol: TCP
+  selector:
+    app.kubernetes.io/instance: traefik-kube-system
+    app.kubernetes.io/name: traefik
 ```
 
-Then, we’ll apply it:
+- **Explanation**:
+  - `ClusterIP`: Used for internal access only (within the cluster not externally exposed).
+
+  - The service exposes port `9000`, which is the default port where Traefik serves its dashboard.
+
 ```bash
-kubectl apply -f traefik-dashboard.yaml
+kubectl apply -f traefik-dashboard-service.yaml
 ```
 
-### Expose the Dashboard
+---
 
-To make the dashboard accessible, we need the hostname `traefik.localhost` to resolve to our cluster. 
+## Create the Traefik Ingress Resource
 
-One way to do this is by adding an entry to our local `/etc/hosts` file:
+Next, we need to create an Ingress that routes traffic to the `traefik-dashboard` service created in the previous step. This will allow external traffic to reach the dashboard by using a specific domain.
 
-```plaintext
-127.0.0.1 traefik.localhost
+Create a YAML file named `traefik-dashboard-ingress.yaml` with the following contents:
+
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: traefik-ingress
+  namespace: kube-system
+  annotations:
+    spec.ingressClassName: traefik
+spec:
+  rules:
+    - host: YOUR_DOMAIN_NAME    # Replace YOUR_DOMAIN_NAME with your own domain.
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: traefik-dashboard
+                port:
+                  number: 9000
 ```
 
-If our cluster isn’t running locally, we’ll replace `127.0.0.1` with the IP address of our K3s server.
+- Ingress: The ingress resource defines rules that route HTTP requests to `traefik-dashboard` at port `9000` based on a specific host (`YOUR_DOMAIN_NAME`).
 
-Alternatively, we could expose Traefik via a `NodePort` service or a load balancer if needed.
+- Replace `YOUR_DOMAIN_NAME` with the desired domain name where you want to expose your Traefik dashboard.
 
-### Access the Dashboard
+- IngressClass: We're using the `traefik` ingress controller, as it's the default installed ingress controller for K3s.
 
-Now, we can visit the dashboard in our browser at:
+```bash
+kubectl apply -f traefik-dashboard-ingress.yaml
 ```
-http://traefik.localhost
+
+---
+
+## Update DNS or `/etc/hosts`
+
+To access the Traefik dashboard through your web browser, you'll need to ensure DNS resolves the host (`YOUR_DOMAIN_NAME`) to the correct IP address (either a load balancer IP, node IP, etc.). In the case of local development, you can update your **/etc/hosts** file.
+
+Suppose you're running a single-node K3s cluster accessible at the IP `192.168.1.100` and you want to use `traefik.example.com`.
+
+Edit `/etc/hosts` and add:
+
+```bash
+192.168.1.100 traefik.example.com
 ```
 
-### Secure the Dashboard (Optional)
+## Access the Traefik Dashboard
 
-If this is in a shared environment, we might want to secure the dashboard with basic authentication. This can be done using a `Middleware` resource in Traefik.
+Once the service and ingress resources are in place, and DNS (or `/etc/hosts`) has been configured, you should be able to access the dashboard in your browser:
 
+```
+http://traefik.example.com/
+```
+
+### Notes:
+
+- Deployment Security: The `Ingress` config above exposes the dashboard without authentication. For production deployments, consider securing the dashboard with basic authentication or other mechanisms.
+- Dashboard Availability: By default, Traefik's dashboard is available via port 9000 and isn't exposed unless configured to be so. The steps above ensure it is properly exposed.
+
+## Clean-up
+
+When you no longer need the Traefik Dashboard exposed, you can remove the resources by using the following commands:
+
+```bash
+kubectl delete -f traefik-dashboard-ingress.yaml
+kubectl delete -f traefik-dashboard-service.yaml
+```
