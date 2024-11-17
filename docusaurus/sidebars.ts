@@ -32,7 +32,7 @@ const sidebars: SidebarsConfig = {
     {
       type: 'category',
       label: 'Kubernetes',
-      items: ['kubernetes/kubernetes-theory', 'kubernetes/k3s-setup', 'kubernetes/k3s-backup', 'kubernetes/k3s-maintenance', 'kubernetes/getting-started-with-kubernetes', 'kubernetes/common-kubernetes-commands', {
+      items: ['kubernetes/kubernetes-theory', 'kubernetes/k3s-setup', 'kubernetes/k3s-backup', 'kubernetes/k3s-maintenance', 'kubernetes/getting-started-with-kubernetes', {
         type: 'category',
         label: 'Storage',
         items: ['storage/understanding-longhorn-concepts', 'storage/setup-longhorn', 'storage/setup-longhorn-dashboard'],
@@ -46,7 +46,8 @@ const sidebars: SidebarsConfig = {
         type: 'category',
         label: 'Networking',
         items: ['networking/understanding-network-components', 'networking/expose-traefik-dashboard-inside-the-k3s-cluster', 'networking/setup-metallb'],
-      }
+      },
+       'kubernetes/common-kubernetes-commands'
     ],
     },
   ],
