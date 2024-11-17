@@ -1,3 +1,7 @@
+---
+title: CloudNativePG Operator
+---
+
 ### Install the CloudNativePG Operator
 
 **Create the [CloudNativePG](https://cloudnative-pg.io) Namespace**

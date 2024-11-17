@@ -40,7 +40,7 @@ const sidebars: SidebarsConfig = {
       {
         type: 'category',
         label: 'Databases',
-        items: ['databases/setup-cloudnative-pg'],
+        items: ['databases/databases-within-kubernetes','databases/setup-cloudnative-pg'],
       },
       {
         type: 'category',
