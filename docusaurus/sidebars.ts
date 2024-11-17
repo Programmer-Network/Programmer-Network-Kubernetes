@@ -45,7 +45,7 @@ const sidebars: SidebarsConfig = {
       {
         type: 'category',
         label: 'Networking',
-        items: ['networking/understanding-network-components', 'networking/traefik-ingress-controller', 'networking/setup-metallb'],
+        items: ['networking/understanding-network-components', 'networking/expose-traefik-dashboard-inside-the-k3s-cluster', 'networking/setup-metallb'],
       }
     ],
     },
