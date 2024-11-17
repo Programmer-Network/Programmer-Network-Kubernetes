@@ -72,7 +72,7 @@ With managed databases, you don’t need to worry about keeping your database so
 ### Scalability Without Complexity:
 Cloud-managed databases allow you to scale up (vertically) or replicate databases easier, without having to configure sharding or complex replication setups typically required for self-hosted databases.
 
-## Conclusion:
+## Conclusion
 
 The decision on whether to host your database on Kubernetes or use a managed database highly depends on your specific needs. From cost-efficiency to required complexity, there are legitimate use cases for both approaches.
 
