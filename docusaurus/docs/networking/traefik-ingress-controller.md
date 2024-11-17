@@ -1,5 +1,5 @@
 ---
-title: Traefik Ingress Controller
+title: Expose Traefik Dashboard inside the K3s Cluster
 ---
 
 As we have learned in the previous section ([Kubernetes Networking](understanding-network-components#ingress-controllers-traefik-nginx)), ingress controllers are responsible for managing HTTP and HTTPS traffic, enabling external access to internal Kubernetes services. In simpler terms, the ingress controller ensures that incoming traffic is directed to the appropriate services that we define.
