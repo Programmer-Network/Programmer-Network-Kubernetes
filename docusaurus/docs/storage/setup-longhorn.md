@@ -69,44 +69,7 @@ Check that the DaemonSet has `Desired` pods on all your nodes, and `Current` mat
 
 ### Accessing the Longhorn UI
 
-Longhorn provides a web-based UI for managing your storage. To access it, you will need to expose its service.
-
-#### Port Forwarding for Local UI Access
-
-You can use `kubectl port-forward` to access the Longhorn UI on localhost:
-
-```bash
-kubectl -n longhorn-system port-forward svc/longhorn-frontend 8080:80
-```
-
-Then navigate to `http://localhost:8080` in your browser to see the Longhorn web UI.
-
-#### Expose the Service with NodePort (Optional)
-
-Alternatively, you may expose the UI service at the `NodePort` or use `Ingress` for more convenient access from a browser on your local network.
-
-Here’s how you can switch the service to `NodePort`:
-
-```yaml
-kubectl patch svc longhorn-frontend \
-  -n longhorn-system \
-  -p '{"spec": {"type": "NodePort"}}'
-```
-
-Now, inspect the service to view the assigned external port:
-
-```bash
-kubectl get svc longhorn-frontend -n longhorn-system
-```
-
-You'll see something like this:
-
-```
-NAME              TYPE       CLUSTER-IP    EXTERNAL-IP   PORT(S)        AGE
-longhorn-frontend NodePort   10.43.31.44   <none>        80:32009/TCP   30m
-```
-
-You can now access Longhorn UI by visiting `http://<node-ip>:32009` from any device on the network.
+Longhorn provides a web-based UI for managing your storage. To access it, you will need to expose its service. We cover this in the next section ["Expose Longhorn Dashboard using Traefik Ingress"](setup-longhorn-dashboard).
 
 ### Configure Nodes for Longhorn Storage
 
