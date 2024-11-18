@@ -101,12 +101,34 @@ my-postgres-cluster-2                1/1     Running   0          1m
 my-postgres-cluster-3                1/1     Running   0          1m
 ```
 
+
 **Access PostgreSQL**
 
-To access PostgreSQL, you’ll want to port-forward from your local machine to one of the PostgreSQL pods. Run the following command:
+To access PostgreSQL from your local machine, you'll need to port-forward one of the PostgreSQL services.
+
+First, let's list the services that have been exposed by the CloudNativePG operator:
 
 ```bash
-kubectl port-forward svc/my-postgres-cluster 5432:5432 -n postgres-db
+kubectl get svc -n postgres-db
+```
+
+You’ll see output similar to this:
+
+```bash
+NAME                     TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
+my-postgres-cluster-r    ClusterIP   10.43.50.146    <none>        5432/TCP   22m
+my-postgres-cluster-ro   ClusterIP   10.43.103.161   <none>        5432/TCP   22m
+my-postgres-cluster-rw   ClusterIP   10.43.242.201   <none>        5432/TCP   22m
+```
+
+- `my-postgres-cluster-r`: Typically routes to the **read** replica.
+- `my-postgres-cluster-ro`: Provides a **read-only** interface for **non-primary** nodes.
+- `my-postgres-cluster-rw`: Connects to the current **primary** node for **read/write** operations.
+
+For example, to expose the `rw` service (which connects to the primary node), you can run:
+
+```bash
+kubectl port-forward svc/my-postgres-cluster-rw 5432:5432 -n postgres-db
 ```
 
 Then, on your machine, you can connect to PostgreSQL at `localhost:5432` using any PostgreSQL client or `psql`.
