@@ -1,0 +1,30 @@
+- name: Backup K3s cluster and fetch to local machine (including token)
+  hosts: rp_1
+  become: yes
+
+  tasks:
+    - name: Ensure backup directory exists on the remote node
+      file:
+        path: "/tmp/k3s-backups"
+        state: directory
+        mode: '0755'
+
+    - name: Backup SQLite database, certificates and token on remote node
+      archive:
+        path:
+          - "/var/lib/rancher/k3s/server/db"
+          - "/var/lib/rancher/k3s/server/tls"
+          - "/var/lib/rancher/k3s/server/token"
+        dest: "/tmp/k3s-backups/k3s-backup-{{ ansible_date_time.date }}-{{ ansible_date_time.hour }}{{ ansible_date_time.minute }}.tar.gz"
+        format: gz
+
+    - name: Fetch the backup archive to the local machine
+      fetch:
+        src: "/tmp/k3s-backups/k3s-backup-{{ ansible_date_time.date }}-{{ ansible_date_time.hour }}{{ ansible_date_time.minute }}.tar.gz"
+        dest: "./k3s-backups/"
+        flat: yes
+
+    - name: Clean up remote backup files
+      file:
+        path: "/tmp/k3s-backups/k3s-backup-{{ ansible_date_time.date }}-{{ ansible_date_time.hour }}{{ ansible_date_time.minute }}.tar.gz"
+        state: absent
