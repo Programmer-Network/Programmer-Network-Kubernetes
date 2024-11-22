@@ -3,6 +3,7 @@ sidebar_position: 5
 title: What is Kubernetes? 🎥
 ---
 
+- [DevOps Books](https://github.com/rohitg00/DevOps_Books)
 - [Kubernetes Explained in 6 Minutes | k8s Architecture](https://www.youtube.com/watch?v=TlHvYWVUZyc&ab_channel=ByteByteGo)
 - [Kubernetes Explained in 15 Minutes](https://www.youtube.com/watch?v=r2zuL9MW6wc)
 - [Docker Mastery: with Kubernetes +Swarm from a Docker Captain](https://www.udemy.com/course/docker-mastery)

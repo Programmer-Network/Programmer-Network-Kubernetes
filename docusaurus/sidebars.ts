@@ -32,7 +32,7 @@ const sidebars: SidebarsConfig = {
     {
       type: 'category',
       label: 'Kubernetes',
-      items: ['kubernetes/kubernetes-theory', 'kubernetes/k3s-setup', 'kubernetes/k3s-backup', 'kubernetes/k3s-maintenance', {
+      items: ['kubernetes/what-is-kubernetes', 'kubernetes/k3s-setup', 'kubernetes/k3s-backup', 'kubernetes/k3s-maintenance', {
         type: 'category',
         label: 'Storage',
         items: ['storage/understanding-longhorn-concepts', 'storage/setup-longhorn', 'storage/setup-longhorn-dashboard'],

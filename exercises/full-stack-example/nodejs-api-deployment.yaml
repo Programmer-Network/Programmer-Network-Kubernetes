@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: nodejs-api
+  namespace: nodejs
 spec:
   replicas: 1
   selector:
@@ -14,7 +15,7 @@ spec:
     spec:
       containers:
         - name: nodejs-api
-          image: node:14
+          image: agjs/test
           ports:
             - containerPort: 3000
           volumeMounts:
@@ -30,8 +31,6 @@ spec:
             requests:
               memory: "256Mi"
               cpu: "250m"
-          command: ["node"]
-          args: ["app.js"]
       volumes:
         - name: data
           persistentVolumeClaim:

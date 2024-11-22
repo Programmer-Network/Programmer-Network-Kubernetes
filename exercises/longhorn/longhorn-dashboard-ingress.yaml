@@ -4,15 +4,15 @@ metadata:
   name: longhorn-ingress
   namespace: longhorn-system
 spec:
-  ingressClassName: traefik
+  ingressClassName: traefik               # Specify that Traefik handles this Ingress
   rules:
-    - host: longhorn.local.host
+    - host: longhorn.local.host            # The domain you'll use to access Longhorn UI
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: longhorn-frontend
+                name: longhorn-frontend    # Correct service name
                 port:
-                  number: 80
+                  number: 80               # Service is using port 80
