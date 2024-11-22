@@ -56,6 +56,11 @@ const config: Config = {
           label: 'YouTube',
           position: 'right',
         },
+        {
+          href: 'https://programmer.network',
+          label: 'Programmer Network',
+          position: 'right',
+        },
       ],
     },
     prism: {
@@ -65,7 +70,7 @@ const config: Config = {
     colorMode: {
       defaultMode: 'dark', // Set dark mode as the default
       disableSwitch: false, // Keep the theme switcher toggle (optional)
-      respectPrefersColorScheme: false, // Ignore the user's system preference
+      respectPrefersColorScheme: true, // Ignore the user's system preference
     },
   } satisfies Preset.ThemeConfig,
 };
