@@ -280,7 +280,3 @@ kubectl apply -f test-ingress.yaml
 3. **Ingress Routing Issues**:
    - Verify the `Ingress` resource, and ensure that the service names and ports match correctly with your application.
    - Validate Traefik's logs for any issues related to routing.
-
----
-
-That's it! By following these steps, you should have MetalLB providing external IPs to Traefik, allowing you to expose Kubernetes services externally via MetalLB-managed LoadBalancer IPs.
