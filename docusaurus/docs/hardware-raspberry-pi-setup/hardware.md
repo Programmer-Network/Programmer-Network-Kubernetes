@@ -47,8 +47,6 @@ flowchart LR
     linkStyle 9 stroke:#00C853,fill:none
     linkStyle 10 stroke:#BBDEFB,fill:none
     linkStyle 11 stroke:#FFCDD2,fill:none
-
-
 ```
 
 This setup isn't set in stone, it's just my personal choice based on what I've experienced and needed. I wanted something sturdy yet portable, so I went with a 4U Rack to keep everything tidy and easy to connect. I'm planning to expand my cluster with four more Raspberry Pis once the prices drop.
