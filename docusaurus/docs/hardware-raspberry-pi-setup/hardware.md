@@ -22,8 +22,10 @@ flowchart LR
   end
     RPI1["RP1"] --- SSD1["SSD (USB 3.0)"]
     RPI2["RP2"] --- SSD2["SSD (USB 3.0)"]
-    RPI3["RP3"] --- SSD3["SSD (USB 3.0)"]
-    RPI4["RP4"] --- SSD4["SSD (USB 3.0)"]
+    RPI3["RP3"] --- SSD3["SSD 1 (USB 3.0)"]
+    RPI3["RP3"] --- SSD3B["SSD 2 (USB 3.0)"]
+    RPI4["RP4"] --- SSD4["SSD 1 (USB 3.0)"]
+    RPI4["RP4"] --- SSD4B["SSD 2 (USB 3.0)"]
     ETH6 --- RPI1
     ETH7 --- RPI2
     ETH8 --- RPI3
@@ -47,6 +49,7 @@ flowchart LR
     linkStyle 9 stroke:#00C853,fill:none
     linkStyle 10 stroke:#BBDEFB,fill:none
     linkStyle 11 stroke:#FFCDD2,fill:none
+
 ```
 
 This setup isn't set in stone, it's just my personal choice based on what I've experienced and needed. I wanted something sturdy yet portable, so I went with a 4U Rack to keep everything tidy and easy to connect. I'm planning to expand my cluster with four more Raspberry Pis once the prices drop.
