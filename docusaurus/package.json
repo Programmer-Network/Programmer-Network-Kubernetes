@@ -45,7 +45,8 @@
     ]
   },
   "engines": {
-    "node": ">=18.0"
+    "node": ">=22.16.0",
+    "npm": ">=11.4.2"
   },
   "overrides": {
     "postcss-selector-parser": "7.1.0"
