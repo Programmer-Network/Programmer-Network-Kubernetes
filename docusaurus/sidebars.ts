@@ -55,6 +55,11 @@ const sidebars: SidebarsConfig = {
        'kubernetes/common-kubernetes-commands'
     ],
     },
+      {
+        id: "terminology",
+        type: 'doc',
+        label: 'Terminology',
+    }
   ],
 };
 

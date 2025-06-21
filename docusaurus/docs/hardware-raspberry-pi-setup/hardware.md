@@ -58,29 +58,62 @@ This setup isn't set in stone, it's just my personal choice based on what I've e
 
 **[4x Raspberry Pi 4 B 8GB](https://www.raspberrypi.com/products/raspberry-pi-4-model-b/)**
 
-*Note*: If you're looking to replicate my setup, opt for Raspberry Pi version 4 only if it's available at a significant discount. Otherwise, always go for the latest generation. Also, it's wise to select the model with the maximum RAM since we'll be running multiple services. More memory means better performance.
+_Note_: If you're looking to replicate my setup, opt for Raspberry Pi version 4 only if it's available at a significant discount. Otherwise, always go for the latest generation. Also, it's wise to select the model with the maximum RAM since we'll be running multiple services. More memory means better performance.
+
+### Mini PCs
+
+**[Lenovo Thinkcentre M900](https://www.ebay.com/sch/i.html?_nkw=Lenovo+thinkcentre+m900&_sacat=0&_from=R40&_trksid=m570.l1313)** - Slightly less powerful than the HP EliteDesk, but still a great choice. It came with 8GB of RAM, which I expanded to 24GB.
+
+**[HP EliteDesk 800 G3 Mini 65W](https://www.ebay.com/sch/i.html?_nkw=HP+EliteDesk+800+G3+Mini+65W&_sacat=0&_from=R40&_trksid=p2334524.m570.l1313&_odkw=Lenovo+thinkcentre+m900&_osacat=0)** - Expanded the HP EliteDesk with [32gb of RAM](https://www.amazon.de/dp/B07N1YBSPZ?ref=ppx_yo2ov_dt_b_fed_asin_title&th=1). As you'll be browing for those on websites such is e.g. ebay, you'll find them in slightly different configurations, so make sure to check the specs before you buy. This one came with 16GB of RAM, which I moved to Lenovo.
+
+Mini PCs are a great alternative to Raspberry Pis. They are more powerful, more reliable, and more affordable. They are also more suitable for running a production-grade service. When it comes to idle power consumption, they are often on pair with the Raspberry Pi's, and as I will show you throughout this guide, we can put them to sleep using [Intel Active Management Technology (AMT)](https://en.wikipedia.org/wiki/Intel_Active_Management_Technology) and wake them up using a simple HTTP request.
+
+You want to get those on the used market, and as shown in the images below, you want to do basic maintenance to them. In my case, I've cleaned the fans and the heat sinks, and I've also added some thermal paste to the CPU and the GPU. Better the cooling, better the performance, and less noise and power consumption.
+
+I'm personally using [BSFF Thermal paste](https://www.amazon.de/dp/B09NLXSP4S?ref=ppx_yo2ov_dt_b_fed_asin_title&th=1), but you can use whatever you want. To wipe the old thermal paste, you can use a simple paper towel or a microfiber cloth, preferably with some isopropyl alcohol. As you may see in the images below, I'm using [PURIVITA® Isopropanol 99.9%](https://www.amazon.de/-/en/dp/B0C4FKV9HY?ref_=ppx_hzsearch_conn_dt_b_fed_asin_title_1&th=1). Using isopropyl alcohol is a good idea, because it's a good solvent and it will help to remove the old thermal paste.
+
+As you can see on the images, these mini pc's often need a bit of maintenance, unless you purchase them from professional sellers. Ideally whatsoever, you want to buy them from regular people as they often undersell them out of incompetence. For instance, both of these PC's costed me less then a price of a new Raspberry Pi 4B.
+
+In mine, thermal paste was dry, and fans needed a bit of cleaning. Besides that, everything else was in a great shape.
+
+import Image from '@theme/IdealImage';
+
+<Image img="/img/minipcs/minipc-opened-1.jpg" />
+<Image img="/img/minipcs/minipc-opened-2.jpg" />
+<Image img="/img/minipcs/minipc-opened-3.jpg" />
+<Image img="/img/minipcs/minipc-opened-4.jpg" />
+
+This is how they look like when assembled. While I was setting them up, including setting up the BIOS, etc. I kept them outside of the rack, as I occassionally needed to connect them to the monitor, keyboard and mouse.
+
+<Image img="/img/minipcs/minipc-assembled.jpg" />
 
 ### Network
 
 **[Mikrotik RB3011UiAS-RM](https://mikrotik.com/product/RB3011UiAS-RM)**: I went with a MikroTik router because it offers professional-grade features at a price that’s hard to beat. It’s packed with options you’d usually only find in high-end gear like Cisco, but without the hefty price tag. The advanced routing, solid firewall, and built-in VPN support made it an easy choice for what I needed.
 
+**[Mikrotik CRS326-24G-2S+RM](https://mikrotik.com/product/CRS326-24G-2SplusRM)**: SwOS/RouterOS powered 24 port Gigabit Ethernet switch with two SFP+ ports. We need a switch with sufficient ports and SFP+ ports for future expansion, but also to do proper VLANs (network isolation) and QoS (quality of service) for different services.
+
 **[deleyCON 5 x 0.25 m CAT8.1](https://www.amazon.de/-/en/gp/product/B08WPJVGHR/ref=ppx_yo_dt_b_search_asin_title?ie=UTF8&th=1)**: deleyCON CAT 8.1 patch cable network cable as set // 2x RJ45 plug // S/FTP PIMF shielding
 
 **[CSL CAT.8 Network Cable 40 Gigabit](https://www.amazon.de/-/en/gp/product/B08FCLHTH5/ref=ppx_yo_dt_b_search_asin_title?ie=UTF8&th=1)**: CSL CAT.8 Network Cable 40 Gigabit
+
+**[deleyCON 5 x 0.25 m CAT6 Network Cable Set](https://www.amazon.de/dp/B079FYFZ96?ref=ppx_yo2ov_dt_b_fed_asin_title&th=1)**
+
+**[deleyCON 10 x 0.5 m CAT6 Network Cable Set](https://www.amazon.de/dp/B0DGKSTM37?ref=ppx_yo2ov_dt_b_fed_asin_title&th=1)**
 
 ### Rack
 
 **[4U Rack Cabinet](https://www.compumail.dk/en/p/lanberg-rack-gra-993865294)**: A 4U Rack to encapsulate all components cleanly. It provides the benefit of space efficiency and easy access for any hardware changes or additions.
 
-**[Rack Power Supply](https://www.compumail.dk/en/p/lanberg-pdu-09f-0300-bk-stromstodsbeskytter-9-stik-16a-sort-3m-996106700)**: A centralized power supply solution for the entire rack. Ensures consistent and reliable power distribution to all the components.
+**[2X Rack Power Supply](https://www.compumail.dk/en/p/lanberg-pdu-09f-0300-bk-stromstodsbeskytter-9-stik-16a-sort-3m-996106700)**: A centralized power supply solution for the entire rack. Ensures consistent and reliable power distribution to all the components.
 
 **[GeeekPi 1U Rack Kit for Raspberry Pi 4B, 19" 1U Rack Mount](https://www.amazon.de/-/en/gp/product/B0972928CN/ref=ppx_yo_dt_b_search_asin_title?ie=UTF8&psc=1)**: This 19 inch rack mount kit is specially designed for recording Raspberry Pi 4B boards and supports up to 4 units.
 
+**[DIGITUS Professional Extendible Shelf for 19-inch cabinets, Black](https://www.amazon.de/dp/B002KTE870?ref=ppx_yo2ov_dt_b_fed_asin_title&th=1)**: This shelf is perfect for the Mini PCs. It's extendible, so you can add more shelves if you need to.
 
 ### Storage
 
-Some of the storage choices were made based on a combination of overall research and a list of [Known Working Adapters](https://jamesachambers.com/best-ssd-storage-adapters-for-raspberry-pi-4-400/). 
-
+Some of the storage choices were made based on a combination of overall research and a list of [Known Working Adapters](https://jamesachambers.com/best-ssd-storage-adapters-for-raspberry-pi-4-400/).
 
 **[4X UGREEN Hard Drive Housing](https://www.amazon.de/dp/B07D2BHVBD?ref=ppx_yo2ov_dt_b_fed_asin_title)**
 
@@ -90,20 +123,18 @@ Some of the storage choices were made based on a combination of overall research
 
 **[2x JSAUX USB 3.0 to SATA Adapter](https://www.amazon.de/dp/B086W944YT?ref=ppx_yo2ov_dt_b_fed_asin_title)**
 
-*During my learning journey with Raspberry Pi, I realized that purchasing microSD cards was a mistake. They perform significantly worse than solid-state drives (SSDs), are prone to random failures, and unfortunately, these microSD cards can be as expensive, or even more so, than buying SSDs. E.g. in comparison, [Verbatim Vi550 S3 SSD](https://www.amazon.de/dp/B07LGKQLT5?ref=ppx_yo2ov_dt_b_fed_asin_title) costs the same as [SanDisk Extreme microSDXC](https://www.amazon.de/dp/B09X7BK27V?ref=ppx_yo2ov_dt_b_fed_asin_title&th=1). In many instances in fact, microSD card is actually more expensive.*
+_During my learning journey with Raspberry Pi, I realized that purchasing microSD cards was a mistake. They perform significantly worse than solid-state drives (SSDs), are prone to random failures, and unfortunately, these microSD cards can be as expensive, or even more so, than buying SSDs. E.g. in comparison, [Verbatim Vi550 S3 SSD](https://www.amazon.de/dp/B07LGKQLT5?ref=ppx_yo2ov_dt_b_fed_asin_title) costs the same as [SanDisk Extreme microSDXC](https://www.amazon.de/dp/B09X7BK27V?ref=ppx_yo2ov_dt_b_fed_asin_title&th=1). In many instances in fact, microSD card is actually more expensive._
 
 ~~**[SanDisk Extreme microSDHC 3 Rescue Pro Deluxe Memory Card, Red/Gold 64GB](https://www.amazon.de/-/en/gp/product/B07FCMBLV6/ref=ppx_yo_dt_b_search_asin_title?ie=UTF8&psc=1)**: Up to 160MB/s Read speed and 60 MB/s. Write speed for fast recording and transferring~~
 
 ~~**[Vanja SD/Micro SD Card Reader](https://www.amazon.de/-/en/gp/product/B00W02VHM6/ref=ppx_yo_dt_b_search_asin_title?ie=UTF8&psc=1)**: Micro USB OTG Adapter and USB 2.0 Memory Card Reader~~
 
-
-
 ### Why These Choices?
 
 **Mobility**: The 4U Rack allows me to move the entire setup easily, making it convenient for different scenarios, from a home office to a small business environment
-  
+
 **Professional-Grade Networking**: The Mikrotik router provides a rich feature set generally found in enterprise-grade hardware, offering me a sandbox to experiment with advanced networking configurations
-  
+
 **Scalability**: The Raspberry Pi units and the Rack setup are easily scalable. I can effortlessly add more Pis to the cluster
 
 **Affordability**: This setup provides a balance between cost and performance, giving me a powerful Kubernetes cluster without breaking the bank
