@@ -1,20 +1,36 @@
 import { useState } from "react";
 import CodeBlock from "../CodeBlock";
 import ExplanationCard from "../ExplanationCard";
-import { sections, sectionStyles } from "./constants";
+import Tabs from "../Tabs";
+import * as deploymentConfig from "./deployment";
+import * as serviceConfig from "./service";
+
+const yamls = {
+  deployment: deploymentConfig,
+  service: serviceConfig,
+};
+
+const tabs = [
+  { id: "deployment", label: "Deployment" },
+  { id: "service", label: "Service" },
+];
 
 export default function App() {
   const [highlightedSection, setHighlightedSection] = useState(null);
+  const [activeTab, setActiveTab] = useState("deployment");
 
   const handleHover = section => {
     setHighlightedSection(section);
   };
 
+  const { sections, sectionStyles } = yamls[activeTab];
+
   return (
     <div className="flex flex-col items-center justify-center">
+      <Tabs tabs={tabs} activeTab={activeTab} setActiveTab={setActiveTab} />
       <div className="text-center mt-6 text-sm"></div>
       <div>
-        <div className="rounded-2xl grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <div className="rounded-2xl grid grid-cols-1 lg:grid-cols-12 gap-8 items-start w-full">
           {/* Left Side: YAML Code */}
           <div className="col-span-8">
             <CodeBlock
@@ -26,7 +42,7 @@ export default function App() {
           </div>
 
           {/* Right Side: Explanations */}
-          <div className="flex flex-col space-y-4 col-span-4">
+          <div className="flex flex-col space-y-2 col-span-4">
             {sections.map(section => (
               <ExplanationCard
                 key={section.id}

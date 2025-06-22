@@ -11,13 +11,15 @@ const ExplanationCard = ({
     id={`exp-${section.id}`}
     data-tooltip-id={`tooltip-${section.id}`}
     data-tooltip-html={section.description}
-    className={`explanation-card border-l-4 p-4 rounded-r-lg transition-all duration-200 ease-in-out cursor-pointer ${
+    className={`explanation-card border-l-12 p-4 rounded-r-lg transition-all duration-200 ease-in-out cursor-pointer ${
       styles.cardColor
-    } ${isHighlighted ? "bg-yellow-50 dark:bg-slate-700/15 " : ""}`}
+    } ${isHighlighted ? "bg-yellow-50 dark:bg-slate-600/15 " : ""}`}
     onMouseEnter={onMouseEnter}
     onMouseLeave={onMouseLeave}
   >
-    <h3 className={`font-bold !mb-0 ${styles.titleColor}`}>{section.title}</h3>
+    <h3 className={`!mb-0 !text-sm !font-normal ${styles.titleColor}`}>
+      {section.title}
+    </h3>
     <Tooltip id={`tooltip-${section.id}`} />
   </div>
 );
