@@ -1,12 +1,13 @@
-const CodeLine = ({ section, styles, highlightedKey, onHover }) => {
-  const isHighlighted = highlightedKey === section.id;
+const CodeLine = ({ section, styles, highlightedSection, onHover }) => {
+  const isHighlighted =
+    highlightedSection && section.title.startsWith(highlightedSection.title);
 
   return (
     <span
       className={`block ${
         isHighlighted ? "bg-gray-200 dark:bg-gray-800/30 rounded" : ""
       }`}
-      onMouseEnter={() => onHover(section.id)}
+      onMouseEnter={() => onHover(section)}
       onMouseLeave={() => onHover(null)}
     >
       {" ".repeat(section.indent || 0)}

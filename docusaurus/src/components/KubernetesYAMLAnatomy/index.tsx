@@ -4,10 +4,10 @@ import ExplanationCard from "../ExplanationCard";
 import { sections, sectionStyles } from "./constants";
 
 export default function App() {
-  const [highlightedKey, setHighlightedKey] = useState(null);
+  const [highlightedSection, setHighlightedSection] = useState(null);
 
-  const handleHover = key => {
-    setHighlightedKey(key);
+  const handleHover = section => {
+    setHighlightedSection(section);
   };
 
   return (
@@ -18,7 +18,7 @@ export default function App() {
           {/* Left Side: YAML Code */}
           <div className="col-span-8">
             <CodeBlock
-              highlightedKey={highlightedKey}
+              highlightedSection={highlightedSection}
               onHover={handleHover}
               sections={sections}
               sectionStyles={sectionStyles}
@@ -32,8 +32,11 @@ export default function App() {
                 key={section.id}
                 section={section}
                 styles={sectionStyles[section.id]}
-                isHighlighted={highlightedKey === section.id}
-                onMouseEnter={() => handleHover(section.id)}
+                isHighlighted={
+                  highlightedSection &&
+                  highlightedSection.title.startsWith(section.title)
+                }
+                onMouseEnter={() => handleHover(section)}
                 onMouseLeave={() => handleHover(null)}
               />
             ))}

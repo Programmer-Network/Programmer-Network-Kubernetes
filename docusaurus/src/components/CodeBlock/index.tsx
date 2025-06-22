@@ -1,7 +1,12 @@
 import { Fragment } from "react";
 import CodeLine from "../CodeLine";
 
-const CodeBlock = ({ highlightedKey, onHover, sections, sectionStyles }) => {
+const CodeBlock = ({
+  highlightedSection,
+  onHover,
+  sections,
+  sectionStyles,
+}) => {
   return (
     <div className="rounded-xl overflow-x-auto sticky">
       <pre className="!bg-gray-100/2">
@@ -16,7 +21,7 @@ const CodeBlock = ({ highlightedKey, onHover, sections, sectionStyles }) => {
               <CodeLine
                 section={section}
                 styles={sectionStyles[section.id]}
-                highlightedKey={highlightedKey}
+                highlightedSection={highlightedSection}
                 onHover={onHover}
               />
             </Fragment>
