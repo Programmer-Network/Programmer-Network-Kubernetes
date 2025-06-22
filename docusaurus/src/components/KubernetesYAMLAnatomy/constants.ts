@@ -1,50 +1,42 @@
 export const sectionStyles = {
   apiVersion: {
     keyColor: "text-blue-600 dark:text-blue-400",
-    cardColor:
-      "border-blue-200 bg-blue-50 dark:border-blue-900 dark:bg-slate-800",
+    cardColor: "border-2 border-blue-200 dark:border-blue-900",
     titleColor: "text-blue-700 dark:text-blue-400",
   },
   kind: {
     keyColor: "text-cyan-600 dark:text-cyan-400",
-    cardColor:
-      "border-cyan-200 bg-cyan-50 dark:border-cyan-900 dark:bg-slate-800",
+    cardColor: "border-2 border-cyan-200 dark:border-cyan-900",
     titleColor: "text-cyan-700 dark:text-cyan-400",
   },
   metadata: {
     keyColor: "text-green-600 dark:text-green-400",
-    cardColor:
-      "border-green-200 bg-green-50 dark:border-green-900 dark:bg-slate-800",
+    cardColor: "border-2 border-green-200 dark:border-green-900",
     titleColor: "text-green-700 dark:text-green-400",
   },
   spec: {
     keyColor: "text-purple-600 dark:text-purple-400",
-    cardColor:
-      "border-purple-200 bg-purple-50 dark:border-purple-900 dark:bg-slate-800",
+    cardColor: "border-2 border-purple-200 dark:border-purple-900",
     titleColor: "text-purple-700 dark:text-purple-400",
   },
   selector: {
     keyColor: "text-orange-600 dark:text-orange-400",
-    cardColor:
-      "border-orange-200 bg-orange-50 dark:border-orange-900 dark:bg-slate-800",
+    cardColor: "border-2 border-orange-200 dark:border-orange-900",
     titleColor: "text-orange-700 dark:text-orange-400",
   },
   template: {
     keyColor: "text-rose-600 dark:text-rose-400",
-    cardColor:
-      "border-rose-200 bg-rose-50 dark:border-rose-900 dark:bg-slate-800",
+    cardColor: "border-2 border-rose-200 dark:border-rose-900",
     titleColor: "text-rose-700 dark:text-rose-400",
   },
   containers: {
     keyColor: "text-yellow-600 dark:text-yellow-400",
-    cardColor:
-      "border-yellow-200 bg-yellow-50 dark:border-yellow-900 dark:bg-slate-800",
+    cardColor: "border-2 border-yellow-200 dark:border-yellow-900",
     titleColor: "text-yellow-700 dark:text-yellow-400",
   },
   status: {
     keyColor: "text-gray-600 dark:text-gray-400",
-    cardColor:
-      "border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-slate-800",
+    cardColor: "border-2 border-gray-200 dark:border-gray-400",
     titleColor: "text-gray-700 dark:text-gray-400",
   },
 };

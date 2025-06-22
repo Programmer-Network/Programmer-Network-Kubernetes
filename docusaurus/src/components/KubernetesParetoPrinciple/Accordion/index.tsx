@@ -1,10 +1,11 @@
 import { useState } from "react";
+import ContentRenderer, { ContentItem } from "../ContentRenderer";
 
 const Accordion = ({
   items,
   initialActiveId,
 }: {
-  items: { id: number; title: string; content: string }[];
+  items: { id: number; title: string; content: ContentItem[] }[];
   initialActiveId?: number;
 }) => {
   const [activeId, setActiveId] = useState(initialActiveId);
@@ -32,10 +33,9 @@ const Accordion = ({
             </span>
           </button>
           {activeId === item.id && (
-            <div
-              className="p-4 pt-0 text-slate-600 dark:text-slate-300"
-              dangerouslySetInnerHTML={{ __html: item.content }}
-            ></div>
+            <div className="p-4 pt-0 text-slate-600 dark:text-slate-300">
+              <ContentRenderer content={item.content} />
+            </div>
           )}
         </div>
       ))}

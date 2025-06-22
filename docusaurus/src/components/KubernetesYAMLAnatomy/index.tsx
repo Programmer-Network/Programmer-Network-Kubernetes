@@ -12,12 +12,7 @@ export default function App() {
 
   return (
     <div className="flex flex-col items-center justify-center">
-      <div className="text-center mt-6 text-sm">
-        <p className="dark:text-slate-300">
-          Hover over the YAML keys or the explanation cards to see the
-          connection.
-        </p>
-      </div>
+      <div className="text-center mt-6 text-sm"></div>
       <div>
         <div className="rounded-2xl grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* Left Side: YAML Code */}

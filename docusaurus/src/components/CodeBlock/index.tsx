@@ -3,8 +3,8 @@ import CodeLine from "../CodeLine";
 
 const CodeBlock = ({ highlightedKey, onHover, sections, sectionStyles }) => {
   return (
-    <div className="rounded-xl overflow-x-auto sticky top-8">
-      <pre>
+    <div className="rounded-xl overflow-x-auto sticky">
+      <pre className="!bg-gray-100/2">
         <code>
           {sections.map(section => (
             <Fragment key={section.id}>

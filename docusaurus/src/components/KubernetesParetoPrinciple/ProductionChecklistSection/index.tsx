@@ -1,4 +1,5 @@
 import { useState } from "react";
+import ContentRenderer from "../ContentRenderer";
 import { contentData } from "../content";
 
 const ProductionChecklistSection = () => {
@@ -24,32 +25,31 @@ const ProductionChecklistSection = () => {
         {contentData.production.map(item => (
           <div
             key={item.id}
-            className="rounded-lg shadow-lg border border-slate-200 dark:border-slate-700"
+            className="rounded-lg shadow-lg border border-slate-200 dark:border-slate-700 mb-4"
           >
             <button
               onClick={() => toggle(item.id)}
-              className="w-full flex justify-between items-center p-4 sm:p-6 text-left"
+              className="w-full flex justify-between items-center px-4 py-4 text-left"
             >
               <div className="flex items-center">
-                <span className="mr-4">{item.icon}</span>
+                <span className="mr-4 text-2xl">{item.icon}</span>
                 <div>
                   <span className="font-semibold text-slate-800 dark:text-slate-200">
                     {item.title}
                   </span>
-                  <p className="text-slate-500 dark:text-slate-400">
+                  <p className="text-slate-500 dark:text-slate-400 !mb-0 text-left">
                     {item.description}
                   </p>
                 </div>
               </div>
-              <span className="text-amber-500 font-light">
+              <span className="text-amber-500 font-light text-2xl">
                 {activeId === item.id ? "−" : "+"}
               </span>
             </button>
             {activeId === item.id && (
-              <div
-                className="p-4 sm:p-6 pt-0 text-slate-600 dark:text-slate-300"
-                dangerouslySetInnerHTML={{ __html: item.content }}
-              ></div>
+              <div className="p-4 sm:p-6 pt-0 text-slate-600 dark:text-slate-300">
+                <ContentRenderer content={item.content} />
+              </div>
             )}
           </div>
         ))}

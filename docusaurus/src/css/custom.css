@@ -3,6 +3,7 @@
 @custom-variant dark (&:is([data-theme="dark"] *));
 
 p,
+ol li,
 ul li,
 span {
   font-size: 20px;
