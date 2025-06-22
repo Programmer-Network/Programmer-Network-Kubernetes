@@ -34,3 +34,7 @@
   --ifm-background-color: #0b0b0b !important;
   --ifm-navbar-background-color: #0b0b0b !important;
 }
+
+.navbar__item.navbar__link svg {
+  display: none;
+}

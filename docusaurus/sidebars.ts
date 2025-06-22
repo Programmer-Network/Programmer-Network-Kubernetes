@@ -25,12 +25,17 @@ const sidebars: SidebarsConfig = {
         },
         {
           type: "doc",
-          label: "Why",
+          label: "Why?",
           id: "why",
         },
         {
           type: "doc",
-          label: "What We Will Learn",
+          label: "The reason why it's hard",
+          id: "why-is-it-hard",
+        },
+        {
+          type: "doc",
+          label: "The outcome",
           id: "what-we-will-learn",
         },
       ],
@@ -221,7 +226,7 @@ const sidebars: SidebarsConfig = {
 function numberSidebar(items, prefix = "") {
   let count = 1;
 
-  return items.map(item => {
+  return items.map((item) => {
     const number = `${prefix}${count}`;
     count++;
 
@@ -261,7 +266,7 @@ function numberSidebar(items, prefix = "") {
 function humanizeId(id) {
   const parts = id.split("/");
   const last = parts[parts.length - 1];
-  return last.replace(/-/g, " ").replace(/\b\w/g, l => l.toUpperCase());
+  return last.replace(/-/g, " ").replace(/\b\w/g, (l) => l.toUpperCase());
 }
 
 export default {
