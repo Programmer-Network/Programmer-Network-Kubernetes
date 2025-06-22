@@ -52,15 +52,25 @@ flowchart LR
 
 ```
 
-This setup isn't set in stone, it's just my personal choice based on what I've experienced and needed. I wanted something sturdy yet portable, so I went with a 4U Rack to keep everything tidy and easy to connect. I'm planning to expand my cluster with four more Raspberry Pis once the prices drop.
+import Alert from "@site/src/components/Alert/index.tsx";
 
-### Raspberry Pi's
+<Alert title="Before you start" description="This setup isn't set in stone, it's just my personal choice based on what I've experienced and needed. I wanted something sturdy yet portable, so I went with a 4U Rack to keep everything tidy and easy to connect." />
+
+If you don't want to go even remotely as crazy as I did, but you still want to be able to mimic my setup, this is my recommendation:
+
+## Affordable Hardware (If you don't want to follow my setup)
+
+[Mikrotik hEX lite](https://mikrotik.com/product/RB750r2) - This is the cheapest Mikrotik router. Most importantly, it comes with their original RouterOS. That essentially means that you can follow my guide to the letter.
+
+As of the Raspberry Pi and/or Mini PC, you can really use anything. For instance, if you have an old Intel laptop laying around, that is perfect. If you have an older version of Raspberry Pi, that is also perfect. No matter your hardware, you can still follow this guide and release your service, or services, by the end of it.
+
+## Raspberry Pi's
 
 **[4x Raspberry Pi 4 B 8GB](https://www.raspberrypi.com/products/raspberry-pi-4-model-b/)**
 
 _Note_: If you're looking to replicate my setup, opt for Raspberry Pi version 4 only if it's available at a significant discount. Otherwise, always go for the latest generation. Also, it's wise to select the model with the maximum RAM since we'll be running multiple services. More memory means better performance.
 
-### Mini PCs
+## Mini PCs
 
 **[Lenovo Thinkcentre M900](https://www.ebay.com/sch/i.html?_nkw=Lenovo+thinkcentre+m900&_sacat=0&_from=R40&_trksid=m570.l1313)** - Slightly less powerful than the HP EliteDesk, but still a great choice. It came with 8GB of RAM, which I expanded to 24GB.
 
@@ -87,7 +97,7 @@ This is how they look like when assembled. While I was setting them up, includin
 
 <Image img="/img/minipcs/minipc-assembled.jpg" />
 
-### Network
+## Network
 
 **[Mikrotik RB3011UiAS-RM](https://mikrotik.com/product/RB3011UiAS-RM)**: I went with a MikroTik router because it offers professional-grade features at a price that’s hard to beat. It’s packed with options you’d usually only find in high-end gear like Cisco, but without the hefty price tag. The advanced routing, solid firewall, and built-in VPN support made it an easy choice for what I needed.
 
@@ -101,7 +111,7 @@ This is how they look like when assembled. While I was setting them up, includin
 
 **[deleyCON 10 x 0.5 m CAT6 Network Cable Set](https://www.amazon.de/dp/B0DGKSTM37?ref=ppx_yo2ov_dt_b_fed_asin_title&th=1)**
 
-### Rack
+## Rack
 
 **[4U Rack Cabinet](https://www.compumail.dk/en/p/lanberg-rack-gra-993865294)**: A 4U Rack to encapsulate all components cleanly. It provides the benefit of space efficiency and easy access for any hardware changes or additions.
 
@@ -111,7 +121,7 @@ This is how they look like when assembled. While I was setting them up, includin
 
 **[DIGITUS Professional Extendible Shelf for 19-inch cabinets, Black](https://www.amazon.de/dp/B002KTE870?ref=ppx_yo2ov_dt_b_fed_asin_title&th=1)**: This shelf is perfect for the Mini PCs. It's extendible, so you can add more shelves if you need to.
 
-### Storage
+## Storage
 
 Some of the storage choices were made based on a combination of overall research and a list of [Known Working Adapters](https://jamesachambers.com/best-ssd-storage-adapters-for-raspberry-pi-4-400/).
 
@@ -129,12 +139,10 @@ _During my learning journey with Raspberry Pi, I realized that purchasing microS
 
 ~~**[Vanja SD/Micro SD Card Reader](https://www.amazon.de/-/en/gp/product/B00W02VHM6/ref=ppx_yo_dt_b_search_asin_title?ie=UTF8&psc=1)**: Micro USB OTG Adapter and USB 2.0 Memory Card Reader~~
 
-### Why These Choices?
+## Why These Choices?
 
 **Mobility**: The 4U Rack allows me to move the entire setup easily, making it convenient for different scenarios, from a home office to a small business environment
 
 **Professional-Grade Networking**: The Mikrotik router provides a rich feature set generally found in enterprise-grade hardware, offering me a sandbox to experiment with advanced networking configurations
-
-**Scalability**: The Raspberry Pi units and the Rack setup are easily scalable. I can effortlessly add more Pis to the cluster
 
 **Affordability**: This setup provides a balance between cost and performance, giving me a powerful Kubernetes cluster without breaking the bank
