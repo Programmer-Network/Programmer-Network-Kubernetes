@@ -95,104 +95,114 @@ const sidebars: SidebarsConfig = {
         },
         {
           type: "doc",
-          label: "4.2 kubectl Command",
-          id: "kubernetes/kubectl-anatomy",
+          label: "4.2 Anatomy of a kubectl Command",
+          id: "kubernetes/anatomy-of-kubectl-command",
         },
         {
           type: "doc",
-          label: "4.2 K3s Setup",
+          label: "4.3 Anatomy of a Kubernetes YAML",
+          id: "kubernetes/anatomy-of-kubernetes-yaml",
+        },
+        {
+          type: "doc",
+          label: "4.4 Kubernetes 80/20 Rule",
+          id: "kubernetes/kubernetes-80-20-rule",
+        },
+        {
+          type: "doc",
+          label: "4.5 K3s Setup",
           id: "kubernetes/k3s-setup",
         },
         {
           type: "doc",
-          label: "4.3 K3s Backup",
+          label: "4.6 K3s Backup",
           id: "kubernetes/k3s-backup",
         },
         {
           type: "doc",
-          label: "4.4 K3s Maintenance",
+          label: "4.7 K3s Maintenance",
           id: "kubernetes/k3s-maintenance",
         },
         {
           type: "category",
-          label: "4.5 Storage",
+          label: "4.8 Storage",
           items: [
             {
               type: "doc",
-              label: "4.5.1 Understanding Longhorn Concepts",
+              label: "4.8.1 Understanding Longhorn Concepts",
               id: "storage/understanding-longhorn-concepts",
             },
             {
               type: "doc",
-              label: "4.5.2 Setup Longhorn",
+              label: "4.8.2 Setup Longhorn",
               id: "storage/setup-longhorn",
             },
             {
               type: "doc",
-              label: "4.5.3 Setup Longhorn Dashboard",
+              label: "4.8.3 Setup Longhorn Dashboard",
               id: "storage/setup-longhorn-dashboard",
             },
           ],
         },
         {
           type: "category",
-          label: "4.6 Databases",
+          label: "4.9 Databases",
           items: [
             {
               type: "doc",
-              label: "4.6.1 Databases Within Kubernetes",
+              label: "4.9.1 Databases Within Kubernetes",
               id: "databases/databases-within-kubernetes",
             },
             {
               type: "doc",
-              label: "4.6.2 Setup CloudNative PG",
+              label: "4.9.2 Setup CloudNative PG",
               id: "databases/setup-cloudnative-pg",
             },
           ],
         },
         {
           type: "category",
-          label: "4.7 Networking",
+          label: "4.10 Networking",
           items: [
             {
               type: "doc",
-              label: "4.7.1 Kubernetes Networking Explained",
+              label: "4.10.1 Kubernetes Networking Explained",
               id: "networking/kubernetes-networking-explained",
             },
             {
               type: "doc",
-              label: "4.7.2 Understanding Network Components",
+              label: "4.10.2 Understanding Network Components",
               id: "networking/understanding-network-components",
             },
             {
               type: "doc",
-              label: "4.7.3 Expose Traefik Dashboard Inside the K3s Cluster",
+              label: "4.10.3 Expose Traefik Dashboard Inside the K3s Cluster",
               id: "networking/expose-traefik-dashboard-inside-the-k3s-cluster",
             },
             {
               type: "doc",
-              label: "4.7.4 Setup MetalLB",
+              label: "4.10.4 Setup MetalLB",
               id: "networking/setup-metallb",
             },
           ],
         },
         {
           type: "category",
-          label: "4.8 Exercises",
+          label: "4.11 Exercises",
           items: [
             {
               type: "doc",
-              label: "4.8.1 Kubernetes YML Structure",
+              label: "4.11.1 Kubernetes YML Structure",
               id: "kubernetes/kubernetes-yml-structure",
             },
             {
               type: "doc",
-              label: "4.8.2 Getting Started With Kubernetes",
+              label: "4.11.2 Getting Started With Kubernetes",
               id: "kubernetes/getting-started-with-kubernetes",
             },
             {
               type: "doc",
-              label: "4.8.3 Common Kubernetes Commands",
+              label: "4.11.3 Common Kubernetes Commands",
               id: "kubernetes/common-kubernetes-commands",
             },
           ],

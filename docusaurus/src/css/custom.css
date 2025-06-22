@@ -2,6 +2,12 @@
 
 @custom-variant dark (&:is([data-theme="dark"] *));
 
+p,
+ul li,
+span {
+  font-size: 20px;
+}
+
 /**
  * Any CSS included here will be global. The classic template
  * bundles Infima by default. Infima is a CSS framework designed to
@@ -31,6 +37,6 @@
   --ifm-color-primary-lighter: #a5b4fc;
   --ifm-color-primary-lightest: #c7d2fe;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
-  --ifm-background-color: #1b1f23 !important;
-  --ifm-navbar-background-color: #1b1f23 !important;
+  --ifm-background-color: #0b0b0b !important;
+  --ifm-navbar-background-color: #0b0b0b !important;
 }
