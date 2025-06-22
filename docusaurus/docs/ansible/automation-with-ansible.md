@@ -9,9 +9,9 @@ To make things more efficient, we can turn to **Ansible**, a tool that allows us
 
 ## Installation and PATH Configuration
 
-Once Ansible has been installed, you *might** encounter a warning indicating that some Ansible executables (like `ansible-doc`, `ansible-galaxy`, and others) are installed in `/home/YOUR_USER/.local/bin`, which is not included in your system’s PATH.
+Once Ansible has been installed, you \*might\*\* encounter a warning indicating that some Ansible executables (like `ansible-doc`, `ansible-galaxy`, and others) are installed in `/home/YOUR_USER/.local/bin`, which is not included in your system’s PATH.
 
-To resolve this, you will need to edit your shell profile. If you’re using Bash, open the `.bashrc` file with `nano ~/.bashrc`. For Zsh users, you should open `.zshrc` by running `nano ~/.zshrc`. 
+To resolve this, you will need to edit your shell profile. If you’re using Bash, open the `.bashrc` file with `nano ~/.bashrc`. For Zsh users, you should open `.zshrc` by running `nano ~/.zshrc`.
 
 At the end of the file, you should add this line:
 
@@ -89,4 +89,4 @@ ansible-vault edit secrets.yml
 
 For more complex setups, such as managing different environments, you can create separate encrypted inventory files, like `prod_secrets.yml` and `dev_secrets.yml`. You can also organize secrets by groups or hosts by creating encrypted files for each, stored in the `group_vars` and `host_vars` directories. This approach allows for fine-grained control over your environments while keeping sensitive data secure.
 
-By following these steps, you can ensure both automation and security when working with multiple Raspberry Pi devices through Ansible. With the help of Ansible Vault, sensitive credentials like passwords and IP addresses are encrypted and protected from unauthorized access, while still being usable whenever Ansible tasks need them.
+In the context of our cluster, we won't be using Ansible in any complex way. We will be using it to automate the setup of our cluster.

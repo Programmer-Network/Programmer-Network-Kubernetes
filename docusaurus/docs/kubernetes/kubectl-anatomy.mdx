@@ -1,0 +1,44 @@
+---
+title: Anatomy of a `kubectl` Command
+---
+
+[kubectl](https://kubernetes.io/docs/reference/kubectl/) is the command-line interface for Kubernetes. It allows us to run commands against Kubernetes clusters. It is the most important command in Kubernetes, and we'll use it a lot.
+
+<div class="relative">
+   <!-- Command Bar -->
+   <div class="bg-gray-100 dark:bg-gray-900 p-4 rounded-xl flex items-center text-lg sm:text-xl overflow-x-auto">
+      <span class="mr-2">$</span>
+      <span id="cmd-base" class="command-part text-blue-400 font-bold whitespace-nowrap">kubectl</span>
+      <span class="mx-2"></span>
+      <span id="cmd-action" class="command-part text-green-400 font-bold whitespace-nowrap">get</span>
+      <span class="mx-2"></span>
+      <span id="cmd-type" class="command-part text-purple-400 font-bold whitespace-nowrap">pod</span>
+      <span class="mx-2"></span>
+      <span id="cmd-name" class="command-part text-red-400 font-bold whitespace-nowrap">my-pod</span>
+      <span class="mx-2"></span>
+      <span id="cmd-flags" class="command-part text-orange-400 font-bold whitespace-nowrap">-n my-namespace</span>
+   </div>
+   <!-- Explanations Grid -->
+   <div id="explanation-grid" class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
+      <!-- Action -->
+      <div id="label-action" class="label-box text-center p-4 border !border-green-400 rounded-lg">
+         <h3 class="font-bold !text-green-400">Command</h3>
+         <p class="text-green-400 mt-1">Specifies the operation that you want to perform on one or more resources, for example create, get, describe, delete.</p>
+      </div>
+      <!-- Resource Type -->
+      <div id="label-type" class="label-box text-center p-4 border !border-purple-400 rounded-lg">
+         <h3 class="font-bold !text-purple-400">Resource Type</h3>
+         <p class="text-purple-400 mt-1">Specifies the __[resource type](https://kubernetes.io/docs/reference/kubectl/#resource-types)__. Resource types are case-insensitive and you can specify the singular, plural, or abbreviated forms. For example, the following commands produce the same output:</p>
+      </div>
+      <!-- Resource Name -->
+      <div id="label-name" class="label-box text-center p-4 border !border-red-400 rounded-lg">
+         <h3 class="font-bold !text-red-400">Resource Name</h3>
+         <p class="text-red-400 mt-1">Specifies the name of the resource. Names are case-sensitive. If the name is omitted, details for all resources are displayed, for example kubectl get pods.</p>
+      </div>
+      <!-- Flags -->
+      <div id="label-flags" class="label-box text-center p-4 border !border-orange-400 rounded-lg">
+         <h3 class="font-bold !text-orange-400">Flags</h3>
+         <p class="text-orange-400 mt-1">Specifies optional flags. For example, you can use the -s or --server flags to specify the address and port of the Kubernetes API server.</p>
+      </div>
+   </div>
+</div>

@@ -1,4 +1,4 @@
-import type {SidebarsConfig} from '@docusaurus/plugin-content-docs';
+import type { SidebarsConfig } from "@docusaurus/plugin-content-docs";
 
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
@@ -15,51 +15,195 @@ import type {SidebarsConfig} from '@docusaurus/plugin-content-docs';
 const sidebars: SidebarsConfig = {
   tutorialSidebar: [
     {
-      type: 'category',
-      label: 'Welcome',
-      items: ['welcome', 'why', 'what-we-will-learn'],
+      type: "category",
+      label: "1. Welcome",
+      items: [
+        {
+          type: "doc",
+          label: "1.1 Welcome",
+          id: "welcome",
+        },
+        {
+          type: "doc",
+          label: "1.2 Why",
+          id: "why",
+        },
+        {
+          type: "doc",
+          label: "1.3 What We Will Learn",
+          id: "what-we-will-learn",
+        },
+      ],
     },
     {
-      type: 'category',
-      label: 'Hardware & PI Setup',
-      items: ['hardware-raspberry-pi-setup/hardware', 'hardware-raspberry-pi-setup/raspberry-pi-setup'],
+      type: "category",
+      label: "2. Hardware",
+      items: [
+        {
+          type: "doc",
+          label: "2.1 Components",
+          id: "hardware-raspberry-pi-setup/hardware",
+        },
+        {
+          type: "category",
+          label: "2.2 Setup",
+          items: [
+            {
+              type: "doc",
+              label: "2.2.1 Before We Start",
+              id: "hardware-raspberry-pi-setup/before-we-start",
+            },
+            {
+              type: "doc",
+              label: "2.2.2 Raspberry Pis",
+              id: "hardware-raspberry-pi-setup/raspberry-pi-setup",
+            },
+            {
+              type: "doc",
+              label: "2.2.3 Mini PCs",
+              id: "hardware-raspberry-pi-setup/mini-pcs-setup",
+            },
+          ],
+        },
+      ],
     },
     {
-      type: 'category',
-      label: 'Ansible',
-      items: ['ansible/automation-with-ansible'],
+      type: "category",
+      label: "3. Tools",
+      items: [
+        {
+          type: "category",
+          label: "3.1 Automation",
+          items: [
+            {
+              type: "doc",
+              label: "3.1.1 Ansible",
+              id: "ansible/automation-with-ansible",
+            },
+          ],
+        },
+      ],
     },
     {
-      type: 'category',
-      label: 'Kubernetes',
-      items: ['kubernetes/what-is-kubernetes', 'kubernetes/k3s-setup', 'kubernetes/k3s-backup', 'kubernetes/k3s-maintenance', {
-        type: 'category',
-        label: 'Storage',
-        items: ['storage/understanding-longhorn-concepts', 'storage/setup-longhorn', 'storage/setup-longhorn-dashboard'],
-      },
-      {
-        type: 'category',
-        label: 'Databases',
-        items: ['databases/databases-within-kubernetes','databases/setup-cloudnative-pg'],
-      },
-      {
-        type: 'category',
-        label: 'Networking',
-        items: ['networking/kubernetes-networking-explained', 'networking/understanding-network-components', 'networking/expose-traefik-dashboard-inside-the-k3s-cluster', 'networking/setup-metallb'],
-      },
-      {
-        type: 'category',
-        label: 'Exercises',
-        items: ['kubernetes/kubernetes-yml-structure', 'kubernetes/getting-started-with-kubernetes'],
-      },
-       'kubernetes/common-kubernetes-commands'
-    ],
+      type: "category",
+      label: "4. Kubernetes",
+      items: [
+        {
+          type: "doc",
+          label: "4.1 What Is Kubernetes",
+          id: "kubernetes/what-is-kubernetes",
+        },
+        {
+          type: "doc",
+          label: "4.2 kubectl Command",
+          id: "kubernetes/kubectl-anatomy",
+        },
+        {
+          type: "doc",
+          label: "4.2 K3s Setup",
+          id: "kubernetes/k3s-setup",
+        },
+        {
+          type: "doc",
+          label: "4.3 K3s Backup",
+          id: "kubernetes/k3s-backup",
+        },
+        {
+          type: "doc",
+          label: "4.4 K3s Maintenance",
+          id: "kubernetes/k3s-maintenance",
+        },
+        {
+          type: "category",
+          label: "4.5 Storage",
+          items: [
+            {
+              type: "doc",
+              label: "4.5.1 Understanding Longhorn Concepts",
+              id: "storage/understanding-longhorn-concepts",
+            },
+            {
+              type: "doc",
+              label: "4.5.2 Setup Longhorn",
+              id: "storage/setup-longhorn",
+            },
+            {
+              type: "doc",
+              label: "4.5.3 Setup Longhorn Dashboard",
+              id: "storage/setup-longhorn-dashboard",
+            },
+          ],
+        },
+        {
+          type: "category",
+          label: "4.6 Databases",
+          items: [
+            {
+              type: "doc",
+              label: "4.6.1 Databases Within Kubernetes",
+              id: "databases/databases-within-kubernetes",
+            },
+            {
+              type: "doc",
+              label: "4.6.2 Setup CloudNative PG",
+              id: "databases/setup-cloudnative-pg",
+            },
+          ],
+        },
+        {
+          type: "category",
+          label: "4.7 Networking",
+          items: [
+            {
+              type: "doc",
+              label: "4.7.1 Kubernetes Networking Explained",
+              id: "networking/kubernetes-networking-explained",
+            },
+            {
+              type: "doc",
+              label: "4.7.2 Understanding Network Components",
+              id: "networking/understanding-network-components",
+            },
+            {
+              type: "doc",
+              label: "4.7.3 Expose Traefik Dashboard Inside the K3s Cluster",
+              id: "networking/expose-traefik-dashboard-inside-the-k3s-cluster",
+            },
+            {
+              type: "doc",
+              label: "4.7.4 Setup MetalLB",
+              id: "networking/setup-metallb",
+            },
+          ],
+        },
+        {
+          type: "category",
+          label: "4.8 Exercises",
+          items: [
+            {
+              type: "doc",
+              label: "4.8.1 Kubernetes YML Structure",
+              id: "kubernetes/kubernetes-yml-structure",
+            },
+            {
+              type: "doc",
+              label: "4.8.2 Getting Started With Kubernetes",
+              id: "kubernetes/getting-started-with-kubernetes",
+            },
+            {
+              type: "doc",
+              label: "4.8.3 Common Kubernetes Commands",
+              id: "kubernetes/common-kubernetes-commands",
+            },
+          ],
+        },
+      ],
     },
-      {
-        id: "terminology",
-        type: 'doc',
-        label: 'Terminology',
-    }
+    {
+      id: "terminology",
+      type: "doc",
+      label: "Terminology",
+    },
   ],
 };
 

@@ -14,7 +14,7 @@ const config: Config = {
   themes: ["@docusaurus/theme-mermaid"],
 
   // Set the production url of your site here
-  url: "https://kubernetes.programmer.network/",
+  url: "https://k3s.guide/",
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: "/",
@@ -43,14 +43,15 @@ const config: Config = {
         disableInDev: false,
       },
     ],
+    "./src/plugins/tailwind-config.js",
   ],
 
   themeConfig: {
     image: "img/docusaurus-social-card.jpg",
     navbar: {
-      title: "Learn Kubernetes",
+      title: "K3s.guide",
       logo: {
-        alt: "Learn K3S",
+        alt: "K3s.guide",
         src: "img/programmer-network-logo.svg",
       },
       items: [

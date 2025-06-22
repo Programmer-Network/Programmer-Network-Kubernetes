@@ -1,30 +1,23 @@
 ---
-sidebar_position: 3
 title: Raspberry Pi Setup
 ---
 
 # Raspberry Pi's Setup
 
-For most steps, an Ansible playbook is available. However, I strongly recommend that you initially set up the first Raspberry Pi manually. This hands-on approach will help you understand each step more deeply and gain practical experience. Once you've completed the manual setup, you can then use the Ansible playbook to automate the same tasks across the other devices.
-
-## Before We Start
-
-Before we begin, I want to mention that I've provided an Ansible playbook for most of the setup tasks. While I encourage you to use it, I also recommend doing things manually at first. Experience the process, let frustration build, and allow yourself to feel the annoyance. 
-
-Just as I did, I want you to truly understand why we use certain tools. You'll only internalize this by initially experiencing the challenges and then resolving them by introducing the right tools.
-
 ### Install the OS Using Pi Imager
+
 - Open [Raspberry Pi Imager](https://www.raspberrypi.com/software/).
   - Choose the `Raspberry Pi OS (other)` > `Raspberry Pi OS Lite (64-bit)`
   - The tool will download the selected OS image for you.
   - Plug in your SSD and select it in the 'Storage' section.
-  - - *Note*: If you're just unpacking brand new SSDs, there's a good chance you'll need to use a Disk Management tool on your operating system to initialize and allocate the available space. Otherwise, they might not appear in the Pi Imager.
+  - - _Note_: If you're just unpacking brand new SSDs, there's a good chance you'll need to use a Disk Management tool on your operating system to initialize and allocate the available space. Otherwise, they might not appear in the Pi Imager.
   - Before writing, click on the cog icon for advanced settings.
     - Set the hostname to your desired value, e.g., `RP1`.
     - Enable SSH and select the "allow public-key authorization only" option.
   - Click on 'Write' to begin the flashing process.
-  
+
 ### Initial Boot and Setup
+
 - Insert the flashed SSD into the USB 3 port on your Raspberry Pi and power it on
 - On the first boot, ssh into the Pi to perform initial configuration
 
@@ -93,6 +86,8 @@ sudo reboot
 ### Disable Swap
 
 [Ansible Playbook](/ansible/playbooks/disable-swap.yml)
+
+[Swap Memory](/terminology.md#swap-memory)
 
 Disabling swap in a K3s cluster is crucial because Kubernetes relies on precise memory management to allocate resources, schedule workloads, and handle potential memory limits. When swap is enabled, it introduces unpredictability in how memory is used. The Linux kernel may move inactive memory to disk (swap), giving the impression that there is available memory when, in reality, the node might be under significant memory pressure. This can lead to performance degradation for applications, as accessing memory from the swap space (on disk) is significantly slower than accessing it from RAM. In addition, Kubernetes, by default, expects swap to be off and prevents the kubelet from running unless explicitly overridden, as swap complicates memory monitoring and scheduling.
 
@@ -165,20 +160,18 @@ sudo reboot
 
 After the system comes back online, run `free -m` again to confirm that swap is still disabled.
 
-
 ### Disable Bluetooth
 
 [Ansible Playbook](/ansible/playbooks/disable-bluetooth.yml)
 
 When using Raspberry Pi devices in a Kubernetes-based environment like K3s, any unused hardware features, such as Bluetooth, can consume system resources or introduce potential security risks. Disabling Bluetooth on each Raspberry Pi optimizes performance by reducing background services and freeing up resources like CPU and memory. Additionally, by disabling an unused service, you reduce the attack surface of your Raspberry Pi-based K3s cluster, providing a more secure and streamlined operating environment.
 
-
 **Stop the Bluetooth service** that might be currently running on your Raspberry Pi:
 
 ```bash
 sudo systemctl stop bluetooth
 ```
-   
+
 **Disable the service** so it doesn't start automatically during system boot:
 
 ```bash
@@ -206,7 +199,6 @@ blacklist hci_uart   # Disables hci_uart module specific to Raspberry Pi Bluetoo
 
 By blacklisting these modules, they won’t be loaded during boot, effectively preventing Bluetooth from running.
 
-
 Bluetooth can be disabled directly at the device level by editing specific Raspberry Pi system configurations.
 
 Open the boot configuration file for editing:
@@ -229,13 +221,12 @@ This command ensures that the Raspberry Pi doesn’t enable Bluetooth at boot by
 
 To fully apply the changes (stopping the service, blacklisting modules, and adjusting system configuration), it’s recommended to reboot the system.
 
-
 ```bash
 sudo reboot
 ```
 
 After rebooting, you can verify that Bluetooth has been disabled by checking the status of the service:
-   
+
 ```bash
 sudo systemctl status bluetooth
 ```
@@ -265,7 +256,7 @@ Open the SSH config file on your local machine:
 ```bash
 vi ~/.ssh/config
 ```
-    
+
 Add the following entries for each Raspberry Pi:
 
 ```bash

@@ -1,0 +1,43 @@
+---
+- name: Reduce Power Consumption with PowerTOP
+  hosts: all_nodes
+  become: true
+  tasks:
+    - name: Check if powertop service file exists
+      ansible.builtin.stat:
+        path: /etc/systemd/system/powertop.service
+      register: powertop_service_file_stat
+
+    - name: Configure powertop if service file does not exist
+      block:
+        - name: Install powertop
+          ansible.builtin.apt:
+            name: powertop
+            state: present
+            update_cache: yes
+
+        - name: Create powertop.service to apply optimizations on boot
+          ansible.builtin.copy:
+            dest: /etc/systemd/system/powertop.service
+            content: |
+              [Unit]
+              Description=PowerTOP auto-tuning
+
+              [Service]
+              Type=oneshot
+              ExecStart=/usr/sbin/powertop --auto-tune
+
+              [Install]
+              WantedBy=multi-user.target
+            mode: "0644"
+
+        - name: Reload systemd daemon
+          ansible.builtin.systemd:
+            daemon_reload: yes
+
+        - name: Enable and start the powertop service
+          ansible.builtin.systemd:
+            name: powertop.service
+            enabled: yes
+            state: started
+      when: not powertop_service_file_stat.stat.exists
