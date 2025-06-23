@@ -10,7 +10,7 @@ Typically, when thinking about PC's, we often think about the computer that one 
 
 In the context of servers, especially our home "mini data center", we want to focus on low power consumption, low noise, and low heat. All of these requirements (or goals) equal low cost. Since our computers will be running 24/7, we have to do all we can to reduce the cost of running them. Additionally, we want to extend the life of the hardware, and reduce the amount of maintenance we have to do.
 
-With that little "preface", let's get started. Whenever you get one of the used mini PCs (as I showed under [Hardware](../hardware-raspberry-pi-setup/hardware.md#mini-pcs)), you'll have to do some maintenance:
+With that little "preface", let's get started. Whenever you get one of the used mini PCs (as I showed under [Hardware](../hardware-raspberry-pi-setup/hardware.mdx#mini-pcs)), you'll have to do some maintenance:
 
 - Clean the hardware, e.g. dust,
 - Clean the computer
