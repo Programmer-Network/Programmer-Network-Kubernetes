@@ -3,58 +3,53 @@ sidebar_position: 3
 title: Hardware Components
 ---
 
-```mermaid
----
-config:
-  look: handDrawn
-  layout: elk
----
-flowchart LR
- subgraph switch["Mikrotik RB3011UiAS-RM"]
-        ETH6["ETH6"]
-        ETH7["ETH7"]
-        ETH8["ETH8"]
-        ETH9["ETH9"]
-  end
- subgraph subGraph1["4U Rack"]
-        powerSupply["Power Supply"]
-        switch
-  end
-    RPI1["RP1"] --- SSD1["SSD (USB 3.0)"]
-    RPI2["RP2"] --- SSD2["SSD (USB 3.0)"]
-    RPI3["RP3"] --- SSD3["SSD 1 (USB 3.0)"]
-    RPI3["RP3"] --- SSD3B["SSD 2 (USB 3.0)"]
-    RPI4["RP4"] --- SSD4["SSD 1 (USB 3.0)"]
-    RPI4["RP4"] --- SSD4B["SSD 2 (USB 3.0)"]
-    ETH6 --- RPI1
-    ETH7 --- RPI2
-    ETH8 --- RPI3
-    ETH9 --- RPI4
-    powerSupply --> RPI4 & RPI3 & RPI2 & RPI1
-    style ETH6 fill:#FFCDD2,color:#000000
-    style ETH7 fill:#BBDEFB,color:#000000
-    style ETH8 fill:#00C853,color:#000000
-    style ETH9 fill:#FF6D00
-    style switch stroke:#2962FF,color:#2962FF,fill:transparent
-    style RPI1 fill:#FFCDD2,color:#000000
-    style RPI2 fill:#BBDEFB,color:#000000
-    style RPI3 fill:#00C853,color:#000000
-    style RPI4 fill:#FF6D00,color:#000000
-    style subGraph1 stroke:#AA00FF,color:#AA00FF,fill:transparent
-    linkStyle 4 stroke:#FFCDD2,fill:none
-    linkStyle 5 stroke:#BBDEFB,fill:none
-    linkStyle 6 stroke:#00C853,fill:none
-    linkStyle 7 stroke:#FF6D00,fill:none
-    linkStyle 8 stroke:#FF6D00,fill:none
-    linkStyle 9 stroke:#00C853,fill:none
-    linkStyle 10 stroke:#BBDEFB,fill:none
-    linkStyle 11 stroke:#FFCDD2,fill:none
-
-```
-
 import Alert from "@site/src/components/Alert/index.tsx";
 
-<Alert title="Before you start" description="This setup isn't set in stone, it's just my personal choice based on what I've experienced and needed. I wanted something sturdy yet portable, so I went with a 4U Rack to keep everything tidy and easy to connect." />
+<Alert
+  title="Before you start"
+  description="This setup isn't set in stone, it's just my personal choice based on what I've experienced and needed. This is also the hardware that I actually use to host my services. If you want to go with a different setup, that's fine, but you'll have to adapt the guide to your needs."
+  variant="warning"
+/>
+
+import ImageGallery from "react-image-gallery";
+
+<ImageGallery
+  thumbnailPosition="right"
+  items={[
+    {
+      original: "/img/hardware/rack.jpg",
+      thumbnail: "/img/hardware/rack.jpg",
+    },
+    {
+      original: "/img/hardware/rack-empty.jpg",
+      thumbnail: "/img/hardware/rack-empty.jpg",
+    },
+    {
+      original: "/img/hardware/switch.jpg",
+      thumbnail: "/img/hardware/switch.jpg",
+    },
+    {
+      original: "/img/hardware/router.jpg",
+      thumbnail: "/img/hardware/router.jpg",
+    },
+    {
+      original: "/img/hardware/mikrotik-router-and-switch.jpg",
+      thumbnail: "/img/hardware/mikrotik-router-and-switch.jpg",
+    },
+    {
+      original: "/img/hardware/single-raspberry-pi.jpg",
+      thumbnail: "/img/hardware/single-raspberry-pi.jpg",
+    },
+    {
+      original: "/img/hardware/raspberry-pi-cluster.jpg",
+      thumbnail: "/img/hardware/raspberry-pi-cluster.jpg",
+    },
+    {
+      original: "/img/hardware/raspberry-pi-cluster2.jpg",
+      thumbnail: "/img/hardware/raspberry-pi-cluster2.jpg",
+    },
+  ]}
+/>
 
 If you don't want to go even remotely as crazy as I did, but you still want to be able to mimic my setup, this is my recommendation:
 
@@ -86,16 +81,25 @@ As you can see on the images, these mini pc's often need a bit of maintenance, u
 
 In mine, thermal paste was dry, and fans needed a bit of cleaning. Besides that, everything else was in a great shape.
 
-import Image from '@theme/IdealImage';
+import Image from "@theme/IdealImage";
 
-<Image img="/img/minipcs/minipc-opened-1.jpg" />
-<Image img="/img/minipcs/minipc-opened-2.jpg" />
-<Image img="/img/minipcs/minipc-opened-3.jpg" />
-<Image img="/img/minipcs/minipc-opened-4.jpg" />
-
-This is how they look like when assembled. While I was setting them up, including setting up the BIOS, etc. I kept them outside of the rack, as I occassionally needed to connect them to the monitor, keyboard and mouse.
-
-<Image img="/img/minipcs/minipc-assembled.jpg" />
+<ImageGallery
+  thumbnailPosition="right"
+  items={[
+    {
+      original: "/img/minipcs/minipc-opened-1.jpg",
+      thumbnail: "/img/minipcs/minipc-opened-1.jpg",
+    },
+    {
+      original: "/img/minipcs/minipc-opened-2.jpg",
+      thumbnail: "/img/minipcs/minipc-opened-2.jpg",
+    },
+    {
+      original: "/img/minipcs/minipc-opened-4.jpg",
+      thumbnail: "/img/minipcs/minipc-opened-4.jpg",
+    },
+  ]}
+/>
 
 ## Network
 

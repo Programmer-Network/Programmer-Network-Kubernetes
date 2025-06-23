@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "react-image-gallery/styles/css/image-gallery.css";
 
 @custom-variant dark (&:is([data-theme="dark"] *));
 
