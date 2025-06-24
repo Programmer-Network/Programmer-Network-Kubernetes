@@ -74,6 +74,47 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: "category",
+      label: "Mikrotik",
+      items: [
+        {
+          type: "doc",
+          label: "Network Overview",
+          id: "networking/mikrotik/network-overview",
+        },
+        {
+          type: "doc",
+          label: "Core Concepts",
+          id: "networking/mikrotik/core-concepts",
+        },
+        {
+          type: "doc",
+          label: "VLAN Schema",
+          id: "networking/mikrotik/vlan-schema",
+        },
+        {
+          type: "doc",
+          label: "Device Configuration",
+          id: "networking/mikrotik/device-configuration",
+        },
+        {
+          type: "doc",
+          label: "Firewall Logic",
+          id: "networking/mikrotik/firewall-logic",
+        },
+        {
+          type: "doc",
+          label: "Common Scenarios",
+          id: "networking/mikrotik/common-scenarios",
+        },
+        {
+          type: "doc",
+          label: "Summary & Checklist",
+          id: "networking/mikrotik/summary-and-checklist",
+        },
+      ],
+    },
+    {
+      type: "category",
       label: "Tools",
       items: [
         {
@@ -89,6 +130,7 @@ const sidebars: SidebarsConfig = {
         },
       ],
     },
+
     {
       type: "category",
       label: "Kubernetes",
@@ -226,7 +268,7 @@ const sidebars: SidebarsConfig = {
 function numberSidebar(items, prefix = "") {
   let count = 1;
 
-  return items.map((item) => {
+  return items.map(item => {
     const number = `${prefix}${count}`;
     count++;
 
@@ -266,7 +308,7 @@ function numberSidebar(items, prefix = "") {
 function humanizeId(id) {
   const parts = id.split("/");
   const last = parts[parts.length - 1];
-  return last.replace(/-/g, " ").replace(/\b\w/g, (l) => l.toUpperCase());
+  return last.replace(/-/g, " ").replace(/\b\w/g, l => l.toUpperCase());
 }
 
 export default {
