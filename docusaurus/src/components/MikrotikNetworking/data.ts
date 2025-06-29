@@ -11,8 +11,7 @@ export const deviceConfigData = {
         title: "Internet Connection (PPPoE on VLAN)",
         description:
           "First, we establish the internet connection. My Telenor ISP requires a specific VLAN (101) for the connection, so we create a VLAN interface and then run the PPPoE client on top of it. Here in Denmark at least, to get the PPPoE credentials, you need to call the customer service. They will send you the credentials via E-mail. This step might be different for your ISP.",
-        code: `
-# Create the VLAN interface on the physical WAN port, I'm using ether1.
+        code: `# Create the VLAN interface on the physical WAN port, I'm using ether1.
 # This is the port that is connected to the Telenor modem.
 /interface vlan
 add name=vlan101-WAN vlan-id=101 interface=ether1
@@ -27,8 +26,7 @@ add name="Telenor PPPoE" interface=vlan101-WAN user="your_telenor_username" pass
         title: "DNS",
         description:
           "We need to set the DNS servers for the router. I'm using Cloudflare's DNS servers. This is my personal preference, you can use any DNS server you want. We might later in time setup our own DNS server, e.g. Technitium, but for now we will use Cloudflare.",
-        code: `
-# allow-remote-requests is set to yes to allow the router to resolve domain names.
+        code: `# allow-remote-requests is set to yes to allow the router to resolve domain names.
 # Without this, the router will not be able to resolve domain names.
 /ip dns set servers=1.1.1.1,1.0.0.1 allow-remote-requests=yes
         `,
@@ -302,8 +300,7 @@ add list=UNTRUSTED interface=VLAN20_K3S,VLAN99_GUEST`,
       title: "Address Lists for Egress Control",
       description:
         "For core services like cert-manager to function, we need to allow specific outbound connections from our otherwise isolated K3S cluster. We use dynamic address lists to securely manage this.",
-      code: `# On the RB3011 Router
-# This example uses Cloudflare. Replace the FQDN with your DNS provider's API endpoint.
+      code: `# This example uses Cloudflare. Replace the FQDN with your DNS provider's API endpoint.
 # The router will resolve and keep this IP list updated automatically.
 /ip firewall address-list
 add address=api.cloudflare.com list=dns-provider-apis comment="Cloudflare API for cert-manager"`,
@@ -354,8 +351,7 @@ export const scenariosConfigData = {
       title: "Scenario 1: Granting Developer Access to K3S",
       description:
         "A common need is to allow a specific, trusted developer machine on the HOME_NET (VLAN 10) to have full access to the K3S_CLUSTER (VLAN 20) for management with tools like kubectl and ssh. We do this by adding a targeted 'accept' rule to the forward chain. This rule must be placed BEFORE the general 'Drop all inter-VLAN traffic' rule to be effective.",
-      code: `# On the RB3011 Router
-# First, give the developer PC a static IP via DHCP lease, e.g., 192.168.10.50
+      code: `# First, give the developer PC a static IP via DHCP lease, e.g., 192.168.10.50
 
 # Add this firewall rule. It allows the PC at 192.168.10.50 to access anything on the K3S network.
 /ip firewall filter
@@ -367,8 +363,7 @@ place-before=[find where comment="Drop all inter-VLAN traffic by default"]`,
       title: "Scenario 2: Exposing a Service to the Internet (Port Forwarding)",
       description:
         "Our firewall correctly blocks all incoming connections from the internet by default. To expose a service (like a web server) from the K3S cluster, we must create an explicit Destination NAT (DNAT) rule. This rule tells the router to forward traffic arriving on a specific public port to an internal IP and port within the K3S network. We also need a corresponding filter rule to allow this forwarded traffic.",
-      code: `# On the RB3011 Router
-# Example: Expose a web service running at 192.168.20.150:30443 to the public on port 443 (HTTPS).
+      code: `# Example: Expose a web service running at 192.168.20.150:30443 to the public on port 443 (HTTPS).
 
 # 1. The DNAT Rule: Forwards incoming internet traffic on port 443 to the internal K3S service.
 /ip firewall nat
