@@ -1,2 +1,2 @@
-ansible_host: 192.168.88.241
+ansible_host: 192.168.20.103
 ansible_user: aleksandar

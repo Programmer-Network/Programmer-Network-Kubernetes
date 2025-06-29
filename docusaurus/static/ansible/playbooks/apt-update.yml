@@ -1,7 +1,7 @@
 ---
 - name: Update all Raspberry Pi hosts
   hosts: all_nodes
-  become: yes # Enables privilege escalation for a task or playbook, allowing it to run as another user (by default, root).
+  become: true # Enables privilege escalation for a task or playbook, allowing it to run as another user (by default, root).
   tasks:
     - name: Update package cache
       ansible.builtin.apt:

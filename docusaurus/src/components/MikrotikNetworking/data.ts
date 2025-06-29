@@ -4,11 +4,107 @@
 */
 
 export const deviceConfigData = {
+  rb3011: {
+    title: "RB3011 Router",
+    steps: [
+      {
+        title: "Internet Connection (PPPoE on VLAN)",
+        description:
+          "First, we establish the internet connection. My Telenor ISP requires a specific VLAN (101) for the connection, so we create a VLAN interface and then run the PPPoE client on top of it. Here in Denmark at least, to get the PPPoE credentials, you need to call the customer service. They will send you the credentials via E-mail. This step might be different for your ISP.",
+        code: `
+# Create the VLAN interface on the physical WAN port, I'm using ether1. 
+# This is the port that is connected to the Telenor modem.
+/interface vlan
+add name=vlan101-WAN vlan-id=101 interface=ether1
+
+# Create the PPPoE client on the new VLAN interface
+# Replace with your actual ISP username and password
+/interface pppoe-client
+add name="Telenor PPPoE" interface=vlan101-WAN user="your_telenor_username" password="your_telenor_password" add-default-route=yes use-peer-dns=no disabled=no
+          `,
+      },
+      {
+        title: "DNS",
+        description:
+          "We need to set the DNS servers for the router. I'm using Cloudflare's DNS servers. This is my personal preference, you can use any DNS server you want. We might later in time setup our own DNS server, e.g. Technitium, but for now we will use Cloudflare.",
+        code: `
+# allow-remote-requests is set to yes to allow the router to resolve domain names. 
+# Without this, the router will not be able to resolve domain names.
+/ip dns set servers=1.1.1.1,1.0.0.1 allow-remote-requests=yes
+        `,
+      },
+      {
+        title: "Bridge & VLAN Interfaces",
+        description:
+          "Next, we create a bridge to act as a container for our internal networks and attach our virtual VLAN interfaces to it. The sfp1 port will connect to our switch. If you are using different hardware and e.g. you might not have a sfp1 port, you can use the ether1 port instead. Just make sure to change the port name in the code.",
+        code: `/interface bridge
+add name=main-bridge vlan-filtering=no
+/interface bridge port
+add bridge=main-bridge interface=sfp1 comment="Trunk to CRS326"
+
+/interface vlan
+add interface=main-bridge name=VLAN10_HOME vlan-id=10
+add interface=main-bridge name=VLAN20_K3S vlan-id=20
+add interface=main-bridge name=VLAN88_MGMT vlan-id=88
+add interface=main-bridge name=VLAN99_GUEST vlan-id=99`,
+      },
+      {
+        title: "IP Addresses",
+        description: "Assign gateway IP addresses to each VLAN interface.",
+        code: `/ip address
+add address=192.168.10.1/24 interface=VLAN10_HOME comment="Gateway for Home LAN"
+add address=192.168.20.1/24 interface=VLAN20_K3S comment="Gateway for K3S Cluster"
+add address=192.168.88.1/24 interface=VLAN88_MGMT comment="Gateway for Management"
+add address=192.168.99.1/24 interface=VLAN99_GUEST comment="Gateway for Guest WiFi"
+`,
+      },
+      {
+        title: "Create IP Pools",
+        description:
+          "Create address pools that will be used by the DHCP servers. This is the range of IP addresses that will be assigned to the clients.",
+        code: `/ip pool
+add name=pool_home ranges=192.168.10.100-192.168.10.254
+add name=pool_k3s ranges=192.168.20.100-192.168.20.254
+add name=pool_mgmt ranges=192.168.88.10-192.168.88.20
+add name=pool_guest ranges=192.168.99.100-192.168.99.254`,
+      },
+      {
+        title: "DHCP Servers",
+        description:
+          "Create DHCP servers so clients on each VLAN receive IP addresses automatically.",
+        code: `/ip dhcp-server
+add address-pool=pool_home interface=VLAN10_HOME name=dhcp_home
+add address-pool=pool_k3s interface=VLAN20_K3S name=dhcp_k3s
+add address-pool=pool_mgmt interface=VLAN88_MGMT name=dhcp_mgmt
+add address-pool=pool_guest interface=VLAN99_GUEST name=dhcp_guest`,
+      },
+      {
+        title: "DHCP Networks",
+        description:
+          "Create DHCP networks so clients receive IP addresses automatically, and also set the DNS server to the router's IP address. DNS is crucial for the clients to be able to resolve the domain names, especially for the K3S cluster. Our K3S machines will be using static DNS records, so the cluster has to be able to resolve the domain names. In simple words, during the setup we will not be using IP's but domain names.",
+        code: `/ip dhcp-server network
+add address=192.168.10.0/24 gateway=192.168.10.1 dns-server=192.168.10.1
+add address=192.168.20.0/24 gateway=192.168.20.1 dns-server=192.168.20.1
+add address=192.168.88.0/24 gateway=192.168.88.1 dns-server=192.168.88.1
+add address=192.168.99.0/24 gateway=192.168.99.1 dns-server=192.168.99.1`,
+      },
+      {
+        title: "VLAN Filtering on Router",
+        description:
+          "Finally for the router, we configure the bridge VLAN table and enable filtering.",
+        code: `/interface bridge vlan
+add bridge=main-bridge tagged=main-bridge,ether1 vlan-ids=10,20,88,99
+
+/interface bridge
+set main-bridge vlan-filtering=yes`,
+      },
+    ],
+  },
   crs326: {
     title: "CRS326 Switch",
     steps: [
       {
-        title: "Step 1: Bridge & Port Setup",
+        title: "Bridge & Port Setup",
         description:
           "First, we create a single bridge to contain all switch ports. This is the modern way to handle VLANs on MikroTik.",
         code: `/interface bridge
@@ -22,7 +118,7 @@ add bridge=main-bridge interface=sfp-sfpplus1
 add bridge=main-bridge interface=sfp-sfpplus2`,
       },
       {
-        title: "Step 2: VLAN & Port Assignment",
+        title: "VLAN & Port Assignment",
         description:
           "Next, we define the VLANs and assign K3S ports. `sfp-sfpplus1` will be the TRUNK to the router. Ports `ether1-6` will be ACCESS ports for the K3S cluster.",
         code: `/interface bridge vlan
@@ -41,7 +137,7 @@ set [ find interface=ether5 ] pvid=20
 set [ find interface=ether6 ] pvid=20`,
       },
       {
-        title: "Step 3: Management IP & Activation",
+        title: "Management IP & Activation",
         description:
           "We will set a management IP for the switch and then enable VLAN filtering. Warning: It is critical to have console access or a safe port before enabling VLAN filtering, as a mistake can cause a lockout.",
         code: `/interface vlan
@@ -59,69 +155,11 @@ set main-bridge vlan-filtering=yes`,
       },
     ],
   },
-  rb3011: {
-    title: "RB3011 Router",
-    steps: [
-      {
-        title: "Step 1: Bridge & VLAN Interfaces",
-        description:
-          "On the router, we create a bridge and then a virtual VLAN interface on that bridge for each network. This allows the router's CPU to process the traffic.",
-        code: `/interface bridge
-add name=main-bridge vlan-filtering=no
-/interface bridge port
-add bridge=main-bridge interface=ether1 comment="Trunk to CRS326"
-
-/interface vlan
-add interface=main-bridge name=VLAN10_HOME vlan-id=10
-add interface=main-bridge name=VLAN20_K3S vlan-id=20
-add interface=main-bridge name=VLAN88_MGMT vlan-id=88
-add interface=main-bridge name=VLAN99_GUEST vlan-id=99`,
-      },
-      {
-        title: "Step 2: IP Addresses & DHCP Servers",
-        description:
-          "Here, we assign gateway IPs to each VLAN and set up DHCP servers to provide addresses to clients.",
-        code: `/ip address
-add address=192.168.10.1/24 interface=VLAN10_HOME
-add address=192.168.20.1/24 interface=VLAN20_K3S
-add address=192.168.88.1/24 interface=VLAN88_MGMT
-add address=192.168.99.1/24 interface=VLAN99_GUEST
-
-/ip pool
-add name=pool_home ranges=192.168.10.100-192.168.10.254
-add name=pool_k3s ranges=192.168.20.100-192.168.20.254
-add name=pool_mgmt ranges=192.168.88.10-192.168.88.20
-add name=pool_guest ranges=192.168.99.100-192.168.99.254
-
-/ip dhcp-server
-add address-pool=pool_home interface=VLAN10_HOME name=dhcp_home
-add address-pool=pool_k3s interface=VLAN20_K3S name=dhcp_k3s
-add address-pool=pool_mgmt interface=VLAN88_MGMT name=dhcp_mgmt
-add address-pool=pool_guest interface=VLAN99_GUEST name=dhcp_guest
-
-/ip dhcp-server network
-add address=192.168.10.0/24 gateway=192.168.10.1 dns-server=192.168.10.1
-add address=192.168.20.0/24 gateway=192.168.20.1 dns-server=192.168.20.1
-add address=192.168.88.0/24 gateway=192.168.88.1 dns-server=192.168.88.1
-add address=192.168.99.0/24 gateway=192.168.99.1 dns-server=192.168.99.1`,
-      },
-      {
-        title: "Step 3: VLAN Filtering on Router",
-        description:
-          "Finally for the router, we configure the bridge VLAN table and enable filtering.",
-        code: `/interface bridge vlan
-add bridge=main-bridge tagged=main-bridge,ether1 vlan-ids=10,20,88,99
-
-/interface bridge
-set main-bridge vlan-filtering=yes`,
-      },
-    ],
-  },
   rb2011: {
     title: "RB2011 AP",
     steps: [
       {
-        title: "Step 1: Bridge & Management IP",
+        title: "Bridge & Management IP",
         description:
           "After resetting the device, we create a bridge, add the uplink port (e.g., ether1) and wlan1, and then set a management IP.",
         code: `/interface bridge
@@ -138,7 +176,7 @@ add address=192.168.88.3/24 interface=VLAN88_MGMT
 add gateway=192.168.88.1`,
       },
       {
-        title: "Step 2: Create VLAN-Aware SSIDs",
+        title: "Create VLAN-Aware SSIDs",
         description:
           "Let's create Virtual APs for the Home and Guest networks. The key is setting `vlan-mode=use-tag` and the correct `vlan-id`.",
         code: `/interface wireless security-profiles
@@ -154,7 +192,7 @@ add bridge=ap-bridge interface=wlan_home_ssid
 add bridge=ap-bridge interface=wlan_guest_ssid`,
       },
       {
-        title: "Step 3: Enable VLAN Filtering",
+        title: "Enable VLAN Filtering",
         description:
           "Finally, we enable VLAN filtering to activate the AP's VLAN-aware configuration.",
         code: `/interface bridge vlan
@@ -171,7 +209,7 @@ export const firewallConfigData = {
   title: "Firewall Configuration (on RB3011)",
   steps: [
     {
-      title: "Step 1: Interface Lists",
+      title: "Interface Lists",
       description:
         "We will use interface lists to create clean, scalable, and human-readable firewall rules. This is a best practice.",
       code: `/interface list
@@ -198,7 +236,7 @@ add list=UNTRUSTED interface=VLAN20_K3S
 add list=UNTRUSTED interface=VLAN99_GUEST`,
     },
     {
-      title: "Step 2: Address Lists for Egress Control",
+      title: "Address Lists for Egress Control",
       description:
         "For core services like cert-manager to function, we need to allow specific outbound connections from our otherwise isolated K3S cluster. We use dynamic address lists to securely manage this.",
       code: `# On the RB3011 Router
@@ -208,7 +246,7 @@ add list=UNTRUSTED interface=VLAN99_GUEST`,
 add address=api.cloudflare.com list=dns-provider-apis comment="Cloudflare API for cert-manager"`,
     },
     {
-      title: "Step 3: Input Chain (Traffic to Router)",
+      title: "Input Chain (Traffic to Router)",
       description:
         "These rules protect the router itself. The order of these rules is critical.",
       code: `/ip firewall filter
@@ -222,7 +260,7 @@ add action=accept chain=input dst-port=123 protocol=udp in-interface-list=LAN co
 add action=drop chain=input comment="Drop all other input"`,
     },
     {
-      title: "Step 4: Forward Chain (Traffic through Router)",
+      title: "Forward Chain (Traffic through Router)",
       description:
         "Here we control traffic between VLANs and the internet, enforcing our isolation policies.",
       code: `/ip firewall filter
@@ -237,7 +275,7 @@ add action=drop chain=forward in-interface-list=LAN out-interface-list=LAN comme
 add action=drop chain=forward comment="Drop all other forward"`,
     },
     {
-      title: "Step 5: NAT (Masquerade)",
+      title: "NAT (Masquerade)",
       description:
         "This rule translates private internal IP addresses to a public IP for internet access.",
       code: `/ip firewall nat
@@ -289,7 +327,7 @@ export const hardeningConfigData = {
   title: "Final Hardening Steps",
   steps: [
     {
-      title: "Step 1: Secure MAC Server (on ALL devices)",
+      title: "Secure MAC Server (on ALL devices)",
       description:
         "The MAC server allows Layer 2 access via Winbox, bypassing IP firewall rules. We must restrict it to the management network.",
       code: `# Run on RB3011, CRS326, and RB2011
@@ -299,7 +337,7 @@ set allowed-interface-list=TRUSTED
 set allowed-interface-list=TRUSTED`,
     },
     {
-      title: "Step 2: System Security (on ALL devices)",
+      title: "System Security (on ALL devices)",
       description:
         "Disable non-essential services and ensure strong user credentials are set.",
       code: `# This is a checklist, not a single script.

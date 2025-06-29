@@ -27,7 +27,9 @@ const Accordion = ({ items }: AccordionProps) => {
             onClick={() => handleToggle(index)}
             className="w-full flex justify-between items-center p-4 text-left bg-[#1c1c1c] hover:bg-gray-800"
           >
-            <span className="font-semibold text-white">{item.title}</span>
+            <span className="font-semibold text-white">
+              Step {index + 1}: {item.title}
+            </span>
             <span
               className={cx(
                 "transform transition-transform text-[#ffab00]",

@@ -1,0 +1,46 @@
+---
+- name: Configure Firewall on all K3s Nodes
+  hosts: all_nodes
+  become: true
+  tasks:
+    - name: Update package cache before installing
+      ansible.builtin.apt:
+        update_cache: yes
+      changed_when: false
+
+    - name: Pre-configure answers for iptables-persistent to avoid prompts
+      ansible.builtin.debconf:
+        name: "{{ item }}"
+        question: "{{ item }}/autosave" # The question asked during installation
+        value: "true" # The answer we want to provide
+        vtype: "boolean"
+      loop:
+        - iptables-persistent
+        - ip6tables-persistent
+
+    - name: Install required firewall packages
+      ansible.builtin.apt:
+        name:
+          - iptables
+          - iptables-persistent
+        state: present
+
+    - name: Check if the cluster traffic rule already exists
+      ansible.builtin.command:
+        cmd: iptables -C INPUT -s 192.168.20.0/24 -j ACCEPT
+      register: iptables_check
+      changed_when: false
+      ignore_errors: true # The check returns a non-zero code if the rule doesn't exist, which is expected
+
+    - name: Insert rule to allow all traffic from the K3s cluster subnet
+      ansible.builtin.command:
+        cmd: iptables -I INPUT 1 -s 192.168.20.0/24 -j ACCEPT -m comment --comment "Allow all traffic from K3s cluster nodes"
+      when: iptables_check.rc != 0
+      notify:
+        - Save iptables rules
+
+  handlers:
+    - name: Save iptables rules
+      ansible.builtin.command:
+        cmd: netfilter-persistent save
+      listen: "Save iptables rules"

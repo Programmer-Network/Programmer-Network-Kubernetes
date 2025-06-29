@@ -6,7 +6,7 @@ import { cx } from "../utils";
 
 const DeviceConfiguration = () => {
   const [activeTab, setActiveTab] =
-    useState<keyof typeof deviceConfigData>("crs326");
+    useState<keyof typeof deviceConfigData>("rb3011");
   const activeDevice = deviceConfigData[activeTab];
 
   return (

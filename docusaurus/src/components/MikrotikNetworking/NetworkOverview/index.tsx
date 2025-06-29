@@ -19,10 +19,13 @@ const DiagramBox = ({
 );
 
 const NetworkOverview = () => (
-  <Section
-    title="Network Architecture Overview"
-    description="This diagram illustrates the new, segmented network topology. All traffic between the different colored zones (VLANs) is controlled by the RB3011 router, providing a strong security boundary for the K3S cluster."
-  >
+  <Section title="Network Architecture Overview">
+    <p>
+      As you may have noticed in the Hardware section, I'm a big fan of
+      Mikrotik. I've been using them for years and they've always been reliable.
+      If you would ask me besides that why, I couldn't tell you. I just like
+      them.
+    </p>
     <div>
       <div className="flex flex-col items-center space-y-4">
         <DiagramBox>
