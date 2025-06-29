@@ -39,3 +39,7 @@
 .navbar__item.navbar__link svg {
   display: none;
 }
+
+ul:not(.menu__list) li {
+  list-style-type: disc;
+}
