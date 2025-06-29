@@ -12,7 +12,7 @@ export const deviceConfigData = {
         description:
           "First, we establish the internet connection. My Telenor ISP requires a specific VLAN (101) for the connection, so we create a VLAN interface and then run the PPPoE client on top of it. Here in Denmark at least, to get the PPPoE credentials, you need to call the customer service. They will send you the credentials via E-mail. This step might be different for your ISP.",
         code: `
-# Create the VLAN interface on the physical WAN port, I'm using ether1. 
+# Create the VLAN interface on the physical WAN port, I'm using ether1.
 # This is the port that is connected to the Telenor modem.
 /interface vlan
 add name=vlan101-WAN vlan-id=101 interface=ether1
@@ -28,7 +28,7 @@ add name="Telenor PPPoE" interface=vlan101-WAN user="your_telenor_username" pass
         description:
           "We need to set the DNS servers for the router. I'm using Cloudflare's DNS servers. This is my personal preference, you can use any DNS server you want. We might later in time setup our own DNS server, e.g. Technitium, but for now we will use Cloudflare.",
         code: `
-# allow-remote-requests is set to yes to allow the router to resolve domain names. 
+# allow-remote-requests is set to yes to allow the router to resolve domain names.
 # Without this, the router will not be able to resolve domain names.
 /ip dns set servers=1.1.1.1,1.0.0.1 allow-remote-requests=yes
         `,
@@ -93,7 +93,7 @@ add address=192.168.99.0/24 gateway=192.168.99.1 dns-server=192.168.99.1`,
         description:
           "Finally for the router, we configure the bridge VLAN table and enable filtering.",
         code: `/interface bridge vlan
-add bridge=main-bridge tagged=main-bridge,ether1 vlan-ids=10,20,88,99
+add bridge=main-bridge tagged=main-bridge,sfp1 vlan-ids=10,20,88,99
 
 /interface bridge
 set main-bridge vlan-filtering=yes`,
@@ -104,54 +104,113 @@ set main-bridge vlan-filtering=yes`,
     title: "CRS326 Switch",
     steps: [
       {
-        title: "Bridge & Port Setup",
+        title: "Create Main Bridge",
         description:
-          "First, we create a single bridge to contain all switch ports. This is the modern way to handle VLANs on MikroTik.",
+          "Create the main bridge interface to aggregate all switch ports. This is the foundation for VLAN-aware switching.",
         code: `/interface bridge
-add name=main-bridge vlan-filtering=no
-
-/interface bridge port
+add name=main-bridge`,
+      },
+      {
+        title: "Add All Physical Ports",
+        description:
+          "Add all physical ports (ether1-24 and both SFP+ ports) to the bridge. This ensures all traffic is handled by the bridge.",
+        code: `/interface bridge port
 add bridge=main-bridge interface=ether1
-# ... repeat for ether2 through ether24 ...
+add bridge=main-bridge interface=ether2
+add bridge=main-bridge interface=ether3
+add bridge=main-bridge interface=ether4
+add bridge=main-bridge interface=ether5
+add bridge=main-bridge interface=ether6
+add bridge=main-bridge interface=ether7
+add bridge=main-bridge interface=ether8
+add bridge=main-bridge interface=ether9
+add bridge=main-bridge interface=ether10
+add bridge=main-bridge interface=ether11
+add bridge=main-bridge interface=ether12
+add bridge=main-bridge interface=ether13
+add bridge=main-bridge interface=ether14
+add bridge=main-bridge interface=ether15
+add bridge=main-bridge interface=ether16
+add bridge=main-bridge interface=ether17
+add bridge=main-bridge interface=ether18
+add bridge=main-bridge interface=ether19
+add bridge=main-bridge interface=ether20
+add bridge=main-bridge interface=ether21
+add bridge=main-bridge interface=ether22
+add bridge=main-bridge interface=ether23
 add bridge=main-bridge interface=ether24
 add bridge=main-bridge interface=sfp-sfpplus1
 add bridge=main-bridge interface=sfp-sfpplus2`,
       },
       {
-        title: "VLAN & Port Assignment",
+        title: "Management VLAN & IP",
         description:
-          "Next, we define the VLANs and assign K3S ports. `sfp-sfpplus1` will be the TRUNK to the router. Ports `ether1-6` will be ACCESS ports for the K3S cluster.",
-        code: `/interface bridge vlan
-add bridge=main-bridge tagged=sfp-sfpplus1 vlan-ids=10 comment="HOME_NET"
-add bridge=main-bridge tagged=sfp-sfpplus1 vlan-ids=20 comment="K3S_CLUSTER"
-add bridge=main-bridge tagged=main-bridge,sfp-sfpplus1 vlan-ids=88 comment="MGMT_NET"
-add bridge=main-bridge tagged=sfp-sfpplus1 vlan-ids=99 comment="GUEST_WIFI"
-
-/interface bridge port
-# Assign K3S ports to VLAN 20
-set [ find interface=ether1 ] pvid=20
-set [ find interface=ether2 ] pvid=20
-set [ find interface=ether3 ] pvid=20
-set [ find interface=ether4 ] pvid=20
-set [ find interface=ether5 ] pvid=20
-set [ find interface=ether6 ] pvid=20`,
-      },
-      {
-        title: "Management IP & Activation",
-        description:
-          "We will set a management IP for the switch and then enable VLAN filtering. Warning: It is critical to have console access or a safe port before enabling VLAN filtering, as a mistake can cause a lockout.",
+          "Create the management VLAN interface, assign the switch's management IP, and set the default route. This allows management access on VLAN 88.",
         code: `/interface vlan
 add interface=main-bridge name=VLAN88_MGMT vlan-id=88
 
 /ip address
 add address=192.168.88.2/24 interface=VLAN88_MGMT
-
 /ip route
-add gateway=192.168.88.1
+add gateway=192.168.88.1`,
+      },
+      {
+        title: "Set Port VLAN IDs (PVIDs)",
+        description:
+          "Assign the correct PVIDs to access ports. ether2 is for your PC (VLAN 10), and ether17-24 are for the K3S cluster (VLAN 20).",
+        code: `/interface bridge port
+# Your PC is on ether2, its traffic belongs to VLAN 10.
+set [find where interface=ether2] pvid=10
+# Your K3S Cluster is on ether17-24, its traffic belongs to VLAN 20.
+set [find where interface=ether17] pvid=20
+set [find where interface=ether18] pvid=20
+set [find where interface=ether19] pvid=20
+set [find where interface=ether20] pvid=20
+set [find where interface=ether21] pvid=20
+set [find where interface=ether22] pvid=20
+set [find where interface=ether23] pvid=20
+set [find where interface=ether24] pvid=20`,
+      },
+      {
+        title: "VLAN Table",
+        description:
+          "Build the VLAN table with explicit rules for tagged and untagged ports for each VLAN.",
+        code: `/interface bridge vlan
+add bridge=main-bridge tagged=sfp-sfpplus1,ether1 untagged=ether2 vlan-ids=10 comment="PC on eth2, AP on eth1, Router on SFP1"
+add bridge=main-bridge tagged=sfp-sfpplus1 untagged=ether17,ether18,ether19,ether20,ether21,ether22,ether23,ether24 vlan-ids=20
+add bridge=main-bridge tagged=main-bridge,sfp-sfpplus1,ether1 vlan-ids=88 comment="Management access for Switch CPU, Router, AP"
+add bridge=main-bridge tagged=sfp-sfpplus1,ether1 vlan-ids=99`,
+      },
+      {
+        title: "Enable VLAN Filtering",
+        description:
+          "Enable VLAN filtering on the bridge. This activates all VLAN rules and enforces isolation as configured.",
+        code: `/interface bridge set main-bridge vlan-filtering=yes`,
+      },
+      {
+        title: "Recommended Enhancements",
+        description:
+          "Optional but recommended settings for improved performance, security, and reliability. These include protocol mode, edge/portfast, hardware offloading, loop protection, and snooping features.",
+        code: `/interface bridge
+set main-bridge protocol-mode=rstp
+set main-bridge loop-protect=yes
+set main-bridge igmp-snooping=yes
+set main-bridge dhcp-snooping=yes
 
-# FINAL STEP - ACTIVATE
-/interface bridge
-set main-bridge vlan-filtering=yes`,
+/interface bridge port
+# Enable edge (portfast) on access ports
+set [find where interface=ether2] edge=yes
+set [find where interface=ether17] edge=yes
+set [find where interface=ether18] edge=yes
+set [find where interface=ether19] edge=yes
+set [find where interface=ether20] edge=yes
+set [find where interface=ether21] edge=yes
+set [find where interface=ether22] edge=yes
+set [find where interface=ether23] edge=yes
+set [find where interface=ether24] edge=yes
+
+# Ensure hardware offloading is enabled on all ports
+set [find] hw=yes`,
       },
     ],
   },
@@ -159,47 +218,59 @@ set main-bridge vlan-filtering=yes`,
     title: "RB2011 AP",
     steps: [
       {
-        title: "Bridge & Management IP",
+        title: "Create Bridge & Add Ports",
         description:
-          "After resetting the device, we create a bridge, add the uplink port (e.g., ether1) and wlan1, and then set a management IP.",
-        code: `/interface bridge
-add name=ap-bridge vlan-filtering=no
+          "Create a single bridge to link the wired uplink (ether1) and the wireless SSIDs.",
+        code: `/interface bridge add name=ap-bridge
 /interface bridge port
 add bridge=ap-bridge interface=ether1
-add bridge=ap-bridge interface=wlan1
-
-/interface vlan
-add interface=ap-bridge name=VLAN88_MGMT vlan-id=88
-/ip address
-add address=192.168.88.3/24 interface=VLAN88_MGMT
-/ip route
-add gateway=192.168.88.1`,
-      },
-      {
-        title: "Create VLAN-Aware SSIDs",
-        description:
-          "Let's create Virtual APs for the Home and Guest networks. The key is setting `vlan-mode=use-tag` and the correct `vlan-id`.",
-        code: `/interface wireless security-profiles
-add name=prof_home wpa2-pre-shared-key="A_Very_Strong_Password"
-add name=prof_guest wpa2-pre-shared-key="A_Simple_Guest_Password"
-
-/interface wireless
-add name=wlan_home_ssid master-interface=wlan1 ssid="MyHomeWiFi" security-profile=prof_home vlan-mode=use-tag vlan-id=10
-add name=wlan_guest_ssid master-interface=wlan1 ssid="MyGuestWiFi" security-profile=prof_guest vlan-mode=use-tag vlan-id=99
-
-/interface bridge port
 add bridge=ap-bridge interface=wlan_home_ssid
 add bridge=ap-bridge interface=wlan_guest_ssid`,
       },
       {
-        title: "Enable VLAN Filtering",
+        title: "Configure Wireless Radio & Security",
         description:
-          "Finally, we enable VLAN filtering to activate the AP's VLAN-aware configuration.",
-        code: `/interface bridge vlan
-add bridge=ap-bridge tagged=ap-bridge,ether1 vlan-ids=10,88,99
+          "Set up the main wireless radio and security profiles for home and guest networks.",
+        code: `/interface wireless
+set [find default-name=wlan1] mode=ap-bridge band=2ghz-b/g/n channel-width=20/40mhz-Ce frequency=auto country=denmark disabled=no hide-ssid=yes
+/interface wireless security-profiles
+set [find default=yes] mode=dynamic-keys authentication-types=wpa2-psk wpa2-pre-shared-key="Your_Strong_Home_Password" name=prof_home
+add name=prof_guest mode=dynamic-keys authentication-types=wpa2-psk wpa2-pre-shared-key="Your_Simple_Guest_Password"`,
+      },
+      {
+        title: "Create VLAN-Aware Virtual SSIDs",
+        description:
+          "Create virtual SSIDs for Home and Guest, each with their own VLAN tag. This is the key to proper network separation.",
+        code: `/interface wireless
+add name=wlan_home_ssid master-interface=wlan1 ssid="MyHomeWiFi" security-profile=prof_home vlan-mode=use-tag vlan-id=10
+add name=wlan_guest_ssid master-interface=wlan1 ssid="MyGuestWiFi" security-profile=prof_guest vlan-mode=use-tag vlan-id=99`,
+      },
+      {
+        title: "Management VLAN & IP Setup",
+        description:
+          "Add the management VLAN interface, assign the management IP, and set the default route.",
+        code: `/interface vlan add name=VLAN88_MGMT interface=ether1 vlan-id=88
+/ip address add address=192.168.88.3/24 interface=VLAN88_MGMT
+/ip route add gateway=192.168.88.1`,
+      },
+      {
+        title: "Recommended Enhancements",
+        description:
+          "Optional but recommended settings for improved security and reliability.",
+        code: `/interface bridge
+# Use RSTP to prevent loops
+set ap-bridge protocol-mode=rstp
 
-/interface bridge
-set ap-bridge vlan-filtering=yes`,
+/interface bridge port
+# Enable edge (portfast) on SSIDs for faster client connections
+set [find interface=wlan_home_ssid] edge=yes
+set [find interface=wlan_guest_ssid] edge=yes
+
+/ip service
+disable [find name=telnet]
+disable [find name=ftp]
+disable [find name=api]
+disable [find name=api-ssl]`,
       },
     ],
   },
@@ -220,20 +291,12 @@ add name=TRUSTED comment="Trusted user networks"
 add name=UNTRUSTED comment="Untrusted/isolated networks"
 
 /interface list member
-# Assume the internet connection is on ether10. This may need to be changed.
-add list=WAN interface=ether10
-add list=VLANs interface=VLAN10_HOME
-add list=VLANs interface=VLAN20_K3S
-add list=VLANs interface=VLAN88_MGMT
-add list=VLANs interface=VLAN99_GUEST
-add list=LAN interface=VLAN10_HOME
-add list=LAN interface=VLAN20_K3S
-add list=LAN interface=VLAN88_MGMT
-add list=LAN interface=VLAN99_GUEST
-add list=TRUSTED interface=VLAN10_HOME
-add list=TRUSTED interface=VLAN88_MGMT
-add list=UNTRUSTED interface=VLAN20_K3S
-add list=UNTRUSTED interface=VLAN99_GUEST`,
+# Ensure the WAN interface list points to the PPPoE connection
+add list=WAN interface="Telenor PPPoE"
+add list=VLANs interface=VLAN10_HOME,VLAN20_K3S,VLAN88_MGMT,VLAN99_GUEST
+add list=LAN interface=VLAN10_HOME,VLAN20_K3S,VLAN88_MGMT,VLAN99_GUEST
+add list=TRUSTED interface=VLAN10_HOME,VLAN88_MGMT
+add list=UNTRUSTED interface=VLAN20_K3S,VLAN99_GUEST`,
     },
     {
       title: "Address Lists for Egress Control",
@@ -264,13 +327,13 @@ add action=drop chain=input comment="Drop all other input"`,
       description:
         "Here we control traffic between VLANs and the internet, enforcing our isolation policies.",
       code: `/ip firewall filter
-add action=fasttrack-connection chain=forward connection-state=established,related hw-offload=yes comment="FastTrack established/related"
+add action=fasttrack-connection chain=forward connection-state=established,related comment="FastTrack established/related"
 add action=accept chain=forward connection-state=established,related,untracked comment="Accept established/related"
 add action=drop chain=forward connection-state=invalid comment="Drop invalid"
 add action=accept chain=forward in-interface-list=TRUSTED out-interface-list=WAN comment="Allow Trusted to WAN"
 add action=accept chain=forward in-interface=VLAN99_GUEST out-interface-list=WAN comment="Allow Guest to WAN"
 # Add rule for cert-manager BEFORE dropping inter-VLAN traffic
-add action=accept chain=forward src-interface=VLAN20_K3S dst-address-list=dns-provider-apis dst-port=443 protocol=tcp comment="Allow K3S to contact DNS provider for certs"
+add action=accept chain=forward src-address=192.168.20.0/24 dst-address-list=dns-provider-apis dst-port=443 protocol=tcp comment="Allow K3S to contact DNS provider for certs"
 add action=drop chain=forward in-interface-list=LAN out-interface-list=LAN comment="Drop all inter-VLAN traffic by default"
 add action=drop chain=forward comment="Drop all other forward"`,
     },
