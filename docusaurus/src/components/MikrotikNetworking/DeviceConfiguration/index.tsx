@@ -14,7 +14,7 @@ const DeviceConfiguration = () => {
     <Section description="In this section, we will walk through the configuration for each device. It is best to start with a factory reset device.">
       <div className="border-b border-gray-800 mb-6">
         <nav className="-mb-px flex space-x-6 overflow-x-auto">
-          {Object.keys(deviceConfigData).map(key => (
+          {Object.keys(deviceConfigData).map((key) => (
             <button
               key={key}
               onClick={() => setActiveTab(key as keyof typeof deviceConfigData)}
@@ -32,15 +32,15 @@ const DeviceConfiguration = () => {
       </div>
       <Accordion
         items={activeDevice.steps}
-        getTitle={item => item.title}
-        renderContent={item => (
+        getTitle={(item) => item.title}
+        renderContent={(item) => (
           <>
             <p className="text-sm mb-4">{item.description}</p>
             <CodeBlock code={item.code} />
           </>
         )}
-        stepPrefix={idx => (
-          <span className="font-semibold text-white">Step {idx + 1}:</span>
+        stepPrefix={(idx) => (
+          <span className="font-semibold">Step {idx + 1}:</span>
         )}
       />
     </Section>

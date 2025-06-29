@@ -2,11 +2,9 @@ import type * as Preset from "@docusaurus/preset-classic";
 import type { Config } from "@docusaurus/types";
 import { themes as prismThemes } from "prism-react-renderer";
 
-// This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
-
 const config: Config = {
   title: "Learn K3S",
-  tagline: "Learn K3S, the lightweight Kubernetes distribution",
+  tagline: "Building a home mini data center using K3s, Mikrotik, and more",
   favicon: "img/favicon.ico",
   markdown: {
     mermaid: true,
@@ -47,7 +45,7 @@ const config: Config = {
   ],
 
   themeConfig: {
-    image: "img/docusaurus-social-card.jpg",
+    image: "img/mini-data-center-social-card.jpg",
     navbar: {
       title: "K3s.guide",
       logo: {

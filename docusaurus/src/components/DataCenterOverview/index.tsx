@@ -22,9 +22,7 @@ const DataCenterOverview = () => (
         <div className="flex flex-col items-center space-y-4">
           <h4 className="font-semibold text-blue-400">1. Hardware Setup</h4>
           <DiagramBox className="w-full hover:border-blue-500">
-            <p className="font-bold text-white !mb-2">
-              🛠️ Physical Infrastructure
-            </p>
+            <p className="font-bold !mb-2">🛠️ Physical Infrastructure</p>
             <ul className="text-sm space-y-2 !mb-0">
               <li>📦 Server Rack</li>
               <li>🍓 Raspberry Pi Cluster</li>
@@ -38,9 +36,7 @@ const DataCenterOverview = () => (
         <div className="flex flex-col items-center space-y-4">
           <h4 className="font-semibold text-green-400">2. Network Setup</h4>
           <DiagramBox className="w-full hover:border-green-500">
-            <p className="font-bold text-white !mb-2">
-              🌐 Network Infrastructure
-            </p>
+            <p className="font-bold !mb-2">🌐 Network Infrastructure</p>
             <ul className="text-sm space-y-2 !mb-0">
               <li>📡 Mikrotik Router</li>
               <li>🔄 Managed Switch</li>
@@ -54,7 +50,7 @@ const DataCenterOverview = () => (
         <div className="flex flex-col items-center space-y-4">
           <h4 className="font-semibold text-purple-400">3. K3s Setup</h4>
           <DiagramBox className="w-full hover:border-purple-500">
-            <p className="font-bold text-white !mb-2">☸️ Kubernetes Layer</p>
+            <p className="font-bold !mb-2">☸️ Kubernetes Layer</p>
             <ul className="text-sm space-y-2 !mb-0">
               <li>🎮 Control Plane</li>
               <li>👷 Worker Nodes</li>
@@ -69,9 +65,7 @@ const DataCenterOverview = () => (
             4. Applications & Services
           </h4>
           <DiagramBox className="w-full hover:border-yellow-500">
-            <p className="font-bold text-white !mb-2">
-              🚀 Applications & Services
-            </p>
+            <p className="font-bold !mb-2">🚀 Applications & Services</p>
             <ul className="text-sm space-y-2 !mb-0">
               <li>🗄️ Databases - PostgreSQL, Redis</li>
               <li>🚪 Ingress - Traefik</li>

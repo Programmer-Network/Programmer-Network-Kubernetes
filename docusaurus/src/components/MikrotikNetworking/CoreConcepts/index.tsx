@@ -25,14 +25,12 @@ const CoreConcepts = () => (
         </p>
         <p className="mt-4">
           By segmenting, we assume{" "}
-          <strong className="text-white">
-            no device is inherently trustworthy.
-          </strong>{" "}
-          We build digital walls between groups of devices. Traffic can't cross
-          these walls unless we create a specific, explicit firewall rule to
-          allow it. This approach drastically reduces the attack surface and
-          contains potential breaches, which is essential when self-hosting
-          production-grade services.
+          <strong>no device is inherently trustworthy.</strong> We build digital
+          walls between groups of devices. Traffic can't cross these walls
+          unless we create a specific, explicit firewall rule to allow it. This
+          approach drastically reduces the attack surface and contains potential
+          breaches, which is essential when self-hosting production-grade
+          services.
         </p>
       </div>
 
@@ -60,9 +58,8 @@ const CoreConcepts = () => (
         <p className="mt-4">
           Devices plugged into ports assigned to VLAN 10 can talk to each other
           at full speed, but they are fundamentally unaware that devices on VLAN
-          20 even exist. This is called{" "}
-          <strong className="text-white">Layer 2 Isolation.</strong> It's the
-          most basic and powerful form of network separation, and the switch
+          20 even exist. This is called <strong>Layer 2 Isolation.</strong> It's
+          the most basic and powerful form of network separation, and the switch
           hardware (the CRS326) enforces it at wire-speed.
         </p>
       </div>
@@ -83,8 +80,8 @@ const CoreConcepts = () => (
           are isolated, we need a way to let <em>some</em> traffic pass between
           them in a controlled way. This is the job of the router (the RB3011).
           The "Router-on-a-Stick" (RoaS) model uses a single physical cable,
-          configured as a <strong className="text-white">VLAN Trunk</strong>, to
-          connect the switch to the router.
+          configured as a <strong>VLAN Trunk</strong>, to connect the switch to
+          the router.
         </p>
         <p className="mt-4">
           Every packet of data that travels over this trunk cable gets a digital
@@ -94,10 +91,8 @@ const CoreConcepts = () => (
           to its destination VLAN. If it is, the router stamps it with a new
           passport for the destination VLAN and sends it back to the switch.
           This process provides
-          <strong className="text-white">
-            centralized control and security inspection
-          </strong>{" "}
-          for all cross-network communication.
+          <strong>centralized control and security inspection</strong> for all
+          cross-network communication.
         </p>
       </div>
     </div>

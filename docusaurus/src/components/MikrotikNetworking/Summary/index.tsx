@@ -14,34 +14,34 @@ const Summary = () => (
       </h3>
       <ul className="list-disc list-inside space-y-2 text-gray-300">
         <li>
-          <b className="font-semibold text-white">Robust Segmentation:</b> The
-          K3S cluster is now securely isolated.
+          <b className="font-semibold">Robust Segmentation:</b> The K3S cluster
+          is now securely isolated.
         </li>
         <li>
-          <b className="font-semibold text-white">Centralized Security:</b> All
-          traffic is inspected by the RB3011's powerful firewall.
+          <b className="font-semibold">Centralized Security:</b> All traffic is
+          inspected by the RB3011's powerful firewall.
         </li>
         <li>
-          <b className="font-semibold text-white">Optimized Performance:</b>{" "}
-          Each device is used for its intended purpose.
+          <b className="font-semibold">Optimized Performance:</b> Each device is
+          used for its intended purpose.
         </li>
         <li>
-          <b className="font-semibold text-white">Secure Management:</b> A
-          dedicated management VLAN protects the network equipment.
+          <b className="font-semibold">Secure Management:</b> A dedicated
+          management VLAN protects the network equipment.
         </li>
       </ul>
     </div>
     <Accordion
       items={hardeningConfigData.steps}
-      getTitle={item => item.title}
-      renderContent={item => (
+      getTitle={(item) => item.title}
+      renderContent={(item) => (
         <>
           <p className="text-sm mb-4">{item.description}</p>
           <CodeBlock code={item.code} />
         </>
       )}
-      stepPrefix={idx => (
-        <span className="font-semibold text-white">Step {idx + 1}:</span>
+      stepPrefix={(idx) => (
+        <span className="font-semibold">Step {idx + 1}:</span>
       )}
     />
   </Section>

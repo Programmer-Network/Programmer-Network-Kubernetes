@@ -99,9 +99,7 @@ const DeviceChart = () => {
 
   return (
     <div className="border border-gray-800 p-6 bg-[#1c1c1c]">
-      <h3 className="font-bold text-xl mb-4 text-white">
-        Device Roles & Strengths
-      </h3>
+      <h3 className="font-bold text-xl mb-4">Device Roles & Strengths</h3>
       <p className="mb-6">
         Each device is assigned a role that plays to its hardware strengths,
         ensuring optimal performance.

@@ -19,23 +19,21 @@ const Sidebar = ({ activeSection, setActiveSection }: SidebarProps) => {
   return (
     <aside className="w-64 bg-black/30 border-r border-gray-800 flex-shrink-0 hidden md:block">
       <div className="p-6">
-        <h1 className="text-xl font-bold text-white">Network Plan</h1>
+        <h1 className="text-xl font-bold">Network Plan</h1>
         <p className="text-sm">Secure K3S Homelab</p>
       </div>
       <nav className="mt-4 flex flex-col space-y-1 px-4">
-        {navItems.map(item => (
+        {navItems.map((item) => (
           <a
             key={item.id}
             href={`#${item.id}`}
-            onClick={e => {
+            onClick={(e) => {
               e.preventDefault();
               setActiveSection(item.id);
             }}
             className={cx(
               "flex items-center px-4 py-2 text-sm transition-colors",
-              activeSection === item.id
-                ? "bg-white/10 text-white"
-                : "hover:bg-white/5 hover:text-white"
+              activeSection === item.id ? "bg-white/10" : "hover:bg-white/5"
             )}
           >
             <span className="mr-3">{item.icon}</span>

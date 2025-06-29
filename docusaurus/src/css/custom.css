@@ -43,3 +43,11 @@
 ul:not(.menu__list) li {
   list-style-type: disc;
 }
+
+.table-of-contents {
+  padding-left: 24px !important;
+}
+
+.table-of-contents li {
+  list-style-type: none !important;
+}
