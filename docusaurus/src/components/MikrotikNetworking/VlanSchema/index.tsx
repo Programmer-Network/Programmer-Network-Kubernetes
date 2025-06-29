@@ -18,15 +18,22 @@ const VlanCard = ({
   tag,
   borderColor,
 }: VlanCardProps) => (
-  <div className={cx("bg-[#1c1c1c] p-4 border-l-4", borderColor)}>
+  <div
+    className={cx(
+      "p-4 border-t-2 border-b-2 border-r-2 border-l-6 rounded-r-lg",
+      borderColor
+    )}
+  >
     <div className="grid grid-cols-2 md:grid-cols-5 gap-4 items-center">
       <div>
-        <span className="font-bold text-white">{vlan}</span>
+        <span className="font-bold">{vlan}</span>
         <br />
         <span className="text-sm text-gray-500">{name}</span>
       </div>
       <div>
-        <span className="font-semibold text-gray-300">{subnet}</span>
+        <span className="font-semibold text-gray-600 dark:text-gray-300">
+          {subnet}
+        </span>
         <br />
         <span className="text-sm text-gray-500">Subnet</span>
       </div>
