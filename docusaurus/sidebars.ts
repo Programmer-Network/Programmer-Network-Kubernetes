@@ -79,7 +79,7 @@ const sidebars: SidebarsConfig = {
         {
           type: "doc",
           label: "Why Mikrotik?",
-          id: "networking/mikrotik/introduction",
+          id: "networking/mikrotik/why-mikrotik",
         },
         {
           type: "doc",
