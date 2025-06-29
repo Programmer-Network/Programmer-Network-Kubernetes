@@ -2,6 +2,8 @@
 title: Before We Start
 ---
 
+<img src="/img/developer-ripping-hair.png" style={{ margin: "auto", display: "block" }} />
+
 Before we start, I want to mention that I've provided an [Ansible](../ansible/automation-with-ansible.md) playbook for most of the setup tasks. While I encourage you to use it, I also recommend doing things manually at first. Experience the process, let frustration build, and allow yourself to feel the annoyance.
 
 Just as I did, I want you to truly understand why we use certain tools. You'll only internalize this by initially experiencing the challenges and then resolving them by introducing the right tools.
