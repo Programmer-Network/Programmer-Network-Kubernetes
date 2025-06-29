@@ -65,7 +65,18 @@ import ImageGallery from "react-image-gallery";
 
 ## Affordable Hardware (If you don't want to follow my setup)
 
-[Mikrotik hEX lite](https://mikrotik.com/product/RB750r2) - This is the cheapest Mikrotik router. Most importantly, it comes with their original RouterOS. That essentially means that you can follow my guide to the letter.
+If you want to follow my k3s guide on a tight budget, here's the absolute cheapest Mikrotik combo I could find after some digging:
+
+**Cheapest Router:**
+
+- **[MikroTik hAP lite (RB941-2nD)](https://mikrotik.com/product/RB941-2nD-TC):** This is about as cheap as it gets. Prices jump around, but I've seen it listed for roughly 168 DKK (about $24 USD).
+- **[MikroTik hEX lite (RB750r2)](https://mikrotik.com/product/RB750r2):** Another solid low-cost pick, usually around $40. You get 5 Ethernet ports, an 850MHz CPU, and 64MB RAM—plenty for a basic home lab.
+
+**Cheapest Switch:**
+
+- **[MikroTik RB260GS](https://mikrotik.com/product/RB260GS):** 5-port Gigabit smart switch, also about $40. Bonus: it has an SFP cage if you ever want to mess with fiber.
+
+So, if you're really trying to keep costs down, grab the hAP lite router and the RB260GS switch. This combo gives you all the routing and switching you need to follow along with my guide, without spending a fortune on higher-end gear.
 
 As of the Raspberry Pi and/or Mini PC, you can really use anything. For instance, if you have an old Intel laptop laying around, that is perfect. If you have an older version of Raspberry Pi, that is also perfect. No matter your hardware, you can still follow this guide and release your service, or services, by the end of it.
 
@@ -113,7 +124,7 @@ import Image from "@theme/IdealImage";
 
 ## Network
 
-**[Mikrotik RB3011UiAS-RM](https://mikrotik.com/product/RB3011UiAS-RM)**: I went with a MikroTik router because it offers professional-grade features at a price that’s hard to beat. It’s packed with options you’d usually only find in high-end gear like Cisco, but without the hefty price tag. The advanced routing, solid firewall, and built-in VPN support made it an easy choice for what I needed.
+**[Mikrotik RB3011UiAS-RM](https://mikrotik.com/product/RB3011UiAS-RM)**: I went with a MikroTik router because it offers professional-grade features at a price that's hard to beat. It's packed with options you'd usually only find in high-end gear like Cisco, but without the hefty price tag. The advanced routing, solid firewall, and built-in VPN support made it an easy choice for what I needed.
 
 **[Mikrotik CRS326-24G-2S+RM](https://mikrotik.com/product/CRS326-24G-2SplusRM)**: SwOS/RouterOS powered 24 port Gigabit Ethernet switch with two SFP+ ports. We need a switch with sufficient ports and SFP+ ports for future expansion, but also to do proper VLANs (network isolation) and QoS (quality of service) for different services.
 
