@@ -2,6 +2,8 @@
 title: Building a "Mini Data Center" with K3S
 ---
 
+<img src="/img/k3s-cluster.png" style={{ margin: "auto", display: "block" }} />
+
 import DataCenterOverview from "@site/src/components/DataCenterOverview";
 
 <DataCenterOverview />
