@@ -46,7 +46,7 @@ function Accordion<T>({
           </button>
           <div
             className={`overflow-hidden transition-all duration-300 ease-in-out ${
-              openIndex === idx ? "max-h-screen" : "max-h-0"
+              openIndex === idx ? "max-h-screen py-6" : "max-h-0"
             }`}
           >
             {openIndex === idx && (
