@@ -1,5 +1,6 @@
 import { useState } from "react";
-import Accordion from "../Accordion";
+import Accordion from "../../Core/Accordion";
+import CodeBlock from "../CodeBlock";
 import { deviceConfigData } from "../data";
 import Section from "../Section";
 import { cx } from "../utils";
@@ -29,7 +30,19 @@ const DeviceConfiguration = () => {
           ))}
         </nav>
       </div>
-      <Accordion items={activeDevice.steps} />
+      <Accordion
+        items={activeDevice.steps}
+        getTitle={item => item.title}
+        renderContent={item => (
+          <>
+            <p className="text-sm mb-4">{item.description}</p>
+            <CodeBlock code={item.code} />
+          </>
+        )}
+        stepPrefix={idx => (
+          <span className="font-semibold text-white">Step {idx + 1}:</span>
+        )}
+      />
     </Section>
   );
 };

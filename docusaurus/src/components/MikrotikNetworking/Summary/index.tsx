@@ -1,4 +1,5 @@
-import Accordion from "../Accordion";
+import Accordion from "../../Core/Accordion";
+import CodeBlock from "../CodeBlock";
 import { hardeningConfigData } from "../data";
 import Section from "../Section";
 
@@ -7,7 +8,7 @@ const Summary = () => (
     title="Summary & Final Hardening"
     description="Once the main configurations are applied, these final steps should be performed on all devices to complete the security setup."
   >
-    <div className="bg-[#1c1c1c] p-6 border border-gray-800 mb-8">
+    <div className="p-6 border border-slate-700 mb-4 rounded-lg">
       <h3 className="font-bold text-xl mb-4 text-[#ffab00]">
         Key Achievements
       </h3>
@@ -30,9 +31,19 @@ const Summary = () => (
         </li>
       </ul>
     </div>
-    <div className="border border-gray-800">
-      <Accordion items={hardeningConfigData.steps} />
-    </div>
+    <Accordion
+      items={hardeningConfigData.steps}
+      getTitle={item => item.title}
+      renderContent={item => (
+        <>
+          <p className="text-sm mb-4">{item.description}</p>
+          <CodeBlock code={item.code} />
+        </>
+      )}
+      stepPrefix={idx => (
+        <span className="font-semibold text-white">Step {idx + 1}:</span>
+      )}
+    />
   </Section>
 );
 
