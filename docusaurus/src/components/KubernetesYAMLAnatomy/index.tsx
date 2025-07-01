@@ -2,17 +2,29 @@ import { useState } from "react";
 import CodeBlock from "../CodeBlock";
 import ExplanationCard from "../ExplanationCard";
 import Tabs from "../Tabs";
+import * as configmapConfig from "./configmap";
 import * as deploymentConfig from "./deployment";
+import * as ingressConfig from "./ingress";
+import * as pvcConfig from "./pvc";
+import * as secretConfig from "./secret";
 import * as serviceConfig from "./service";
 
 const yamls = {
   deployment: deploymentConfig,
   service: serviceConfig,
+  ingress: ingressConfig,
+  configmap: configmapConfig,
+  secret: secretConfig,
+  pvc: pvcConfig,
 };
 
 const tabs = [
   { id: "deployment", label: "Deployment" },
   { id: "service", label: "Service" },
+  { id: "ingress", label: "Ingress" },
+  { id: "configmap", label: "ConfigMap" },
+  { id: "secret", label: "Secret" },
+  { id: "pvc", label: "PVC" },
 ];
 
 export default function App() {

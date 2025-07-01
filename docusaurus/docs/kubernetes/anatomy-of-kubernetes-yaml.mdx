@@ -2,6 +2,10 @@
 title: Anatomy of Kubernetes YAML
 ---
 
+Let's take a look at a couple of YAML files that your infrastructure will typically be composed of. Note that you don't have to fully understand what they do or instantly know how to write them, but by the time you finish this lesson, you should have a good idea of how we'll be defining our infrastructure.
+
+<KubernetesYAMLAnatomy />
+
 import Alert from "@site/src/components/Alert/index.tsx";
 
 <Alert
@@ -31,8 +35,4 @@ A typical Kubernetes YAML file is structured into several key sections ([Objects
 - **metadata**: Provides identifying information such as the object's name, namespace, and labels.
 - **spec**: Contains the desired state and configuration details for the object.
 
-Each section plays a specific role in telling Kubernetes what we want to run and how we want it managed.
-
-Mastering these files is key to effectively deploying and managing applications in Kubernetes.
-
-<KubernetesYAMLAnatomy />
+Each section plays a specific role in telling Kubernetes what we want to run and how we want it managed. Mastering these files is key to effectively deploying and managing applications in Kubernetes.

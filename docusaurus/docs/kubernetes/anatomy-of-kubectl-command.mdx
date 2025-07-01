@@ -4,6 +4,8 @@ title: Anatomy of a `kubectl` Command
 
 [kubectl](https://kubernetes.io/docs/reference/kubectl/) is the command-line interface for Kubernetes. It allows us to run commands against Kubernetes clusters. It is the most important command in Kubernetes, and we'll use it a lot.
 
+I can't emphasize enough how important it is to write these commands manually until we internalize them. And, very importantly, make sure to set up [kubectl completion](https://kubernetes.io/docs/reference/kubectl/generated/kubectl_completion/), it will speed things up a lot.
+
 <div class="relative">
    <!-- Command Bar -->
    <div class="bg-gray-100 dark:bg-gray-900 p-4 rounded-xl flex items-center text-lg sm:text-xl overflow-x-auto">
@@ -28,7 +30,7 @@ title: Anatomy of a `kubectl` Command
       <!-- Resource Type -->
       <div id="label-type" class="label-box text-center p-4 border !border-purple-400 rounded-lg">
          <h3 class="font-bold !text-purple-400">Resource Type</h3>
-         <p class="text-purple-400 mt-1">Specifies the __[resource type](https://kubernetes.io/docs/reference/kubectl/#resource-types)__. Resource types are case-insensitive and you can specify the singular, plural, or abbreviated forms. For example, the following commands produce the same output:</p>
+         <p class="text-purple-400 mt-1">Specifies the __[resource type](https://kubernetes.io/docs/reference/kubectl/#resource-types)__. Resource types are case-insensitive and you can specify the singular, plural, or abbreviated forms.</p>
       </div>
       <!-- Resource Name -->
       <div id="label-name" class="label-box text-center p-4 border !border-red-400 rounded-lg">
