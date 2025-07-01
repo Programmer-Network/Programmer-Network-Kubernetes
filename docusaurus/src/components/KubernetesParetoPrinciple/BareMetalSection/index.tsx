@@ -4,7 +4,7 @@ const BareMetalSection = () => (
       <h2 className="font-bold tracking-tight text-slate-900 dark:text-slate-100">
         The Bare-Metal Gauntlet
       </h2>
-      <p className="mt-4 text-slate-600 dark:text-slate-300">
+      <p className="mt-4">
         In the cloud, networking and storage are managed services. On bare
         metal, they are your direct responsibility and the source of the most
         difficult challenges. This section provides a roadmap to tame them.

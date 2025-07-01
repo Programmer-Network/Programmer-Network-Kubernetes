@@ -50,9 +50,7 @@ function Accordion<T>({
             }`}
           >
             {openIndex === idx && (
-              <div className="p-4 pt-0 text-slate-600 dark:text-slate-300">
-                {renderContent(item, idx)}
-              </div>
+              <div className="p-4 pt-0">{renderContent(item, idx)}</div>
             )}
           </div>
         </div>

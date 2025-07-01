@@ -8,7 +8,7 @@ const ProductionChecklistSection = () => (
       <h2 className="font-bold tracking-tight text-slate-900 dark:text-slate-100">
         Production-Readiness Crucible
       </h2>
-      <p className="mt-4 text-slate-600 dark:text-slate-300">
+      <p className="mt-4">
         A functional cluster is not a production cluster. Use this checklist to
         systematically harden, monitor, and back up your system for
         mission-critical workloads.

@@ -6,7 +6,7 @@ const K3sInternalsSection = () => (
       <h2 className="font-bold tracking-tight text-slate-900 dark:text-slate-100">
         K3s In The Trenches
       </h2>
-      <p className="mt-4 text-slate-600 dark:text-slate-300">
+      <p className="mt-4">
         K3s has unique behaviors that can trip you up when moving from a homelab
         to production. Understanding its datastore options and HA model is key
         to building a stable cluster.
