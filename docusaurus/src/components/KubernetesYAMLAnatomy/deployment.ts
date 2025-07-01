@@ -137,15 +137,4 @@ export const sections = [
       "The heart of the Pod. A list of one or more containers to run, specifying the `image`, `ports`, etc.",
     indent: 6,
   },
-  {
-    id: "status",
-    key: "status:",
-    value: `
-  availableReplicas: 3
-  readyReplicas: 3`,
-    title: "status",
-    description:
-      "The **actual state**. This field is read-only and is managed by Kubernetes to report the current status of the object.",
-    comment: "# --- Status (Read-Only) ---",
-  },
 ];

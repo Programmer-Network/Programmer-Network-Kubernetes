@@ -28,8 +28,8 @@ export default function App() {
   return (
     <div className="flex flex-col items-center justify-center">
       <Tabs tabs={tabs} activeTab={activeTab} setActiveTab={setActiveTab} />
-      <div className="text-center mt-6 text-sm"></div>
-      <div>
+      <div className="text-center mt-6"></div>
+      <div className="w-full">
         <div className="rounded-2xl grid grid-cols-1 lg:grid-cols-12 gap-8 items-start w-full">
           {/* Left Side: YAML Code */}
           <div className="col-span-8">
@@ -42,7 +42,7 @@ export default function App() {
           </div>
 
           {/* Right Side: Explanations */}
-          <div className="flex flex-col space-y-2 col-span-4">
+          <div className="space-y-2 col-span-4">
             {sections.map(section => (
               <ExplanationCard
                 key={section.id}

@@ -9,7 +9,7 @@ const CodeBlock = ({
 }) => {
   return (
     <div className="rounded-xl overflow-x-auto sticky">
-      <pre className="!bg-gray-100/2">
+      <pre className="!bg-transparent">
         <code>
           {sections.map(section => (
             <Fragment key={section.id}>

@@ -10,16 +10,14 @@ const FirewallLogic = () => (
   >
     <Accordion
       items={firewallConfigData.steps}
-      getTitle={(item) => item.title}
-      renderContent={(item) => (
+      getTitle={item => item.title}
+      renderContent={item => (
         <>
-          <p className="text-sm mb-4">{item.description}</p>
+          <p className="mb-4">{item.description}</p>
           <CodeBlock code={item.code} />
         </>
       )}
-      stepPrefix={(idx) => (
-        <span className="font-semibold">Step {idx + 1}:</span>
-      )}
+      stepPrefix={idx => <span className="font-semibold">Step {idx + 1}:</span>}
     />
   </Section>
 );

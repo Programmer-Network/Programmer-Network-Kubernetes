@@ -2,6 +2,37 @@
 title: Anatomy of Kubernetes YAML
 ---
 
+import Alert from "@site/src/components/Alert/index.tsx";
+
+<Alert
+  title="Helm - The package manager for Kubernetes"
+  description="Keep in mind that throughout this entire journey, we will be writing our YAML files manually. In simple terms, we will not be using Helm (the package manager for Kubernetes). In my experience, introducing these abstractions too soon robs us of learning opportunities and understanding how these files are written. Trust this advice: follow this path until you are fully irritated doing it manually. At that point, you'll be ready to optimize."
+  variant="warning"
+/>
+
 import KubernetesYAMLAnatomy from "@site/src/components/KubernetesYAMLAnatomy/index.tsx";
+
+Understanding Kubernetes YAML files is essential for working with Kubernetes. These declarative files define nearly every aspect of our infrastructure: how many instances of an application to run, what type of storage to use, access controls, networking, and more.
+
+From now on, we should approach these concepts in a straightforward way, because that's really all there is to it. If we focus too much on terminology and fluff, it's easy to feel overwhelmed.
+
+> It's important to think about each of these "components" naturally. For example: we want to deploy an application with an API and supporting services (x, y, z). We might need 10GB of storage for our Postgres database, and we want Postgres to be accessible only by our API. Finally, we need to expose our API to the internet.
+
+Each major configuration area is typically represented by its own YAML file. For example:
+
+- **Ingress**: Describes how a service is accessed via HTTP and HTTPS.
+- **Deployment**: Specifies how many instances (replicas) of an application to run, and resource allocations like RAM and CPU.
+- **Service**: Defines networking and how other components or users can access our application.
+
+A typical Kubernetes YAML file is structured into several key sections ([Objects In Kubernetes](https://kubernetes.io/docs/concepts/overview/working-with-objects/)):
+
+- **apiVersion**: Specifies the Kubernetes API version to use for this object.
+- **kind**: Indicates the type of Kubernetes object (e.g., Deployment, Service, Ingress).
+- **metadata**: Provides identifying information such as the object's name, namespace, and labels.
+- **spec**: Contains the desired state and configuration details for the object.
+
+Each section plays a specific role in telling Kubernetes what we want to run and how we want it managed.
+
+Mastering these files is key to effectively deploying and managing applications in Kubernetes.
 
 <KubernetesYAMLAnatomy />

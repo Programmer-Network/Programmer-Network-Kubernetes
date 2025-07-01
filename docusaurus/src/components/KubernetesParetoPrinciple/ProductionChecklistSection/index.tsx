@@ -22,7 +22,7 @@ const ProductionChecklistSection = () => (
           <span className="font-semibold text-slate-800 dark:text-slate-200">
             {item.title}
           </span>
-          <span className="ml-2 text-slate-500 dark:text-slate-400 text-sm font-normal">
+          <span className="ml-2 text-slate-500 dark:text-slate-400 font-normal">
             {item.description}
           </span>
         </span>

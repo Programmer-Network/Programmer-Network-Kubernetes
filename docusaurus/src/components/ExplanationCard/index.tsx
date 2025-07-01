@@ -17,7 +17,7 @@ const ExplanationCard = ({
     onMouseEnter={onMouseEnter}
     onMouseLeave={onMouseLeave}
   >
-    <h3 className={`!mb-0 !text-sm !font-normal ${styles.titleColor}`}>
+    <h3 className={`!mb-0 !font-normal ${styles.titleColor}`}>
       {section.title}
     </h3>
     <Tooltip id={`tooltip-${section.id}`} />

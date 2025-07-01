@@ -23,7 +23,7 @@ const DataCenterOverview = () => (
           <h4 className="font-semibold text-blue-400">1. Hardware Setup</h4>
           <DiagramBox className="w-full hover:border-blue-500">
             <p className="font-bold !mb-2">🛠️ Physical Infrastructure</p>
-            <ul className="text-sm space-y-2 !mb-0">
+            <ul className="space-y-2 !mb-0">
               <li>📦 Server Rack</li>
               <li>🍓 Raspberry Pi Cluster</li>
               <li>💻 Mini PCs</li>
@@ -37,7 +37,7 @@ const DataCenterOverview = () => (
           <h4 className="font-semibold text-green-400">2. Network Setup</h4>
           <DiagramBox className="w-full hover:border-green-500">
             <p className="font-bold !mb-2">🌐 Network Infrastructure</p>
-            <ul className="text-sm space-y-2 !mb-0">
+            <ul className="space-y-2 !mb-0">
               <li>📡 Mikrotik Router</li>
               <li>🔄 Managed Switch</li>
               <li>🔒 VLANs & Security</li>
@@ -51,7 +51,7 @@ const DataCenterOverview = () => (
           <h4 className="font-semibold text-purple-400">3. K3s Setup</h4>
           <DiagramBox className="w-full hover:border-purple-500">
             <p className="font-bold !mb-2">☸️ Kubernetes Layer</p>
-            <ul className="text-sm space-y-2 !mb-0">
+            <ul className="space-y-2 !mb-0">
               <li>🎮 Control Plane</li>
               <li>👷 Worker Nodes</li>
               <li>💾 Storage (Longhorn)</li>
@@ -66,7 +66,7 @@ const DataCenterOverview = () => (
           </h4>
           <DiagramBox className="w-full hover:border-yellow-500">
             <p className="font-bold !mb-2">🚀 Applications & Services</p>
-            <ul className="text-sm space-y-2 !mb-0">
+            <ul className="space-y-2 !mb-0">
               <li>🗄️ Databases - PostgreSQL, Redis</li>
               <li>🚪 Ingress - Traefik</li>
               <li>📊 Monitoring - Prometheus, Grafana</li>

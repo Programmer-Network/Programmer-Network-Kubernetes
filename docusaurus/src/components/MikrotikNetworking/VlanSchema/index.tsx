@@ -28,20 +28,20 @@ const VlanCard = ({
       <div>
         <span className="font-bold">{vlan}</span>
         <br />
-        <span className="text-sm text-gray-500">{name}</span>
+        <span className="text-gray-500">{name}</span>
       </div>
       <div>
         <span className="font-semibold text-gray-600 dark:text-gray-300">
           {subnet}
         </span>
         <br />
-        <span className="text-sm text-gray-500">Subnet</span>
+        <span className="text-gray-500">Subnet</span>
       </div>
       <div className="col-span-2">
-        <p className="text-sm">{description}</p>
+        <p>{description}</p>
       </div>
       <div className="text-right">
-        <span className="inline-flex items-center rounded-sm bg-gray-700 px-2 py-1 text-xs font-medium text-gray-300">
+        <span className="inline-flex items-center rounded-sm bg-gray-700 px-2 py-1 font-medium text-gray-300">
           {tag}
         </span>
       </div>
