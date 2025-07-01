@@ -1,3 +1,4 @@
+import { Highlight, themes } from "prism-react-renderer";
 import { useState } from "react";
 
 interface CodeBlockProps {
@@ -15,9 +16,19 @@ const CodeBlock = ({ code }: CodeBlockProps) => {
 
   return (
     <div className="relative group">
-      <pre className="bg-[#1c1c1c] text-gray-300 p-4 text-sm overflow-x-auto">
-        <code>{code}</code>
-      </pre>
+      <Highlight theme={themes.gruvboxMaterialDark} language="bash" code={code}>
+        {({ className, style, tokens, getLineProps, getTokenProps }) => (
+          <pre className={`p-4 overflow-x-auto ${className}`} style={style}>
+            {tokens.map((line, i) => (
+              <div key={i} {...getLineProps({ line, key: i })}>
+                {line.map((token, key) => (
+                  <span key={key} {...getTokenProps({ token, key })} />
+                ))}
+              </div>
+            ))}
+          </pre>
+        )}
+      </Highlight>
       <button
         onClick={handleCopy}
         className="absolute top-2 right-2 bg-gray-700 hover:bg-gray-600 px-2 py-1 text-xs opacity-0 group-hover:opacity-100 transition-opacity"
