@@ -120,26 +120,13 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: "category",
-      label: "Tools",
-      items: [
-        {
-          type: "category",
-          label: "Automation",
-          items: [
-            {
-              type: "doc",
-              label: "Ansible",
-              id: "ansible/automation-with-ansible",
-            },
-          ],
-        },
-      ],
-    },
-
-    {
-      type: "category",
       label: "Kubernetes",
       items: [
+        {
+          type: "doc",
+          label: "K3s Setup",
+          id: "kubernetes/k3s-setup",
+        },
         {
           type: "doc",
           label: "What Is Kubernetes",
@@ -159,11 +146,6 @@ const sidebars: SidebarsConfig = {
           type: "doc",
           label: "Kubernetes 80/20 Rule",
           id: "kubernetes/kubernetes-80-20-rule",
-        },
-        {
-          type: "doc",
-          label: "K3s Setup",
-          id: "kubernetes/k3s-setup",
         },
         {
           type: "doc",
@@ -261,6 +243,24 @@ const sidebars: SidebarsConfig = {
         },
       ],
     },
+    {
+      type: "category",
+      label: "Tools",
+      items: [
+        {
+          type: "category",
+          label: "Automation",
+          items: [
+            {
+              type: "doc",
+              label: "Ansible",
+              id: "ansible/automation-with-ansible",
+            },
+          ],
+        },
+      ],
+    },
+
     {
       id: "terminology",
       type: "doc",

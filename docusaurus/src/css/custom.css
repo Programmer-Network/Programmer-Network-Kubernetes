@@ -32,8 +32,8 @@
   --ifm-color-primary-lighter: #a5b4fc;
   --ifm-color-primary-lightest: #c7d2fe;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
-  --ifm-background-color: #0b0b0b !important;
-  --ifm-navbar-background-color: #0b0b0b !important;
+  --ifm-background-color: #242323 !important;
+  --ifm-navbar-background-color: #242323 !important;
 }
 
 .navbar__item.navbar__link svg {

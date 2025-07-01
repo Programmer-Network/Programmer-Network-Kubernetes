@@ -32,6 +32,38 @@ sudo apt update
 sudo apt upgrade
 ```
 
+### Enable Memory Cgroups
+
+[Ansible Playbook](/ansible/playbooks/enable-memory-groups.yml)
+
+Before installing K3s, it's essential to enable memory cgroups on the Raspberry Pi for container resource management.
+
+For the Ubuntu Server, e.g. our mini-pcs, this is already enabled by default.
+
+[Control Groups (Cgroups)](https://en.wikipedia.org/wiki/Cgroups) are a Linux kernel feature that allows you to allocate resources such as CPU time, system memory, and more among user-defined groups of tasks (processes).
+
+K3s requires memory cgroups to be enabled to better manage and restrict the resources that each container can use. This is crucial in a multi-container environment where resource allocation needs to be as efficient as possible.
+
+**Simple Analogy**: Imagine you live in a house with multiple people (processes), and there are limited resources like time (CPU), space (memory), and tools (I/O). Without a system in place, one person might hog the vacuum cleaner all day (CPU time), while someone else fills the fridge with their stuff (memory). With a `"chore schedule"` (cgroups), you ensure everyone gets an allocated time with the vacuum cleaner, some space in the fridge, and so on. This schedule ensures that everyone can do their chores without stepping on each other's toes, much like how cgroups allocate system resources to multiple processes.
+
+Edit the `/boot/firmware/cmdline.txt` file on your Raspberry Pi.
+
+```bash
+sudo vi /boot/firmware/cmdline.txt
+```
+
+Append the following to enable memory cgroups.
+
+```text
+cgroup_memory=1 cgroup_enable=memory
+```
+
+Save the file and reboot your Raspberry Pi.
+
+```bash
+sudo reboot
+```
+
 ## Optimize our Pi's
 
 Since our Raspberry Pis are nodes in our cluster and will consistently be used when plugged into our Ethernet switch or router, we can optimize them by disabling unnecessary components. This reduces the number of services running on them, naturally lowering CPU and memory usage. More importantly, it reduces power consumption, leading to lower electricity bills.
