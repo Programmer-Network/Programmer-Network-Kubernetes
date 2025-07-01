@@ -27,7 +27,7 @@ The official K3S documentation also explains both:
 
 We use static DNS names (not raw IP addresses) for our nodes, as configured in our [Network Device Configuration](../networking/mikrotik/device-configuration.mdx).
 
-If we use IP addresses directly when setting up K3S, and those IPs ever change (for example, due to network reconfiguration or moving to a different subnet), our cluster will likely break. This is because K3S (and Kubernetes in general) embeds the node addresses—including in SSL certificates and cluster configuration. Changing the IPs later would require us to tear down and completely recreate the cluster, as the certificates and internal references would no longer match.
+If we use IP addresses directly when setting up K3S, and those IPs ever change (for example, due to network reconfiguration or moving to a different subnet), our cluster will likely break. This is because K3S (and Kubernetes in general) embeds the node addresses, including in SSL certificates and cluster configuration. Changing the IPs later would require us to tear down and completely recreate the cluster, as the certificates and internal references would no longer match.
 
 By using DNS names that always resolve to the correct node, we can change the underlying IPs in our network without having to rebuild our Kubernetes cluster. The nodes will continue to find and trust each other as long as the DNS names remain consistent.
 
