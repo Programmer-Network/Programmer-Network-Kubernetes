@@ -155,7 +155,7 @@ add gateway=192.168.88.1`,
       {
         title: "Set Port VLAN IDs (PVIDs)",
         description:
-          "Assign the correct PVIDs to access ports. ether2 is for your PC (VLAN 10), and ether17-24 are for the K3S cluster (VLAN 20).",
+          "Assign the correct PVIDs to access ports. ether2 is where my PC is connected (VLAN 10), and ether17-24 are for the K3S cluster (VLAN 20). This might differ for you, but the gist of it is that you need to assign the correct PVIDs to the correct ports.",
         code: `/interface bridge port
 # Your PC is on ether2, its traffic belongs to VLAN 10.
 set [find where interface=ether2] pvid=10
