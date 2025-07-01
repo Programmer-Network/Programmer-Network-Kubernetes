@@ -176,10 +176,3 @@ server: https://<master_node_ip>:6443
 Replace `<master_node_ip>` with the IP address of your master node.
 
 After completing these steps, you should be able to run `kubectl` commands from your local machine to interact with your Kubernetes cluster. This avoids the need to SSH into the master node for cluster management tasks.
-
----
-
-## Next Steps
-
-- [Kubernetes Command Cheatsheet](./common-kubernetes-commands.md) — Explore more useful `kubectl` commands.
-- [K3S Backup Guide](./k3s-backup.md) — Once your cluster is running, consider setting up regular backups to protect your data.
