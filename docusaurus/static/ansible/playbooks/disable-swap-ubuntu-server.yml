@@ -1,0 +1,32 @@
+---
+- name: Ensure swap is disabled permanently
+  hosts: ubuntu_server
+  become: true
+
+  tasks:
+    - name: Run swap disabling tasks only if swap is currently configured
+      block:
+        - name: Disable all active swap devices
+          ansible.builtin.command:
+            cmd: swapoff -a
+          # This command is not expected to change state in a way Ansible detects
+          changed_when: false
+
+        - name: Comment out swap entries in /etc/fstab to make change permanent
+          ansible.builtin.replace:
+            path: /etc/fstab
+            # This regex finds any line containing the word "swap" that is not already commented out
+            regexp: '^(.*?\sswap\s.*)$'
+            replace: '# \1'
+          register: fstab_status
+
+      # This 'when' condition applies to the entire block of tasks above.
+      # It checks the facts gathered by Ansible for the target machine.
+      when: ansible_facts.memory_mb.swap.total > 0
+
+    - name: Reboot the node if the fstab file was changed
+      ansible.builtin.reboot:
+        reboot_timeout: 120 # 120 seconds = 2 minutes
+        msg: "Rebooting node to finalize disabling swap."
+      # This condition ensures we only reboot if the fstab variable exists AND it reports a change.
+      when: fstab_status is defined and fstab_status.changed

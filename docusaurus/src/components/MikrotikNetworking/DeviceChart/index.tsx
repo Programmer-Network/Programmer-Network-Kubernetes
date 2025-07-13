@@ -20,18 +20,18 @@ const DeviceChart = () => {
     chartRef.current = new Chart(ctx, {
       type: "bar",
       data: {
-        labels: ["RB3011 (Router)", "CRS326 (Switch)", "RB2011 (AP)"],
+        labels: ["Lenovo M920q (Router)", "CRS326 (Switch)", "RB2011 (AP)"],
         datasets: [
           {
             label: "CPU Power (Normalized)",
-            data: [100, 25, 43],
+            data: [100, 3.8, 2.9],
             backgroundColor: "rgba(255, 171, 0, 0.6)",
             borderColor: "rgba(255, 171, 0, 1)",
             borderWidth: 1,
           },
           {
             label: "RAM (Normalized)",
-            data: [100, 10, 12.5],
+            data: [100, 3.2, 0.8],
             backgroundColor: "rgba(96, 165, 250, 0.6)",
             borderColor: "rgba(96, 165, 250, 1)",
             borderWidth: 1,
@@ -71,14 +71,15 @@ const DeviceChart = () => {
                   label += ": ";
                 }
                 if (context.dataset.label === "CPU Power (Normalized)") {
-                  if (context.label === "RB3011 (Router)")
-                    label += "1.4 GHz Dual-Core";
+                  if (context.label === "Lenovo M920q (Router)")
+                    label += "Intel Core i5-8500T, 6C/6T, up to 3.5 GHz";
                   if (context.label === "CRS326 (Switch)")
                     label += "800 MHz Single-Core";
                   if (context.label === "RB2011 (AP)")
                     label += "600 MHz Single-Core";
                 } else {
-                  if (context.label === "RB3011 (Router)") label += "1 GB";
+                  if (context.label === "Lenovo M920q (Router)")
+                    label += "16 GB DDR4 2666 MHz";
                   if (context.label === "CRS326 (Switch)") label += "512 MB";
                   if (context.label === "RB2011 (AP)") label += "128 MB";
                 }

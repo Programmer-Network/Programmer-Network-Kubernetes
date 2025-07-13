@@ -4,6 +4,11 @@ master_node:
     rp_2:
     rp_3:
 
+ubuntu_server:
+  hosts:
+    lenovo:
+    hp:
+
 all_nodes:
   hosts:
     rp_1:

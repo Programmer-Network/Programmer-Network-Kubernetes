@@ -1,0 +1,99 @@
+---
+sidebar_position: 3
+title: MikroTik RouterOS on Lenovo M920Q
+---
+
+As I mentioned in the [Hardware Overview](../../hardware-raspberry-pi-setup/hardware.mdx) section, you don't have to use the same hardware I did. If you have a different router running MikroTik RouterOS, you can skip this section. However, if you're looking for an enterprise-grade router for your home network at a much lower cost than buying hardware from MikroTik or other vendors, this section is for you.
+
+Many homelab setups I’ve seen on YouTube underestimate the importance of proper networking. Regardless of CPU, RAM, or storage, devices must communicate efficiently. Clients connect to the router, which means it must handle many firewall rules, NAT, VPN, etc.
+
+There are four things you need for this setup:
+
+1. [Lenovo M920Q Mini PC](https://www.ebay.com/sch/i.html?_nkw=Lenovo+M920Q&_sacat=0&_from=R40&_trksid=p2332490.m570.l1313)
+   - Has a critical feature: a usable PCIe expansion slot, allowing installation of a server-grade network card.
+2. [The Network Card](https://www.aliexpress.com/item/1005005920672631.html?spm=a2g0o.order_list.order_list_main.11.329f180254cPlG) (NIC)
+   - SFP+ model (Intel 82599ES chipset, X520-DA2) for direct fiber or DAC connectivity to your switch.
+3. [PCIe Riser Card](https://www.aliexpress.com/item/1005007593015885.html?spm=a2g0o.order_list.order_list_main.5.329f180254cPlG) (to connect the NIC to the motherboard)
+   - Mandatory adapter needed to physically connect the network card to the Lenovo M920q's motherboard.
+4. [MikroTik RouterOS License](https://help.mikrotik.com/docs/spaces/ROS/pages/328149/RouterOS+license+keys)
+   - You'll need a Level 4 (P1) RouterOS license to unlock the full speed of your hardware.
+
+<br />
+
+import ImageGallery from "react-image-gallery";
+
+<ImageGallery
+  thumbnailPosition="right"
+  items={[
+    {
+      original: "/img/hardware/roas/lenovo-m920q-roas.jpg",
+      thumbnail: "/img/hardware/roas/lenovo-m920q-roas.jpg",
+    },
+    {
+      original: "/img/hardware/roas/lenovo-m920q-roas-assembly.jpg",
+      thumbnail: "/img/hardware/roas/lenovo-m920q-roas-assembly.jpg",
+    },
+    {
+      original: "/img/hardware/roas/lenovo-m920q-roas-nic-2.jpg",
+      thumbnail: "/img/hardware/roas/lenovo-m920q-roas-nic-2.jpg",
+    },
+    {
+      original: "/img/hardware/roas/lenovo-m920q-roas-nic-3.jpg",
+      thumbnail: "/img/hardware/roas/lenovo-m920q-roas-nic-3.jpg",
+    },
+    {
+      original: "/img/hardware/roas/lenovo-m920q-roas-nic.jpg",
+      thumbnail: "/img/hardware/roas/lenovo-m920q-roas-nic.jpg",
+    },
+    {
+      original: "/img/hardware/roas/lenovo-m920q-roas-sticker.jpg",
+      thumbnail: "/img/hardware/roas/lenovo-m920q-roas-sticker.jpg",
+    },
+  ]}
+/>
+
+<br />
+
+For this build, we'll install MikroTik RouterOS v7 directly on bare metal. This avoids virtualization headaches and ensures maximum hardware performance. We'll ise a 90W or higher power adapter to ensure the CPU, SSD, and NIC have enough power, even under heavy load.
+
+Switching from the RB3011 to this build is a huge leap forward. The RB3011 would struggle with high connection counts or heavy traffic, but this setup handles those demands easily, making it ideal for a busy K3s cluster. Compared to expensive MikroTik CCRs, this Intel-powered box outperforms many for CPU-intensive tasks like VPNs or complex firewall rules.
+
+We benefit from the flexibility and power of a general-purpose CPU, rather than being limited by a fixed-function router chip. For our services, this router removes the network as a bottleneck. APIs and applications will run at full speed, limited only by the server itself, not by the network path.
+
+## Lenovo M920Q BIOS
+
+Before we can install RouterOS, we have to configure the BIOS on our Lenovo M920q. To save you time and effort, here are the BIOS settings you should enable or disable.
+
+Generally, disable features you don't use. In this context, two clear candidates are `bluetooth` and the `wireless` card. I went further and removed the wireless card from the Lenovo M920q, as I won't be using it.
+
+Assuming you've updated the BIOS to the latest version, do the following:
+
+- Restart the PC and keep pressing the F1 key to enter the BIOS.
+
+- Go to `Devices > USB Setup > Bluetooth` and set it to `disabled`. If you don't use the front USB ports, you can disable those too, leaving just one rear port enabled for keyboard or external screen setup.
+
+- Go to `Devices > Network Setup` and ensure all options except `Wireless LAN` are enabled. Disable `Wireless LAN`, this router won't connect to your switch via wireless. The `PXE` options must be enabled to install RouterOS via [Netinstall](https://help.mikrotik.com/docs/spaces/ROS/pages/24805390/Netinstall#Netinstall-InstructionsforWindows).
+
+- Go to `Power` and set `After Power Loss` to `Power On`. This is the most critical setting for all Mini PCs, ensuring the hardware automatically powers on after an outage.
+
+- Go to `Startup` and make sure the `CSM` option is `Enabled` and `Boot Mode` is set to `Auto`. `CSM` stands for `Compatibility Support Module` and allows loading of non-UEFI operating systems.
+
+- Go to `Startup > Primary Boot Sequence` and change the boot order. Since you'll install RouterOS using Netinstall (via ethernet), move `Network 1` to the top of the `Primary Boot Sequence` list.
+
+At this point, your BIOS should be fully set up, and we can proceed to the next section: setting up MikroTik's Netinstall. For now, you can turn the PC off.
+
+## Install MikroTik RouterOS on Lenovo M920Q
+
+From experience, I must emphasize: installing RouterOS via USB stick is not possible. I tried burning [RouterOS](https://mikrotik.com/software) to a USB stick using [Rufus](https://rufus.ie/en/), set up the BIOS, and booted into the USB. Starting the RouterOS installation, I got a `no cdrom found` error.
+
+<img src="/img/mikrotik-no-cdrom-found.jpg" />
+
+<br />
+
+I thought it might be a corrupted ISO or USB stick, so I tried different sticks and Rufus settings, but nothing worked. Eventually, with help from AI and forums, I concluded you must follow MikroTik's [Netinstall guide](https://help.mikrotik.com/docs/spaces/ROS/pages/24805390/Netinstall#Netinstall-InstructionsforWindows).
+
+In short, install RouterOS over the network. The USB process fails because, once installation starts, RouterOS looks for a CD-ROM instead of recognizing the USB drive.
+
+Rather than duplicating all the content from MikroTik's original guide, simply follow the official [Netinstall guide](https://help.mikrotik.com/docs/spaces/ROS/pages/24805390/Netinstall#Netinstall-InstructionsforWindows). The installation process takes less than a minute, and the next time you boot, your Lenovo M920q will be ready to route.
+
+`Before finalizing the setup`, make sure to return to your BIOS setup, go to `Startup > Primary Boot Sequence`, and set your SSD or NVMe (depending on your hardware) back as the primary boot option. If you skip this, your Lenovo will try to boot from the network every time, causing long delays before it attempts another boot method.
