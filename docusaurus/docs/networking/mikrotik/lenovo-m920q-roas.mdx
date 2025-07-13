@@ -1,6 +1,6 @@
 ---
 sidebar_position: 3
-title: MikroTik RouterOS on Lenovo M920Q
+title: MikroTik RouterOS on Lenovo M920q
 ---
 
 As I mentioned in the [Hardware Overview](../../hardware-raspberry-pi-setup/hardware.mdx) section, you don't have to use the same hardware I did. If you have a different router running MikroTik RouterOS, you can skip this section. However, if you're looking for an enterprise-grade router for your home network at a much lower cost than buying hardware from MikroTik or other vendors, this section is for you.
@@ -9,7 +9,7 @@ Many homelab setups I’ve seen on YouTube underestimate the importance of prope
 
 There are four things you need for this setup:
 
-1. [Lenovo M920Q Mini PC](https://www.ebay.com/sch/i.html?_nkw=Lenovo+M920Q&_sacat=0&_from=R40&_trksid=p2332490.m570.l1313)
+1. [Lenovo M920q Mini PC](https://www.ebay.com/sch/i.html?_nkw=Lenovo+M920Q&_sacat=0&_from=R40&_trksid=p2332490.m570.l1313)
    - Has a critical feature: a usable PCIe expansion slot, allowing installation of a server-grade network card.
 2. [The Network Card](https://www.aliexpress.com/item/1005005920672631.html?spm=a2g0o.order_list.order_list_main.11.329f180254cPlG) (NIC)
    - SFP+ model (Intel 82599ES chipset, X520-DA2) for direct fiber or DAC connectivity to your switch.
@@ -82,7 +82,7 @@ Assuming you've updated the BIOS to the latest version, do the following:
 
 At this point, your BIOS should be fully set up, and we can proceed to the next section: setting up MikroTik's Netinstall. For now, you can turn the PC off.
 
-## Install MikroTik RouterOS on Lenovo M920Q
+## Install MikroTik RouterOS on Lenovo M920q
 
 From experience, I must emphasize: installing RouterOS via USB stick is not possible. I tried burning [RouterOS](https://mikrotik.com/software) to a USB stick using [Rufus](https://rufus.ie/en/), set up the BIOS, and booted into the USB. Starting the RouterOS installation, I got a `no cdrom found` error.
 
@@ -97,3 +97,13 @@ In short, install RouterOS over the network. The USB process fails because, once
 Rather than duplicating all the content from MikroTik's original guide, simply follow the official [Netinstall guide](https://help.mikrotik.com/docs/spaces/ROS/pages/24805390/Netinstall). The installation process takes less than a minute, and the next time you boot, your Lenovo M920q will be ready to route.
 
 `Before finalizing the setup`, make sure to return to your BIOS setup, go to `Startup > Primary Boot Sequence`, and set your SSD or NVMe (depending on your hardware) back as the primary boot option. If you skip this, your Lenovo will try to boot from the network every time, causing long delays before it attempts another boot method.
+
+## Purchase the Mikrotik RouterOS License
+
+If everything went well up until this point, it means we are ready to do the final step, connect to our new amazing router and purchase the license.
+
+Unless you are about to register a mini ISP company and sell internet, just like myself, you'll want to get RouterOS Level 4 license. You can compare the licenses under [RouterOS license key levels](https://help.mikrotik.com/docs/spaces/ROS/pages/328149/RouterOS+license+keys#RouterOSlicensekeys-RouterOSlicensekeylevels). In short, you'll notice that the main difference between license level 4 and higher ups, are things like OVPN, Tunnels, EoIP, User Management, RADIUS, etc. In simple words, we don't care about the majority of those.
+
+To purchase the license, you will need to create a MikroTik account at [MikroTik Account](https://mikrotik.com/client/) page. Once your account is created, you will get your initial login information via email. (Make sure to change the password once you log in).
+
+Once you purchase the license, you will get an email with a subject `MikroTik RouterOS Licensed Key`, which will contain your license in a `.key` file. You will download the license, login to your router via e.g. winbox, go to `System > License` and click `Import Key...`. Once you import the key, your router will prompt you that it has to be restarted and after it does so, your new level 4 license will be applied to your device.
