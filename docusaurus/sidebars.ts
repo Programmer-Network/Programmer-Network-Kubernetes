@@ -93,7 +93,7 @@ const sidebars: SidebarsConfig = {
         },
         {
           type: "doc",
-          label: "MikroTik RouterOS on Lenovo M920Q",
+          label: "MikroTik RouterOS on Lenovo M920q",
           id: "networking/mikrotik/lenovo-m920q-roas",
         },
         {

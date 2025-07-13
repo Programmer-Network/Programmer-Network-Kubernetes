@@ -14,6 +14,7 @@ title: Kubernetes Networking Explained
 ## The Basics of Kubernetes Networking
 
 Kubernetes networking is designed to be **simple and flat**:
+
 - Any pod can communicate with any other pod in the cluster, regardless of which namespace they're in. This communication works out of the box without additional configuration.
 - Pods and services use **DNS** for service discovery instead of hardcoding IP addresses.
 
@@ -26,6 +27,7 @@ Every pod is assigned a unique IP address. All pods share a single, flat address
 Kubernetes provides a built-in DNS service that allows pods to resolve services using their names. For example:
 
 - A service called `nodejs-service` in the `default` namespace can be resolved by other pods in the same namespace as:
+
 ```
 http://nodejs-service
 ```
@@ -41,9 +43,11 @@ This DNS-based service discovery simplifies communication between pods and servi
 ## Key Networking Components in Kubernetes
 
 ### **A. Services**
+
 Services are used to expose a group of pods (selected using labels) over the network and provide a stable address for accessing them.
 
 Three key types of services:
+
 1. **ClusterIP** (default)
 
 - Accessible **within the cluster only**.
@@ -55,7 +59,7 @@ Three key types of services:
 - Exposes a service on a static port across all cluster nodes.
 - Mostly used for development purposes but not ideal for production due to limited network flexibility.
 
-3. **LoadBalancer** 
+3. **LoadBalancer**
 
 - Requests an external IP to expose the service outside your cluster. In K3s, this integrates with **MetalLB** to assign an IP from your private pool.
 
@@ -83,20 +87,21 @@ metadata:
     traefik.ingress.kubernetes.io/router.entrypoints: web
 spec:
   rules:
-  - host: nodejs.example.com
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: nodejs-service
-            port:
-              number: 80
+    - host: nodejs.example.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: nodejs-service
+                port:
+                  number: 80
 ```
 
 ### Benefits of Ingress:
-- Reduces the need for multiple `LoadBalancer` services—only Traefik’s load balancer requires an external IP.
+
+- Reduces the need for multiple `LoadBalancer` services, only Traefik’s load balancer requires an external IP.
 - Simplifies DNS-based routing for multiple services.
 
 ## Cross-Namespace Networking
@@ -104,7 +109,9 @@ spec:
 ### **Default Behavior:**
 
 In K3s/Kubernetes, pods and services in one namespace can communicate with those in another **by default**. You can achieve this by:
+
 1. Using DNS:
+
    - `<service-name>.<namespace>.svc.cluster.local`
    - Example: `http://postgres-service.database.svc.cluster.local`
 
@@ -141,8 +148,8 @@ metadata:
 spec:
   podSelector: {}
   policyTypes:
-  - Ingress
-  - Egress
+    - Ingress
+    - Egress
 ```
 
 - Blocks all traffic to/from pods in the `default` namespace unless explicitly allowed.
@@ -160,12 +167,12 @@ metadata:
 spec:
   podSelector: {}
   policyTypes:
-  - Ingress
+    - Ingress
   ingress:
-  - from:
-    - namespaceSelector:
-        matchLabels:
-          role: frontend
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              role: frontend
 ```
 
 - In the `backend` namespace, only pods from the `frontend` namespace (labeled `role: frontend`) can communicate.
@@ -185,10 +192,10 @@ spec:
     matchLabels:
       app: backend
   ingress:
-  - from:
-    - podSelector:
-        matchLabels:
-          app: frontend
+    - from:
+        - podSelector:
+            matchLabels:
+              app: frontend
 ```
 
 - Backend pods (`app: backend`) can only receive traffic from frontend pods (`app: frontend`).
@@ -198,26 +205,31 @@ spec:
 1. **DNS Resolution**
 
 - Verify service discovery with DNS:
+
 ```bash
 kubectl exec -it <pod-name> -- nslookup <service-name>
 ```
 
 2. **Curl/HTTP Testing**
+
 - Use `curl` or similar tools to confirm connectivity between services:
+
 ```bash
 kubectl exec -it <pod-name> -- curl <service-name>
 ```
 
 3. **Logs for Ingress**
+
 - Check Traefik logs to diagnose routing issues.
 
 4. **Network Policy Debugging**
+
 - Use tools like **Cilium** (if installed) or **NetworkPolicy Viewer** addons for better visualization of applied policies.
 
 ## Best Practices for K3s Networking
 
 - Use **ClusterIP** for internal services and restrict `NodePort` services.
-- Depend on **Ingress** for external HTTP/S access—reduce the use of multiple `LoadBalancer` services.
+- Depend on **Ingress** for external HTTP/S access, reduce the use of multiple `LoadBalancer` services.
 - Enforce a **default-deny policy** and gradually allow necessary traffic.
 - Use namespace labels and Network Policies to isolate and secure workloads.
 - Monitor and audit your networking policies and Traefik configurations regularly.

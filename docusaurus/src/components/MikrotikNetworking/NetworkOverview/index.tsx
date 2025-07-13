@@ -33,8 +33,8 @@ const NetworkOverview = () => (
         </DiagramBox>
         <div className="w-px h-8 bg-gray-700"></div>
         <DiagramBox>
-          <h3 className="font-bold !mb-0">RB3011 Router (The Brain)</h3>
-          <p className="!mb-0">Inter-VLAN Routing & Firewall</p>
+          <h3 className="font-bold !mb-0">Lenovo M920q Router (The Brain)</h3>
+          <p className="!mb-0">Inter-VLAN Routing, Firewall, VPN, Scripting</p>
         </DiagramBox>
         <div className="w-full text-center font-semibold text-[#ffab00]">
           VLAN Trunk (Single Cable)

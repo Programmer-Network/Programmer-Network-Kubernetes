@@ -19,7 +19,7 @@ const Summary = () => (
         </li>
         <li>
           <b className="font-semibold">Centralized Security:</b> All traffic is
-          inspected by the RB3011's powerful firewall.
+          inspected by the Lenovo M920q's powerful firewall.
         </li>
         <li>
           <b className="font-semibold">Optimized Performance:</b> Each device is

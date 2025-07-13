@@ -10,7 +10,7 @@ Make sure you have:
 - [x] [Set up your Mini-PCs (if any)](../hardware-raspberry-pi-setup/mini-pcs-setup.md)
 - [x] [Configured your Network](../networking/mikrotik/network-overview.mdx)
 
-Now, we are going to set up a Kubernetes cluster. You don't need to understand what Kubernetes is at this point—just follow the steps and you'll be able to use it. Once it's set up, you'll be able to deploy your applications and learn more about how it works.
+Now, we are going to set up a Kubernetes cluster. You don't need to understand what Kubernetes is at this point, just follow the steps and you'll be able to use it. Once it's set up, you'll be able to deploy your applications and learn more about how it works.
 
 In this guide, we will set up a [HA (High Availability)](https://en.wikipedia.org/wiki/High-availability_cluster) cluster with 3 master nodes. If you are using different [hardware](../hardware-raspberry-pi-setup/hardware.mdx), you can set up your cluster accordingly. For example, if you are using a single machine (e.g., a single Raspberry Pi, a single Mini-PC, etc.), you can set up a single master node cluster.
 

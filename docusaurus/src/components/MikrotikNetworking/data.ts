@@ -4,8 +4,8 @@
 */
 
 export const deviceConfigData = {
-  rb3011: {
-    title: "RB3011 Router",
+  lenovoM920q: {
+    title: "Lenovo M920q Router",
     steps: [
       {
         title: "Internet Connection (PPPoE on VLAN)",
@@ -34,11 +34,11 @@ add name="Telenor PPPoE" interface=vlan101-WAN user="your_telenor_username" pass
       {
         title: "Bridge & VLAN Interfaces",
         description:
-          "Next, we create a bridge to act as a container for our internal networks and attach our virtual VLAN interfaces to it. The sfp1 port will connect to our switch. If you are using different hardware and e.g. you might not have a sfp1 port, you can use the ether1 port instead. Just make sure to change the port name in the code.",
+          "Next, we create a bridge to group our internal networks and attach the virtual VLAN interfaces. The uplink to our switch uses ether2, which corresponds to the first SFP+ port on our Lenovo M920q. This is because, after manually installing MikroTik RouterOS, the Intel X520-DA2 SFP+ ports are detected as ether2 and ether3. If you use different hardware, your uplink port name may differ, just update the code accordingly.",
         code: `/interface bridge
 add name=main-bridge vlan-filtering=no
 /interface bridge port
-add bridge=main-bridge interface=sfp1 comment="Trunk to CRS326"
+add bridge=main-bridge interface=ether2 comment="Trunk to CRS326"
 
 /interface vlan
 add interface=main-bridge name=VLAN10_HOME vlan-id=10
@@ -275,7 +275,7 @@ disable [find name=api-ssl]`,
 };
 
 export const firewallConfigData = {
-  title: "Firewall Configuration (on RB3011)",
+  title: "Firewall Configuration (on Lenovo M920q)",
   steps: [
     {
       title: "Interface Lists",
@@ -303,20 +303,23 @@ add list=UNTRUSTED interface=VLAN20_K3S,VLAN99_GUEST`,
       code: `# This example uses Cloudflare. Replace the FQDN with your DNS provider's API endpoint.
 # The router will resolve and keep this IP list updated automatically.
 /ip firewall address-list
-add address=api.cloudflare.com list=dns-provider-apis comment="Cloudflare API for cert-manager"`,
+add address=api.cloudflare.com list=dns-provider-apis comment="Cloudflare API for cert-manager"
+# Add Cloudflare IPs for ingress filtering
+add address=1.1.1.1 list=cloudflare-ips
+add address=1.0.0.1 list=cloudflare-ips`,
     },
     {
       title: "Input Chain (Traffic to Router)",
       description:
         "These rules protect the router itself. The order of these rules is critical.",
       code: `/ip firewall filter
-add action=accept chain=input connection-state=established,related,untracked comment="Accept established/related"
+add action=accept chain=input connection-state=established,related,untracked comment="Allow established/related"
 add action=drop chain=input connection-state=invalid comment="Drop invalid"
-add action=accept chain=input protocol=icmp in-interface-list=TRUSTED comment="Allow ICMP from Trusted"
-add action=accept chain=input dst-port=22,80,443,8291 protocol=tcp in-interface=VLAN88_MGMT comment="Allow Management Access"
-add action=accept chain=input dst-port=53 protocol=tcp in-interface-list=LAN comment="Allow DNS (TCP) from LAN"
-add action=accept chain=input dst-port=53 protocol=udp in-interface-list=LAN comment="Allow DNS (UDP) from LAN"
-add action=accept chain=input dst-port=123 protocol=udp in-interface-list=LAN comment="Allow NTP from LAN"
+add action=accept chain=input protocol=icmp comment="Allow Ping to router"
+add action=accept chain=input protocol=udp in-interface-list=LAN dst-port=53 comment="Allow LAN DNS queries"
+add action=accept chain=input protocol=tcp in-interface-list=LAN dst-port=53 comment="Allow LAN DNS queries (TCP)"
+add action=accept chain=input src-address=192.168.10.253 comment="Allow my PC to manage router"
+add action=drop chain=input in-interface-list=WAN comment="Drop all other input from WAN"
 add action=drop chain=input comment="Drop all other input"`,
     },
     {
@@ -324,22 +327,27 @@ add action=drop chain=input comment="Drop all other input"`,
       description:
         "Here we control traffic between VLANs and the internet, enforcing our isolation policies.",
       code: `/ip firewall filter
-add action=fasttrack-connection chain=forward connection-state=established,related comment="FastTrack established/related"
-add action=accept chain=forward connection-state=established,related,untracked comment="Accept established/related"
+add action=accept chain=forward connection-state=established,related,untracked comment="Allow established/related"
 add action=drop chain=forward connection-state=invalid comment="Drop invalid"
-add action=accept chain=forward in-interface-list=TRUSTED out-interface-list=WAN comment="Allow Trusted to WAN"
-add action=accept chain=forward in-interface=VLAN99_GUEST out-interface-list=WAN comment="Allow Guest to WAN"
-# Add rule for cert-manager BEFORE dropping inter-VLAN traffic
-add action=accept chain=forward src-address=192.168.20.0/24 dst-address-list=dns-provider-apis dst-port=443 protocol=tcp comment="Allow K3S to contact DNS provider for certs"
-add action=drop chain=forward in-interface-list=LAN out-interface-list=LAN comment="Drop all inter-VLAN traffic by default"
+add action=accept chain=forward connection-state=new connection-nat-state=dstnat protocol=tcp dst-address=192.168.20.241 src-address-list=cloudflare-ips in-interface-list=WAN dst-port=80,443 comment="Allow incoming K3S traffic from Cloudflare"
+add action=drop chain=forward connection-state=new connection-nat-state=!dstnat in-interface-list=WAN comment="Drop new connections from WAN not DSTNATed"
+add action=accept chain=forward in-interface-list=TRUSTED out-interface-list=WAN comment="Allow trusted VLANs to access internet"
+add action=accept chain=forward protocol=tcp src-address=192.168.20.0/24 dst-address-list=dns-provider-apis dst-port=443 comment="Allow K3S to contact DNS provider for certs"
+add action=accept chain=forward src-address=192.168.10.253 dst-address=192.168.20.0/24 comment="Allow my PC to access K3S"
+add action=accept chain=forward src-address=192.168.10.253 dst-address=192.168.88.0/24 comment="Allow my PC to access Management VLAN"
+add action=accept chain=forward src-address=192.168.20.0/24 out-interface-list=WAN comment="Allow K3S Cluster outbound internet"
 add action=drop chain=forward comment="Drop all other forward"`,
     },
     {
-      title: "NAT (Masquerade)",
+      title: "NAT (Port Forwarding, Hairpin, and Masquerade)",
       description:
-        "This rule translates private internal IP addresses to a public IP for internet access.",
+        "These rules handle DNS bypass for K3S, port forwarding for HTTP/HTTPS to K3S Ingress, hairpin NAT for internal access, and masquerade for internet access.",
       code: `/ip firewall nat
-add action=masquerade chain=srcnat out-interface-list=WAN comment="Masquerade for Internet Access"`,
+add chain=dstnat action=accept protocol=udp src-address=192.168.20.0/24 dst-port=53 comment="Allow K3S DNS to bypass redirect"
+add chain=dstnat action=dst-nat to-addresses=192.168.20.241 to-ports=80 protocol=tcp in-interface-list=WAN dst-port=80 comment="Forward HTTP to K3S Ingress"
+add chain=dstnat action=dst-nat to-addresses=192.168.20.241 to-ports=443 protocol=tcp in-interface-list=WAN dst-port=443 comment="Forward HTTPS to K3S Ingress"
+add chain=srcnat action=masquerade src-address=192.168.0.0/16 dst-address=192.168.20.241 comment="Correct Hairpin NAT"
+add chain=srcnat action=masquerade src-address=192.168.0.0/16 out-interface-list=WAN comment="Main NAT rule for Internet Access"`,
     },
   ],
 };
@@ -388,7 +396,7 @@ export const hardeningConfigData = {
       title: "Secure MAC Server (on ALL devices)",
       description:
         "The MAC server allows Layer 2 access via Winbox, bypassing IP firewall rules. We must restrict it to the management network.",
-      code: `# Run on RB3011, CRS326, and RB2011
+      code: `# Run on Lenovo M920q, CRS326, and RB2011
 /tool mac-server
 set allowed-interface-list=TRUSTED
 /tool mac-server mac-winbox

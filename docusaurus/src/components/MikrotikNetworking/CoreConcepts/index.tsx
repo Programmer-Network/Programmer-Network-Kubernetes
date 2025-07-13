@@ -78,10 +78,10 @@ const CoreConcepts = () => (
             VLANs
           </a>{" "}
           are isolated, we need a way to let <em>some</em> traffic pass between
-          them in a controlled way. This is the job of the router (the RB3011).
-          The "Router-on-a-Stick" (RoaS) model uses a single physical cable,
-          configured as a <strong>VLAN Trunk</strong>, to connect the switch to
-          the router.
+          them in a controlled way. This is the job of the router (the Lenovo
+          M920q). The "Router-on-a-Stick" (RoaS) model uses a single physical
+          cable, configured as a <strong>VLAN Trunk</strong>, to connect the
+          switch to the router.
         </p>
         <p className="mt-4">
           Every packet of data that travels over this trunk cable gets a digital
