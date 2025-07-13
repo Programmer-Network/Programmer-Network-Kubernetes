@@ -72,7 +72,7 @@ Assuming you've updated the BIOS to the latest version, do the following:
 
 - Go to `Devices > USB Setup > Bluetooth` and set it to `disabled`. If you don't use the front USB ports, you can disable those too, leaving just one rear port enabled for keyboard or external screen setup.
 
-- Go to `Devices > Network Setup` and ensure all options except `Wireless LAN` are enabled. Disable `Wireless LAN`, this router won't connect to your switch via wireless. The `PXE` options must be enabled to install RouterOS via [Netinstall](https://help.mikrotik.com/docs/spaces/ROS/pages/24805390/Netinstall#Netinstall-InstructionsforWindows).
+- Go to `Devices > Network Setup` and ensure all options except `Wireless LAN` are enabled. Disable `Wireless LAN`, this router won't connect to your switch via wireless. The `PXE` options must be enabled to install RouterOS via [Netinstall](https://help.mikrotik.com/docs/spaces/ROS/pages/24805390/Netinstall).
 
 - Go to `Power` and set `After Power Loss` to `Power On`. This is the most critical setting for all Mini PCs, ensuring the hardware automatically powers on after an outage.
 
@@ -90,10 +90,10 @@ From experience, I must emphasize: installing RouterOS via USB stick is not poss
 
 <br />
 
-I thought it might be a corrupted ISO or USB stick, so I tried different sticks and Rufus settings, but nothing worked. Eventually, with help from AI and forums, I concluded you must follow MikroTik's [Netinstall guide](https://help.mikrotik.com/docs/spaces/ROS/pages/24805390/Netinstall#Netinstall-InstructionsforWindows).
+I thought it might be a corrupted ISO or USB stick, so I tried different sticks and Rufus settings, but nothing worked. Eventually, with help from AI and forums, I concluded you must follow MikroTik's [Netinstall guide](https://help.mikrotik.com/docs/spaces/ROS/pages/24805390/Netinstall).
 
 In short, install RouterOS over the network. The USB process fails because, once installation starts, RouterOS looks for a CD-ROM instead of recognizing the USB drive.
 
-Rather than duplicating all the content from MikroTik's original guide, simply follow the official [Netinstall guide](https://help.mikrotik.com/docs/spaces/ROS/pages/24805390/Netinstall#Netinstall-InstructionsforWindows). The installation process takes less than a minute, and the next time you boot, your Lenovo M920q will be ready to route.
+Rather than duplicating all the content from MikroTik's original guide, simply follow the official [Netinstall guide](https://help.mikrotik.com/docs/spaces/ROS/pages/24805390/Netinstall). The installation process takes less than a minute, and the next time you boot, your Lenovo M920q will be ready to route.
 
 `Before finalizing the setup`, make sure to return to your BIOS setup, go to `Startup > Primary Boot Sequence`, and set your SSD or NVMe (depending on your hardware) back as the primary boot option. If you skip this, your Lenovo will try to boot from the network every time, causing long delays before it attempts another boot method.
