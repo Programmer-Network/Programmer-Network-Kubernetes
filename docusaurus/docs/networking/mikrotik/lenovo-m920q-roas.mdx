@@ -3,6 +3,8 @@ sidebar_position: 3
 title: MikroTik RouterOS on Lenovo M920q
 ---
 
+You can have the greatest computers in the world, with insane amounts of CPU, RAM, and storage. But without proper networking, or if your network stack is a bottleneck, none of it will matter. Who cares if your NVMe can transfer data at lightning speed if your network is slow? Who cares if your API is written in binary and can process 17 trillion requests in negative time if your network adds four seconds of latency? Simply put, without top-notch networking, everything else will feel like a third-rate setup. That’s why I decided to step up my game and build this awesome machine as my dedicated router, the brain of the entire operation.
+
 As I mentioned in the [Hardware Overview](../../hardware-raspberry-pi-setup/hardware.mdx) section, you don't have to use the same hardware I did. If you have a different router running MikroTik RouterOS, you can skip this section. However, if you're looking for an enterprise-grade router for your home network at a much lower cost than buying hardware from MikroTik or other vendors, this section is for you.
 
 Many homelab setups I’ve seen on YouTube underestimate the importance of proper networking. Regardless of CPU, RAM, or storage, devices must communicate efficiently. Clients connect to the router, which means it must handle many firewall rules, NAT, VPN, etc.
@@ -98,12 +100,39 @@ Rather than duplicating all the content from MikroTik's original guide, simply f
 
 `Before finalizing the setup`, make sure to return to your BIOS setup, go to `Startup > Primary Boot Sequence`, and set your SSD or NVMe (depending on your hardware) back as the primary boot option. If you skip this, your Lenovo will try to boot from the network every time, causing long delays before it attempts another boot method.
 
-## Purchase the Mikrotik RouterOS License
+Your text is clear and mostly well-written. Here’s a proofread version with minor improvements for clarity and flow:
 
-If everything went well up until this point, it means we are ready to do the final step, connect to our new amazing router and purchase the license.
+## Purchase the MikroTik RouterOS License
 
-Unless you are about to register a mini ISP company and sell internet, just like myself, you'll want to get RouterOS Level 4 license. You can compare the licenses under [RouterOS license key levels](https://help.mikrotik.com/docs/spaces/ROS/pages/328149/RouterOS+license+keys#RouterOSlicensekeys-RouterOSlicensekeylevels). In short, you'll notice that the main difference between license level 4 and higher ups, are things like OVPN, Tunnels, EoIP, User Management, RADIUS, etc. In simple words, we don't care about the majority of those.
+If everything has gone well up to this point, you’re ready for the final step: connect to your new router and purchase the license.
 
-To purchase the license, you will need to create a MikroTik account at [MikroTik Account](https://mikrotik.com/client/) page. Once your account is created, you will get your initial login information via email. (Make sure to change the password once you log in).
+Unless you plan to register a mini ISP company and sell internet, just like myself, you’ll want to get a RouterOS Level 4 license. You can compare the licenses at [RouterOS license key levels](https://help.mikrotik.com/docs/spaces/ROS/pages/328149/RouterOS+license+keys#RouterOSlicensekeys-RouterOSlicensekeylevels). In short, the main differences between level 4 and higher licenses are features like OVPN, tunnels, EoIP, user management, RADIUS, etc. For most users, these aren’t necessary.
 
-Once you purchase the license, you will get an email with a subject `MikroTik RouterOS Licensed Key`, which will contain your license in a `.key` file. You will download the license, login to your router via e.g. winbox, go to `System > License` and click `Import Key...`. Once you import the key, your router will prompt you that it has to be restarted and after it does so, your new level 4 license will be applied to your device.
+To purchase the license, create a MikroTik account at the [MikroTik Account](https://mikrotik.com/client/) page. Once your account is created, you’ll receive your initial login information via email (be sure to change your password after logging in).
+
+After purchasing the license, you’ll receive an email with the subject `MikroTik RouterOS Licensed Key`, which will contain your license in a `.key` file. Download the license, log in to your router (e.g., via Winbox), go to `System > License`, and click `Import Key...`. Once you import the key, your router will prompt you to restart. After restarting, your new level 4 license will be applied to your device.
+
+## Moving the Configuration from an Old MikroTik Router
+
+Until now, I was using an RB3011. I exported its configuration and, with minimal changes, imported it to the new Lenovo M920q router. This saved a lot of time, as I didn’t have to recreate everything from scratch.
+
+If your current (original) router, such as an RB3011 or similar, is still running, follow these steps:
+
+**Export the config on the RB3011:**
+
+```bash
+# You can name the file however you like
+/export file=rb3011-backup
+```
+
+This will generate a file named `rb3011-backup.rsc`.
+
+Download this file using Winbox, WebFig, or SCP. You’ll find it under the `Files` menu.
+
+Open it in your preferred text editor (e.g., Neovim, VSCode, Emacs).
+
+At this point, you’ll want to adjust the config to match the interfaces on the Lenovo M920q. In my case, I only needed to search for `sfp1` (from the RB3011) and replace it with `ether2`. This is because, after installing the [Intel X520-DA2](https://www.aliexpress.com/item/1005005920672631.html?spm=a2g0o.order_list.order_list_main.11.329f180254cPlG), MikroTik RouterOS identifies the two SFP+ ports as `ether2` and `ether3`. So, your router will appear to have three Ethernet ports: `ether1`, `ether2`, and `ether3`. Functionally, these are still SFP+ ports, only the naming is different.
+
+Make the absolute minimum changes needed to get the new router up and running. Avoid making lots of adjustments at once, as this can make troubleshooting difficult (e.g., is the Lenovo working? Is the new SFP cable good?).
+
+Once you’ve confirmed the basic setup works, you can make further changes and experiment as needed.
