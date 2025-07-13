@@ -135,4 +135,10 @@ At this point, you’ll want to adjust the config to match the interfaces on the
 
 Make the absolute minimum changes needed to get the new router up and running. Avoid making lots of adjustments at once, as this can make troubleshooting difficult (e.g., is the Lenovo working? Is the new SFP cable good?).
 
-Once you’ve confirmed the basic setup works, you can make further changes and experiment as needed.
+Once you’ve made the minimal necessary changes, restore the backup onto your Lenovo M920q.
+
+After confirming that the basic setup works, you can proceed with additional changes and experiment as needed.
+
+## Keep Your Old Router Around as a Backup
+
+If you’re not in desperate need of money and don’t have to sell your old router, I recommend keeping it. You can use it to practice MikroTik configurations and have a backup in case your Lenovo ever stops functioning. Since much of this setup is about Kubernetes and we’re calling it a `mini data center`, high availability (HA) should apply at every level, not just the Kubernetes nodes. So, stash your old router in a safe place as a backup plan.
