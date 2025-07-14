@@ -4,7 +4,7 @@ title: DDNS Using Cloudflare
 
 ## MikroTik Scripting
 
-After nearly two decades as programmers, we find MikroTik scripting to be one of RouterOS’s best features. It enables creativity and extensibility, allowing us to quickly write scripts whenever a new use case arises. The scripting language is simple, and if we have programming experience, it should feel straightforward.
+After nearly two decades as programmers, I find MikroTik scripting to be one of RouterOS’s best features. It enables creativity and extensibility, allowing me to quickly write scripts whenever a new use case arises. The scripting language is simple, and if you have programming experience, it should feel straightforward.
 
 ## Why do we need a DDNS?
 
