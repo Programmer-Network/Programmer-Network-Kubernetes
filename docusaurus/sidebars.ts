@@ -113,6 +113,16 @@ const sidebars: SidebarsConfig = {
         },
         {
           type: "doc",
+          label: "Configure Email",
+          id: "networking/mikrotik/configure-email-on-mikrotik",
+        },
+        {
+          type: "doc",
+          label: "Dynamic DNS with Cloudflare",
+          id: "networking/mikrotik/dynamic-dns-with-cloudflare",
+        },
+        {
+          type: "doc",
           label: "Common Scenarios",
           id: "networking/mikrotik/common-scenarios",
         },
