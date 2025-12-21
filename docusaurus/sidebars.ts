@@ -275,12 +275,6 @@ const sidebars: SidebarsConfig = {
         },
       ],
     },
-
-    {
-      id: "terminology",
-      type: "doc",
-      label: "Terminology",
-    },
   ],
 };
 
