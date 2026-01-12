@@ -9,7 +9,7 @@ exercise introduces database management in Kubernetes.
 
 ## Prerequisites
 
-- Completed [Exercise 6: Services and Networking](./06-services-and-networking)
+- Completed [Exercise 6: Services and Networking](./services-and-networking)
 - CloudNative PG operator installed (check with
   `kubectl get pods -n cnpg-system`)
 - Longhorn storage available
@@ -217,7 +217,7 @@ This will delete the cluster and all associated resources.
 
 ## Next Steps
 
-→ [Exercise 8: CloudNative PG Advanced](./08-cloudnative-pg-advanced)
+→ [Exercise 8: CloudNative PG Advanced](./cloudnative-pg-advanced)
 
 ## Additional Practice
 

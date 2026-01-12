@@ -53,11 +53,11 @@ Before starting these exercises, make sure you have:
 Start here if you're new to Kubernetes. These exercises cover the fundamental
 concepts you'll use everywhere.
 
-1. **[Basic Kubernetes Resources](./01-basic-kubernetes)** - Pods, Deployments,
-   and Services
-2. **[Namespaces and Resources](./02-namespaces-and-resources)** - Organizing
-   your cluster
-3. **[ConfigMaps and Secrets](./03-configmaps-and-secrets)** - Managing
+1. **[Basic Kubernetes Resources](./basic-kubernetes)** - Pods, Deployments, and
+   Services
+2. **[Namespaces and Resources](./namespaces-and-resources)** - Organizing your
+   cluster
+3. **[ConfigMaps and Secrets](./configmaps-and-secrets)** - Managing
    configuration and sensitive data
 
 ### Intermediate Level
@@ -65,24 +65,24 @@ concepts you'll use everywhere.
 Once you're comfortable with basics, these exercises introduce storage and
 networking concepts.
 
-4. **[Persistent Volumes](./04-persistent-volumes)** - Understanding storage in
+4. **[Persistent Volumes](./persistent-volumes)** - Understanding storage in
    Kubernetes
-5. **[Longhorn Storage](./05-longhorn-storage)** - Using Longhorn for persistent
+5. **[Longhorn Storage](./longhorn-storage)** - Using Longhorn for persistent
    storage
-6. **[Services and Networking](./06-services-and-networking)** - Different
-   service types and networking patterns
+6. **[Services and Networking](./services-and-networking)** - Different service
+   types and networking patterns
 
 ### Advanced Level
 
 These exercises combine everything you've learned and introduce database
 management and complete application stacks.
 
-7. **[CloudNative PG Basics](./07-cloudnative-pg-basics)** - Creating and
-   managing PostgreSQL clusters
-8. **[CloudNative PG Advanced](./08-cloudnative-pg-advanced)** - Database
+7. **[CloudNative PG Basics](./cloudnative-pg-basics)** - Creating and managing
+   PostgreSQL clusters
+8. **[CloudNative PG Advanced](./cloudnative-pg-advanced)** - Database
    management, backups, and advanced features
-9. **[Complete Application](./10-complete-application)** - Full-stack
-   application with database, storage, and services
+9. **[Complete Application](./complete-application)** - Full-stack application
+   with database, storage, and services
 
 ## Progression Guide
 
@@ -146,8 +146,8 @@ If you get stuck:
 
 ## Ready to Start?
 
-Begin with [Exercise 1: Basic Kubernetes Resources](./01-basic-kubernetes) and
-work through the exercises in order. Remember, the goal isn't to rush through
+Begin with [Exercise 1: Basic Kubernetes Resources](./basic-kubernetes) and work
+through the exercises in order. Remember, the goal isn't to rush through
 them—it's to build a solid understanding of how Kubernetes works in practice.
 
 Good luck, and have fun! 🚀

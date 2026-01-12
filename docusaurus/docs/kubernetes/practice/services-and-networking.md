@@ -9,7 +9,7 @@ Understand when to use ClusterIP, NodePort, and LoadBalancer services.
 
 ## Prerequisites
 
-- Completed [Exercise 5: Longhorn Storage](./05-longhorn-storage)
+- Completed [Exercise 5: Longhorn Storage](./longhorn-storage)
 - Understanding of Deployments and Pods
 - MetalLB installed (for LoadBalancer type) - check with
   `kubectl get pods -n metallb-system`
@@ -242,7 +242,7 @@ kubectl delete namespace practice-06
 
 ## Next Steps
 
-→ [Exercise 7: CloudNative PG Basics](./07-cloudnative-pg-basics)
+→ [Exercise 7: CloudNative PG Basics](./cloudnative-pg-basics)
 
 ## Additional Practice
 

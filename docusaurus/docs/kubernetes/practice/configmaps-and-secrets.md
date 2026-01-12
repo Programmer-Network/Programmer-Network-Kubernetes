@@ -11,7 +11,7 @@ and secure.
 ## Prerequisites
 
 - Completed
-  [Exercise 2: Namespaces and Resources](./02-namespaces-and-resources)
+  [Exercise 2: Namespaces and Resources](./namespaces-and-resources)
 - Understanding of Deployments and Pods
 
 ## Exercise: Configure an Application
@@ -245,7 +245,7 @@ kubectl delete namespace practice-03
 
 ## Next Steps
 
-→ [Exercise 4: Persistent Volumes](./04-persistent-volumes)
+→ [Exercise 4: Persistent Volumes](./persistent-volumes)
 
 ## Additional Practice
 

@@ -214,7 +214,7 @@ kubectl delete -f namespace.yaml
 
 ## Next Steps
 
-→ [Exercise 2: Namespaces and Resources](./02-namespaces-and-resources)
+→ [Exercise 2: Namespaces and Resources](./namespaces-and-resources)
 
 ## Additional Practice
 

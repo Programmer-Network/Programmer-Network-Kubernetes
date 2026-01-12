@@ -9,7 +9,7 @@ backups, and connecting applications to databases.
 
 ## Prerequisites
 
-- Completed [Exercise 7: CloudNative PG Basics](./07-cloudnative-pg-basics)
+- Completed [Exercise 7: CloudNative PG Basics](./cloudnative-pg-basics)
 - Understanding of PostgreSQL basics
 - CloudNative PG operator installed
 
@@ -262,7 +262,7 @@ kubectl delete namespace practice-08
 
 ## Next Steps
 
-→ [Exercise 10: Complete Application](./10-complete-application)
+→ [Exercise 10: Complete Application](./complete-application)
 
 ## Additional Practice
 

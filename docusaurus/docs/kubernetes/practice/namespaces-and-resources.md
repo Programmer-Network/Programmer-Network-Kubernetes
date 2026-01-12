@@ -9,7 +9,7 @@ resource management concepts like resource quotas and labels.
 
 ## Prerequisites
 
-- Completed [Exercise 1: Basic Kubernetes](./01-basic-kubernetes)
+- Completed [Exercise 1: Basic Kubernetes](./basic-kubernetes)
 - Understanding of Pods, Deployments, and Services
 
 ## Exercise: Organize Resources with Namespaces
@@ -190,7 +190,7 @@ kubectl delete namespace production
 
 ## Next Steps
 
-→ [Exercise 3: ConfigMaps and Secrets](./03-configmaps-and-secrets)
+→ [Exercise 3: ConfigMaps and Secrets](./configmaps-and-secrets)
 
 ## Additional Practice
 

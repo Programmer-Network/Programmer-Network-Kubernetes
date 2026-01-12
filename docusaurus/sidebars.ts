@@ -165,16 +165,6 @@ const sidebars: SidebarsConfig = {
             },
             {
               type: 'doc',
-              label: 'Kubernetes YAML Structure',
-              id: 'kubernetes/kubernetes-yml-structure',
-            },
-            {
-              type: 'doc',
-              label: 'Common Kubernetes Commands',
-              id: 'kubernetes/common-kubernetes-commands',
-            },
-            {
-              type: 'doc',
               label: 'Kubernetes 80/20 Rule',
               id: 'kubernetes/kubernetes-80-20-rule',
             },

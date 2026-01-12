@@ -10,7 +10,7 @@ storage.
 
 ## Prerequisites
 
-- Completed [Exercise 3: ConfigMaps and Secrets](./03-configmaps-and-secrets)
+- Completed [Exercise 3: ConfigMaps and Secrets](./configmaps-and-secrets)
 - Understanding of Deployments and Pods
 
 ## Exercise: Create an Application with Persistent Storage
@@ -178,7 +178,7 @@ This will also delete the PVC and the underlying volume.
 
 ## Next Steps
 
-→ [Exercise 5: Longhorn Storage](./05-longhorn-storage)
+→ [Exercise 5: Longhorn Storage](./longhorn-storage)
 
 ## Additional Practice
 

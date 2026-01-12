@@ -9,7 +9,7 @@ cluster. Understand Longhorn-specific features and volume management.
 
 ## Prerequisites
 
-- Completed [Exercise 4: Persistent Volumes](./04-persistent-volumes)
+- Completed [Exercise 4: Persistent Volumes](./persistent-volumes)
 - Longhorn installed in your cluster (check with
   `kubectl get pods -n longhorn-system`)
 
@@ -207,7 +207,7 @@ This will delete the PVC and the Longhorn volume.
 
 ## Next Steps
 
-→ [Exercise 6: Services and Networking](./06-services-and-networking)
+→ [Exercise 6: Services and Networking](./services-and-networking)
 
 ## Additional Practice
 
