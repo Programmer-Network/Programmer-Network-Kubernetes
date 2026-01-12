@@ -1,0 +1,16 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: my-postgres-cluster
+  namespace: postgres-db
+spec:
+  instances: 3
+  primaryUpdateMethod: switchover
+  storage:
+    size: 1Gi
+    storageClass: my-first-storage-class
+  bootstrap:
+    initdb:
+      # Avoid creating the default app database
+      postInitSQL:
+        - CREATE USER appuser WITH PASSWORD 'appuser_password';

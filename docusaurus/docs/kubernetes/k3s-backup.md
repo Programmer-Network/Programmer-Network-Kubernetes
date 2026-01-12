@@ -1,94 +1,131 @@
 ---
-title: K3S Backup
+title: Production Backup Strategy Overview
 ---
 
-## Backup and Restore for Single-Node K3s Cluster Using SQLite
+## Overview
 
-[Ansible Playbook](/ansible/playbooks/backup-k3s.yml)
+This production K3s cluster uses a comprehensive four-layer backup strategy to
+ensure data protection at different levels:
 
-When working with a single-node K3s cluster, the default datastore is [SQLite](https://docs.k3s.io/datastore/backup-restore#backup-and-restore-with-sqlite), which is a lightweight, file-based database. Unfortunately, K3s does not provide specialized tools for backing up SQLite in single-node configurations.
+1. **[K3s etcd Snapshots](./k3s-backup-etcd)** - Control plane database backups
+2. **[Longhorn Volume Backups](./k3s-backup-longhorn)** - Persistent volume
+   backups
+3. **[Velero Cluster Backups](./k3s-backup-velero)** - Application-aware cluster
+   backups
+4. **[CloudNative PG Backups](./k3s-backup-cloudnative-pg)** - PostgreSQL
+   database-consistent backups with point-in-time recovery
 
-In contrast, if you're running a multi-node (High Availability) cluster using etcd as the datastore, K3s offers a convenient [`k3s etcd-snapshot`](https://docs.k3s.io/cli/etcd-snapshot) command for backups and recovery. However, this tool is not applicable for single-node clusters where SQLite is the default datastore.
+All backups are stored in Cloudflare R2, providing off-site redundancy and
+disaster recovery capabilities.
 
-### Why Manually Back Up?
+## Backup Schedule Summary
 
-SQLite backups in K3s require manual steps because:
+| Layer            | Schedule               | Retention | Destination   |
+| ---------------- | ---------------------- | --------- | ------------- |
+| K3s etcd         | Daily at 1:00 AM       | 5 days    | Cloudflare R2 |
+| Longhorn Volumes | Daily at 2:00 AM       | 7 days    | Cloudflare R2 |
+| Velero Cluster   | Daily at 3:00 AM       | 14 days   | Cloudflare R2 |
+| CloudNative PG   | Every 6 hours (4x/day) | 30 days   | Cloudflare R2 |
 
-* SQLite is a simple, file-based database, so backing it up is as easy as copying key directories.
-* K3s doesn't provide automatic backup utilities for this.
+## Prerequisites: Cloudflare R2 Setup
 
-The good news is that manual backups are not too complicated. In this guide, we'll walk you through how to perform a manual backup and restore of K3s data using simple tools.
+Before configuring backups, you need a Cloudflare R2 bucket and API credentials:
 
-## Backup and Restore for Single-Node K3s (SQLite)
+1. **Create an R2 Bucket:**
+   - In your Cloudflare dashboard, go to **R2** and click **Create bucket**
+   - Give it a unique name (e.g., `k3s-backup-repository`)
+   - Note your **S3 Endpoint URL** from the bucket's main page:
+     `https://<ACCOUNT_ID>.r2.cloudflarestorage.com`
 
-### Backup Process:
+2. **Create R2 API Credentials:**
+   - On the main R2 page, click **Manage R2 API Tokens**
+   - Click **Create API Token**
+   - Give it a name (e.g., `k3s-backup-token`) and grant it **Object Read &
+     Write** permissions
+   - Securely copy the **Access Key ID** and **Secret Access Key**
 
-1. **Identify Critical Files**:
+You'll need these credentials for all three backup layers.
 
-- SQLite Database: `/var/lib/rancher/k3s/server/db/`
-- TLS Certificates: `/var/lib/rancher/k3s/server/tls/`
-- Join Token: `/var/lib/rancher/k3s/server/token`
+## Why Four Layers?
 
-2. Create Backup Folder on Local Machine:
+Each backup layer serves a specific purpose:
+
+- **etcd Snapshots**: Protect the Kubernetes control plane state (API objects,
+  cluster configuration)
+- **Longhorn Backups**: Protect persistent volume data independently of cluster
+  state
+- **Velero Backups**: Provide application-aware backups that capture both
+  resources and volumes together
+- **CloudNative PG Backups**: Provide PostgreSQL-consistent backups with
+  point-in-time recovery capabilities
+
+This multi-layer approach ensures you can recover from different types of
+failures:
+
+- Control plane corruption → Restore from etcd snapshot
+- Volume data loss → Restore from Longhorn backup
+- Complete cluster failure → Restore from Velero backup
+- Database corruption/PITR → Restore from CloudNative PG backup
+
+## Quick Links
+
+- **[Setup etcd Snapshots](./k3s-backup-etcd)** - Configure control plane
+  backups
+- **[Setup Longhorn Backups](./k3s-backup-longhorn)** - Configure volume backups
+- **[Setup Velero Backups](./k3s-backup-velero)** - Configure cluster backups
+- **[Setup CloudNative PG Backups](./k3s-backup-cloudnative-pg)** - Configure
+  PostgreSQL backups
+- **[Disaster Recovery](./k3s-backup-disaster-recovery)** - Recovery procedures
+
+## Monitoring and Maintenance
+
+### Check Backup Status
+
+**etcd Snapshots:**
 
 ```bash
-mkdir -p ~/k3s-backups/
+sudo k3s etcd-snapshot list
 ```
 
-3. Copy Files from K3s Server to Local Machine:
+**Longhorn Backups:**
 
 ```bash
-scp -r user@master_node:/var/lib/rancher/k3s/server/db ~/k3s-backups/
-scp -r user@master_node:/var/lib/rancher/k3s/server/tls ~/k3s-backups/
-scp user@master_node:/var/lib/rancher/k3s/server/token ~/k3s-backups/
+kubectl get recurringjobs -n longhorn-system
+kubectl get jobs -n longhorn-system
 ```
 
-4. (Optional) Compress the Backup:
+**Velero Backups:**
 
 ```bash
-tar -czf ~/k3s-backups/k3s-backup-$(date +%F_%T).tar.gz -C ~/k3s-backups db tls token
+kubectl get schedules -n velero
+velero backup get
 ```
 
-### Restore Process:
-
-1. Stop K3s:
+**CloudNative PG Backups:**
 
 ```bash
-sudo systemctl stop k3s
+kubectl get backups -n <postgres-namespace>
+kubectl get cronjobs -n <postgres-namespace>
 ```
 
-2. Upload Backup from Local Machine to K3s Node:
+### Backup Health Checks
 
-```bash
-scp -r ~/k3s-backups/db user@master_node:/var/lib/rancher/k3s/server/
-scp -r ~/k3s-backups/tls user@master_node:/var/lib/rancher/k3s/server/
-scp ~/k3s-backups/token user@master_node:/var/lib/rancher/k3s/server/
-```
+Regularly verify that backups are completing successfully:
 
-3. Ensure Correct Permissions:
+1. **Check R2 bucket** for recent backup files
+2. **Review Velero backup logs:**
+   ```bash
+   kubectl logs -n velero deployment/velero
+   ```
+3. **Check Longhorn backup jobs:**
+   ```bash
+   kubectl get jobs -n longhorn-system -l app=longhorn-manager
+   ```
 
-```bash
-sudo chown -R root:root /var/lib/rancher/k3s/server/db /var/lib/rancher/k3s/server/tls
-sudo chown root:root /var/lib/rancher/k3s/server/token
-sudo chmod 0600 /var/lib/rancher/k3s/server/token
-```
+## References
 
-4. Start K3s:
-
-```bash
-sudo systemctl start k3s
-```
-
-5. Verify Cluster Health:
-
-```bash
-kubectl get nodes
-kubectl get pods --all-namespaces
-```
-
-### Summary:
-
-- Backup: Copy `db/`, `tls/`, and `token` from `/var/lib/rancher/k3s/server/` to your local machine.
-
-- Restore: Stop K3s, upload those files back to the node, ensure permissions, and start K3s again.
-
+- **[etcd Snapshots](./k3s-backup-etcd)** - Control plane backup documentation
+- **[Longhorn Backups](./k3s-backup-longhorn)** - Volume backup documentation
+- **[Velero Backups](./k3s-backup-velero)** - Cluster backup documentation
+- **[CloudNative PG Backups](./k3s-backup-cloudnative-pg)** - PostgreSQL backup
+  documentation

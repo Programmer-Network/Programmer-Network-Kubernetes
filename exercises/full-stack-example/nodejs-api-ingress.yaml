@@ -1,12 +1,12 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: traefik-ingress
+  name: nodejs-ingress
   namespace: nodejs
 spec:
   ingressClassName: traefik
   rules:
-    - host: node-api.local.host
+    - host: nodejs.local.host
       http:
         paths:
           - path: /
@@ -15,4 +15,4 @@ spec:
               service:
                 name: nodejs-api
                 port:
-                  number: 3000
+                  number: 80

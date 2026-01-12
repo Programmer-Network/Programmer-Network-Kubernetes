@@ -53,21 +53,23 @@ export default function App() {
             />
           </div>
 
-          {/* Right Side: Explanations */}
-          <div className="space-y-2 col-span-4">
-            {sections.map(section => (
+          {/* Right Side: Explanation (single card) */}
+          <div className="col-span-4 max-w-full">
+            {highlightedSection ? (
               <ExplanationCard
-                key={section.id}
-                section={section}
-                styles={sectionStyles[section.id]}
-                isHighlighted={
-                  highlightedSection &&
-                  highlightedSection.title.startsWith(section.title)
-                }
-                onMouseEnter={() => handleHover(section)}
+                section={highlightedSection}
+                styles={sectionStyles[highlightedSection.id]}
+                isHighlighted={true}
+                onMouseEnter={() => handleHover(highlightedSection)}
                 onMouseLeave={() => handleHover(null)}
               />
-            ))}
+            ) : (
+              <div className="border-l-4 border-gray-300 dark:border-gray-600 p-4 rounded-r-lg bg-gray-50 dark:bg-gray-800/50">
+                <p className="text-sm text-gray-500 dark:text-gray-400 italic">
+                  Hover over any section in the YAML code to see its explanation
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </div>

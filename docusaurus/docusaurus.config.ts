@@ -77,8 +77,8 @@ const config: Config = {
     },
     prism: {
       additionalLanguages: ["bash"],
-      theme: prismThemes.ultramin,
-      darkTheme: prismThemes.gruvboxMaterialDark,
+      theme: prismThemes.dracula,
+      darkTheme: prismThemes.nightOwl,
     },
     colorMode: {
       defaultMode: "dark", // Set dark mode as the default

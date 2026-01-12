@@ -2,13 +2,16 @@
 title: Writing YAML files for Kubernetes
 ---
 
-Writing YAML files for Kubernetes involves understanding the basic structure and key components used to define cluster objects. Here's a simple logical guide to help you write k3s YAML files manually:
+Writing YAML files for Kubernetes involves understanding the basic structure and
+key components used to define cluster objects. Here's a simple logical guide to
+help you write k3s YAML files manually:
 
 ### Basic Structure of a Kubernetes YAML File
 
 #### API Version (`apiVersion`):
 
-Every YAML file starts with an API version. It's a string that indicates the version of the Kubernetes API you're using for the object. 
+Every YAML file starts with an API version. It's a string that indicates the
+version of the Kubernetes API you're using for the object.
 
 Common examples include:
 
@@ -19,7 +22,8 @@ Common examples include:
 ---
 
 **Kind (`kind`)**:
-- This represents the type of Kubernetes resource you're defining. 
+
+- This represents the type of Kubernetes resource you're defining.
 
 Some common kinds are:
 
@@ -42,21 +46,20 @@ This section includes basic metadata about the object, such as:
 
 **Spec (`spec`)**:
 
-This section contains the specifications of the object. 
+This section contains the specifications of the object.
 
-It varies significantly between different kinds, but here are some general guidelines:
+It varies significantly between different kinds, but here are some general
+guidelines:
 
-**For Deployments**:
-    - Define `replicas` to set the desired number of pod copies.
-    - Use `selector` to match Pods with labels.
-    - Define a `template` for the Pod specification.
+**For Deployments**: - Define `replicas` to set the desired number of pod
+copies. - Use `selector` to match Pods with labels. - Define a `template` for
+the Pod specification.
 
-**For Services**:
-    - Define `selector` to route traffic to the right Pods.
-    - Set `ports` to map incoming traffic to the target Pods.
+**For Services**: - Define `selector` to route traffic to the right Pods. - Set
+`ports` to map incoming traffic to the target Pods.
 
-**For Ingress**:
-    - Define rules for routing external HTTP/S traffic to internal services.
+**For Ingress**: - Define rules for routing external HTTP/S traffic to internal
+services.
 
 ---
 
@@ -64,16 +67,21 @@ It varies significantly between different kinds, but here are some general guide
 
 **Determine the Object Type**:
 
-Decide whether you need a Deployment, Service, Pod, etc. This dictates the fields you'll need.
+Decide whether you need a Deployment, Service, Pod, etc. This dictates the
+fields you'll need.
 
 **Set the API Version and Kind**:
 
-Reference Kubernetes documentation or k3s-specific resources to know which API version to use and set the appropriate kind.
+Reference Kubernetes documentation or k3s-specific resources to know which API
+version to use and set the appropriate kind.
 
 **Add Metadata**:
 
-Assign a name to your object and optionally a namespace. Proper naming conventions help manage and track resources.
+Assign a name to your object and optionally a namespace. Proper naming
+conventions help manage and track resources.
 
 **Define the Spec**:
 
-Tailor this section based on the object type. Carefully specify details like the number of replicas for Deployments, port mappings for Services, or routing rules for Ingress.
+Tailor this section based on the object type. Carefully specify details like the
+number of replicas for Deployments, port mappings for Services, or routing rules
+for Ingress.

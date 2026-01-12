@@ -3,5 +3,9 @@
         "https://i.ibb.co/xYkFskM/space-colorful-waves-abstract-4k-36.jpg"
     ],
     "background.autoInstall": true,
-    "background.smoothImageRendering": true
+    "background.smoothImageRendering": true,
+    "twitch.channel": "programmer_network",
+    "twitch.oauth": "oauth:xgqnvk20qflyufpd33kcibqp74a869",
+    "twitch.username": "programmer_network",
+    "ansible.python.interpreterPath": "/bin/python3"
 }

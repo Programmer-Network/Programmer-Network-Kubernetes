@@ -7,5 +7,7 @@ data:
   POSTGRES_USER: appuser
   POSTGRES_PASSWORD: appuser_password
   POSTGRES_DB: app
-  POSTGRES_HOST: my-postgres-cluster-rw
+  POSTGRES_HOST: my-postgres-cluster-rw.postgres-db.svc.cluster.local
   POSTGRES_PORT: "5432"
+
+  

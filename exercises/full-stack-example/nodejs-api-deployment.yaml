@@ -21,6 +21,8 @@ spec:
           volumeMounts:
             - name: data
               mountPath: /app/data
+            - name: config-volume
+              mountPath: /app/config
           envFrom:
             - configMapRef:
                 name: nodejs-api-configmap
@@ -35,3 +37,6 @@ spec:
         - name: data
           persistentVolumeClaim:
             claimName: nodejs-api-pvc
+        - name: config-volume
+          configMap:
+            name: nodejs-api-configmap

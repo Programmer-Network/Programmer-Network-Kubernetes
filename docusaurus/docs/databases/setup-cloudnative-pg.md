@@ -2,31 +2,100 @@
 title: CloudNativePG Operator
 ---
 
-### Install the CloudNativePG Operator
+## Overview
+
+CloudNativePG is a Kubernetes operator for PostgreSQL that simplifies database
+cluster management, providing features like high availability, automated
+backups, and seamless upgrades.
+
+## Installation
+
+There are two ways to install CloudNativePG: via ArgoCD (recommended for GitOps
+workflows) or manually using kubectl.
+
+### Option 1: Install via ArgoCD (Recommended)
+
+If you're using ArgoCD for GitOps, you can manage the CloudNativePG operator as
+an ArgoCD Application. This ensures the operator stays up to date and is managed
+declaratively.
+
+Create an ArgoCD Application manifest (e.g., `cloudnative-pg-application.yaml`):
+
+```yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cloudnative-pg-operator
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: argocd
+    server: https://kubernetes.default.svc
+  project: cloudnativepg-project
+  source:
+    path: releases/
+    repoURL: https://github.com/cloudnative-pg/cloudnative-pg.git
+    targetRevision: main
+    directory:
+      recurse: false
+      include: 'cnpg-1.26.0.yaml'
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - ServerSideApply=true
+      - ApplyOutOfSyncOnly=true
+```
+
+Apply the application:
+
+```bash
+kubectl apply -f cloudnative-pg-application.yaml
+```
+
+ArgoCD will automatically install and keep the operator updated. Check the
+application status:
+
+```bash
+kubectl get application cloudnative-pg-operator -n argocd
+```
+
+### Option 2: Install Manually using kubectl
 
 **Create the [CloudNativePG](https://cloudnative-pg.io) Namespace**
-First, create a namespace for CloudNativePG. You don't have to do this, but it's good practice to separate operators into their own namespaces.
+
+First, create a namespace for CloudNativePG. You don't have to do this, but it's
+good practice to separate operators into their own namespaces.
 
 ```bash
 kubectl create namespace cnpg-system
 ```
 
-**Install the [CloudNativePG](https://cloudnative-pg.io) Operator using kubectl**
+**Install the [CloudNativePG](https://cloudnative-pg.io) Operator using
+kubectl**
 
-The CloudNativePG team provides a manifest file that’s hosted publicly. You can fetch it using `kubectl` directly from their GitHub repository and apply it to your cluster.
+The CloudNativePG team provides a manifest file that’s hosted publicly. You can
+fetch it using `kubectl` directly from their GitHub repository and apply it to
+your cluster.
 
 ```bash
 # Take the latest version from: https://cloudnative-pg.io/documentation/current/installation_upgrade/
+# Example for version 1.26.0:
 
 kubectl apply --server-side -f \
-  https://raw.githubusercontent.com/cloudnative-pg/cloudnative-pg/release-1.24/releases/cnpg-1.24.1.yaml
+  https://raw.githubusercontent.com/cloudnative-pg/cloudnative-pg/release-1.26/releases/cnpg-1.26.0.yaml
 ```
 
-This command applies all necessary resources such as CRDs, RBAC permissions, and the operator's Deployment.
+This command applies all necessary resources such as CRDs, RBAC permissions, and
+the operator's Deployment.
 
 **Verify the Deployment**
 
-You can check if the CloudNativePG operator pod is running correctly in its namespace:
+You can check if the CloudNativePG operator pod is running correctly in its
+namespace:
 
 ```bash
 kubectl get pods -n cnpg-system
@@ -39,16 +108,18 @@ NAME                                READY   STATUS    RESTARTS   AGE
 cloudnative-pg-controller-manager   1/1     Running   0          1m
 ```
 
-At this point, the CloudNativePG operator is installed, and you’re ready to create PostgreSQL clusters.
-
+At this point, the CloudNativePG operator is installed, and you’re ready to
+create PostgreSQL clusters.
 
 ### Deploy a PostgreSQL Cluster
 
-Now that CloudNativePG is running, let's set up a simple PostgreSQL database cluster.
+Now that CloudNativePG is running, let's set up a simple PostgreSQL database
+cluster.
 
 **Create a Namespace for Your PostgreSQL Database**
 
-For better organization, create a namespace for your PostgreSQL cluster if needed:
+For better organization, create a namespace for your PostgreSQL cluster if
+needed:
 
 ```bash
 kubectl create namespace postgres-db
@@ -62,23 +133,27 @@ Save the following YAML into a file called `postgres-cluster.yaml`:
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-    name: my-postgres-cluster
-    namespace: postgres-db
+  name: my-postgres-cluster
+  namespace: postgres-db
 spec:
-    instances: 3                         # Number of database instances
-    primaryUpdateMethod: switchover       # Update strategy for the primary node
-    storage:
-    size: 1Gi                          # Storage size for persistent volumes
-    storageClass: longhorn
+  instances: 3 # Number of database instances
+  primaryUpdateMethod: switchover # Update strategy for the primary node
+  storage:
+  size: 1Gi # Storage size for persistent volumes
+  storageClass: longhorn
 ```
 
-This YAML creates a PostgreSQL cluster with 3 instances managed by CloudNativePG. Note the `storageClass` is set to `longhorn`, assuming you have Longhorn installed and set up as the default backend. You might want to adjust the `size` value of the storage (`1Gi`) if needed.
+This YAML creates a PostgreSQL cluster with 3 instances managed by
+CloudNativePG. Note the `storageClass` is set to `longhorn`, assuming you have
+Longhorn installed and set up as the default backend. You might want to adjust
+the `size` value of the storage (`1Gi`) if needed.
 
 3 replicas of PostgreSQL pods will be created, providing High Availability.
 
 **Apply the PostgreSQL Cluster YAML**
 
-Run the following command to deploy the PostgreSQL cluster to your Kubernetes cluster:
+Run the following command to deploy the PostgreSQL cluster to your Kubernetes
+cluster:
 
 ```bash
 kubectl apply -f postgres-cluster.yaml
@@ -86,7 +161,8 @@ kubectl apply -f postgres-cluster.yaml
 
 **Verify Running PostgreSQL Pods**
 
-After creating the cluster, confirm that the pods for your PostgreSQL cluster are created and running:
+After creating the cluster, confirm that the pods for your PostgreSQL cluster
+are created and running:
 
 ```bash
 kubectl get pods -n postgres-db
@@ -101,12 +177,13 @@ my-postgres-cluster-2                1/1     Running   0          1m
 my-postgres-cluster-3                1/1     Running   0          1m
 ```
 
-
 **Access PostgreSQL**
 
-To access PostgreSQL from your local machine, you'll need to port-forward one of the PostgreSQL services.
+To access PostgreSQL from your local machine, you'll need to port-forward one of
+the PostgreSQL services.
 
-First, let's list the services that have been exposed by the CloudNativePG operator:
+First, let's list the services that have been exposed by the CloudNativePG
+operator:
 
 ```bash
 kubectl get svc -n postgres-db
@@ -122,16 +199,20 @@ my-postgres-cluster-rw   ClusterIP   10.43.242.201   <none>        5432/TCP   22
 ```
 
 - `my-postgres-cluster-r`: Typically routes to the **read** replica.
-- `my-postgres-cluster-ro`: Provides a **read-only** interface for **non-primary** nodes.
-- `my-postgres-cluster-rw`: Connects to the current **primary** node for **read/write** operations.
+- `my-postgres-cluster-ro`: Provides a **read-only** interface for
+  **non-primary** nodes.
+- `my-postgres-cluster-rw`: Connects to the current **primary** node for
+  **read/write** operations.
 
-For example, to expose the `rw` service (which connects to the primary node), you can run:
+For example, to expose the `rw` service (which connects to the primary node),
+you can run:
 
 ```bash
 kubectl port-forward svc/my-postgres-cluster-rw 5432:5432 -n postgres-db
 ```
 
-Then, on your machine, you can connect to PostgreSQL at `localhost:5432` using any PostgreSQL client or `psql`.
+Then, on your machine, you can connect to PostgreSQL at `localhost:5432` using
+any PostgreSQL client or `psql`.
 
 For example:
 
@@ -139,17 +220,20 @@ For example:
 psql -h localhost -U postgres
 ```
 
-By default, the `postgres` user is created, and you can set custom credentials by defining them in the cluster YAML under `spec.users`.
-
+By default, the `postgres` user is created, and you can set custom credentials
+by defining them in the cluster YAML under `spec.users`.
 
 ### Optional: Persistent Volumes with Longhorn
 
-To ensure the PostgreSQL data persists across node restarts, Kubernetes Persistent Volume Claims (PVCs) should use a proper storage class. 
+To ensure the PostgreSQL data persists across node restarts, Kubernetes
+Persistent Volume Claims (PVCs) should use a proper storage class.
 
-We assumed in the YAML above that you've configured Longhorn as your storage solution:
+We assumed in the YAML above that you've configured Longhorn as your storage
+solution:
 
 ```yaml
 storageClass: longhorn
 ```
 
-This makes use of Longhorn's reliable storage and ensures that your PostgreSQL data is replicated and safe from node failures.
+This makes use of Longhorn's reliable storage and ensures that your PostgreSQL
+data is replicated and safe from node failures.

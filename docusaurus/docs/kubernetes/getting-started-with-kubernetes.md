@@ -2,18 +2,30 @@
 title: Practice Makes Perfect 🥷🏻🚀
 ---
 
+At this point, our Raspberry Pis should be configured, and we should have a
+basic understanding of Kubernetes. Most importantly, we know why we're learning
+all of this. Now, let's move into the practical side of things by using
+[`kubectl`](https://kubernetes.io/docs/reference/kubectl/) (pronounced
+"kube-control").
 
-At this point, our Raspberry Pis should be configured, and we should have a basic understanding of Kubernetes. Most importantly, we know why we're learning all of this. Now, let's move into the practical side of things by using [`kubectl`](https://kubernetes.io/docs/reference/kubectl/) (pronounced "kube-control"). 
+Until we start using tools like [`helm`](https://helm.sh/),
+[`kubectl`](https://kubernetes.io/docs/reference/kubectl/) will be our best
+friend. As I've mentioned before in previous sections or during my
+[live streams](https://www.twitch.tv/programmer_network), we should add tools
+and abstractions only **once** the work becomes repetitive and frustrating.
 
-Until we start using tools like [`helm`](https://helm.sh/), [`kubectl`](https://kubernetes.io/docs/reference/kubectl/) will be our best friend. As I've mentioned before in previous sections or during my [live streams](https://www.twitch.tv/programmer_network), we should add tools and abstractions only **once** the work becomes repetitive and frustrating. 
-
-In this case, we aren't going to use [`helm`](https://helm.sh/) until we've learned how to use [`kubectl`](https://kubernetes.io/docs/reference/kubectl/) thoroughly and memorized the key commands. Mastering the basics will help us build a strong foundation and make it clear when it's time to introduce new abstractions.
+In this case, we aren't going to use [`helm`](https://helm.sh/) until we've
+learned how to use [`kubectl`](https://kubernetes.io/docs/reference/kubectl/)
+thoroughly and memorized the key commands. Mastering the basics will help us
+build a strong foundation and make it clear when it's time to introduce new
+abstractions.
 
 ## Namespace Setup
 
 **Create a new Kubernetes Namespace**:
 
 **Command:**
+
 ```bash
 kubectl create namespace my-apps
 ```
@@ -27,7 +39,8 @@ kind: Namespace
 metadata:
   # The name of the Namespace
   name: my-apps
- ```
+```
+
 **Apply with:**
 
 ```bash
@@ -36,7 +49,7 @@ kubectl apply -f namespace.yaml
 
 ## Basic Deployment
 
-**Deploy a Simple App**: 
+**Deploy a Simple App**:
 
 **Command:**
 
@@ -74,8 +87,8 @@ spec:
           ports:
             # Container port that needs to be exposed
             - containerPort: 80
-
 ```
+
 **Apply with:**
 
 ```bash
@@ -84,7 +97,7 @@ kubectl apply -f deployment.yaml
 
 ## Service Exposure
 
-**Expose the Deployment**: 
+**Expose the Deployment**:
 
 **Command:**
 
@@ -100,8 +113,9 @@ apiVersion: v1
 kind: Service
 metadata:
   # Name of the Service
-  name: hello-world
-   # Namespace to create the service in
+  name:
+    hello-world
+    # Namespace to create the service in
   namespace: my-apps
 spec:
   # Select Pods with this label to expose via the Service
@@ -115,16 +129,17 @@ spec:
       targetPort: 80
   # The type of Service; ClusterIP makes it reachable only within the cluster
   type: ClusterIP
-
 ```
+
 **Apply with:**
+
 ```bash
 kubectl apply -f service.yaml
 ```
 
 ## Verify Deployment
 
-**Verify Using Port-Forward**: 
+**Verify Using Port-Forward**:
 
 ```bash
 # This is only needed if service type is ClusterIP
@@ -138,13 +153,15 @@ kubectl port-forward deployment/hello-world 8081:80 --namespace=my-apps
 ```bash
 kubectl delete namespace my-apps
 ```
+
 **Or remove individual resources with:**
 
 ```bash
 kubectl delete -f <filename>.yaml
 ```
 
-**Warning**: Deleting the namespace will remove all resources in that namespace. Ensure you're okay with that before running the command.
+**Warning**: Deleting the namespace will remove all resources in that namespace.
+Ensure you're okay with that before running the command.
 
 ## Exercises
 
@@ -155,13 +172,13 @@ Create a simple Pod running Nginx.
 ```bash
 kubectl run nginx-pod --image=nginx --restart=Never
 ```
-    
+
 Examine the Pod.
 
 ```bash
 kubectl describe pod nginx-pod
 ```
-    
+
 Delete the Pod.
 
 ```bash
@@ -172,7 +189,8 @@ kubectl delete pod nginx-pod
 
 ### Exercise 2: Create a Deployment
 
-Create a Deployment for a simple Node.js app (You can use a Docker image like `node:20`).
+Create a Deployment for a simple Node.js app (You can use a Docker image like
+`node:20`).
 
 ```bash
 kubectl create deployment node-app --image=node:20
@@ -190,7 +208,8 @@ Rollback the Deployment.
 kubectl rollout undo deployment node-app
 ```
 
-**Objective**: Learn how to manage application instances declaratively using Deployments.
+**Objective**: Learn how to manage application instances declaratively using
+Deployments.
 
 ### Exercise 3: Expose the Deployment as a Service
 
@@ -205,9 +224,9 @@ Access the service within the cluster.
 ```bash
 kubectl get svc
 ```
-   
+
 Use `kubectl port-forward` to test the service.
-   
+
 ```bash
 kubectl port-forward svc/node-app 8080:80
 ```

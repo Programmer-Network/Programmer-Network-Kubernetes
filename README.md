@@ -11,10 +11,12 @@
 **Goal**: By the end of this journey, aim to have the capability to rapidly instantiate new development and production environments and expose them to the external world with equal ease.
 
 ## Table of Contents
+
 - [Hardware](./docs/hardware-components.md#hardware)
   - [Hardware Components](./docs/hardware-components.md#hardware)
   - [Why These Choices?](./docs/hardware-components.md#why-these-choices)
 - [Raspberry Pi's Setup](./docs/raspberry-pi-setup.md#raspberry-pis-setup)
+
   - [Flash SD Cards with Raspberry Pi OS](./docs/raspberry-pi-setup.md#flash-sd-cards-with-raspberry-pi-os-using-pi-imager)
   - [Initial Boot and Setup](./docs/raspberry-pi-setup.md#initial-boot-and-setup)
   - [Update and Upgrade](./docs/raspberry-pi-setup.md#update-and-upgrade---ansible-playbook)
@@ -27,12 +29,14 @@
 - [Automation with Ansible](./docs/getting-started-with-ansible.md)
 
 - [K3S Setup](./docs/k3s-setup.md#k3s-setup)
+
   - [Enable Memory CGroups](./docs/k3s-setup.md#enable-memory-cgroups-ansible-playbook)
   - [Master Node](./docs/k3s-setup.md#setup-the-master-node)
   - [Worker Nodes](./docs/k3s-setup.md#setup-worker-nodes)
   - [Kubectl on local machine](./docs/k3s-setup.md#setup-kubectl-on-your-local-machine)
 
 - [Kubernetes Theory](./docs/kubernetes-theory.md#kubernetes)
+
   - [What is Kubernetes](./docs/kubernetes-theory.md#1-what-is-kubernetes-)
   - [Kubernetes Components Explained](./docs/kubernetes-theory.md#kubernetes-components-explained)
   - [Control Plane Components](./docs/kubernetes-theory.md#control-plane-components)

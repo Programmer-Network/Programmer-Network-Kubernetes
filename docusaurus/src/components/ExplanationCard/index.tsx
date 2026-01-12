@@ -1,5 +1,3 @@
-import { Tooltip } from "react-tooltip";
-
 const ExplanationCard = ({
   section,
   styles,
@@ -9,18 +7,18 @@ const ExplanationCard = ({
 }) => (
   <div
     id={`exp-${section.id}`}
-    data-tooltip-id={`tooltip-${section.id}`}
-    data-tooltip-html={section.description}
-    className={`explanation-card border-l-12 p-4 rounded-r-lg transition-all duration-200 ease-in-out cursor-pointer ${
+    className={`explanation-card border-l-4 p-4 rounded-r-lg transition-all duration-200 ease-in-out cursor-pointer max-w-full sticky top-4 ${
       styles.cardColor
-    } ${isHighlighted ? "bg-yellow-50 dark:bg-slate-600/15 " : ""}`}
+    } ${isHighlighted ? "bg-yellow-50 dark:bg-slate-600/15 shadow-md" : "bg-white dark:bg-gray-800"}`}
     onMouseEnter={onMouseEnter}
     onMouseLeave={onMouseLeave}
   >
-    <h3 className={`!mb-0 !font-normal ${styles.titleColor}`}>
+    <h3 className={`!mb-2 !font-semibold text-base ${styles.titleColor}`}>
       {section.title}
     </h3>
-    <Tooltip id={`tooltip-${section.id}`} />
+    <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed !mb-0 break-words">
+      {section.description}
+    </p>
   </div>
 );
 

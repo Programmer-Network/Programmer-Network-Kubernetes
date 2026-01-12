@@ -1,85 +1,100 @@
 ---
-title: K3S Maintenance
+title: K3s Maintenance Overview
 ---
 
-### Steps for Updating K3S
+## Overview
 
-Updating K3S involves safely taking each node offline (one at a time), performing the update, then bringing the node back into the cluster.
+Regular maintenance is essential for keeping your K3s cluster healthy, secure,
+and up-to-date. This section covers the key maintenance tasks you'll need to
+perform throughout your cluster's lifecycle.
 
-Before doing any updates, **backup your data**. Ensure you have backups of your K3S server data and important configuration files. This is especially crucial if something goes wrong during the update and you need to restore to a previous state.
+## Maintenance Categories
 
-### Draining the Node
-When performing maintenance (such as updating K3S), it’s important to **"drain"** the node to protect your workloads and avoid interruptions. 
+### [Updating K3s](./k3s-maintenance-updates)
 
-#### What Does "Draining" a Node Mean?
-- **Draining** safely evicts all non-essential pods from the node, allowing Kubernetes to reschedule them on other nodes.
-- It also makes the node "unschedulable," ensuring no new pods can be assigned to the node while it’s offline.
+Keeping your K3s cluster updated is crucial for security patches, bug fixes, and
+new features. Learn how to safely update K3s nodes one at a time without
+disrupting your workloads.
 
-#### What does "evicting" a Pod Mean?
+**Key Topics:**
 
-- In Kubernetes, "evicts" refers to the process of safely terminating Pods on a node, typically to free up resources or for maintenance, allowing them to be rescheduled on other nodes.
+- Pre-update backups
+- Draining nodes safely
+- Updating K3s version
+- Verifying updates
 
-#### How to Drain a Node:
-To drain a node, run the following command replacing `<node-name>` with the name of the node you want to update:
+### [Health Checks and Monitoring](./k3s-maintenance-health)
 
-```bash
-kubectl drain <node-name> --ignore-daemonsets --delete-emptydir-data
-```
+Regular health checks help you identify issues before they become critical.
+Monitor your cluster's components, nodes, and workloads to ensure everything is
+running smoothly.
 
-**Explanation of Command Options:**
-- `--ignore-daemonsets`: Prevents Kubernetes from evicting system-critical pods managed by DaemonSets (these won't be touched).
-- `--delete-emptydir-data`: Deletes any storage associated with `EmptyDir` volumes (used for temporary data in pods).
+**Key Topics:**
 
-### Stopping the K3S Service
+- Cluster health verification
+- Node status checks
+- Component health monitoring
+- Resource usage monitoring
 
-To update K3S, we first need to stop the running K3S service on the Raspberry Pi:
+### [Troubleshooting Common Issues](./k3s-maintenance-troubleshooting)
 
-```bash
-sudo systemctl stop k3s
-```
+When things go wrong, having a systematic troubleshooting approach helps you
+resolve issues quickly. Learn how to diagnose and fix common K3s cluster
+problems.
 
-This command stops K3S gracefully, which ensures everything halts correctly and there's no risk of corruption during the update.
+**Key Topics:**
 
-### Updating K3S
+- Pod startup failures
+- Network connectivity issues
+- Storage problems
+- Certificate issues
+- Log analysis
 
-Now, let's update K3S to its newest version. You can use the official K3S installation script to do this in a streamlined way. Running the script below will automatically detect the current installation and update it to the latest available version:
+### [Node Management](./k3s-maintenance-nodes)
 
-```bash
-curl -sfL https://get.k3s.io | sh -
-```
+As your cluster grows or hardware changes, you'll need to add, remove, or
+replace nodes. Learn how to safely manage your cluster's node lifecycle.
 
-The script will download, install, and configure the latest version of K3S while keeping all your configurations in place.
+**Key Topics:**
 
-### Starting the K3S Service Again
+- Adding new nodes
+- Removing nodes
+- Replacing failed nodes
+- Node labeling and tainting
 
-Once the update finishes, restart the K3S service on the node to bring it back online:
+## Maintenance Best Practices
 
-```bash
-sudo systemctl start k3s
-```
+1. **Always Backup First**: Before any maintenance operation, ensure you have
+   recent backups of your etcd data, persistent volumes, and cluster
+   configuration.
 
-This will load the new K3S version and all services will resume.
+2. **One Node at a Time**: In multi-node clusters, perform maintenance on one
+   node at a time to maintain cluster availability.
 
-### Uncordoning the Node
+3. **Schedule During Low Traffic**: Plan maintenance windows during periods of
+   low application usage when possible.
 
-#### What Is "Uncordoning"?
-After an update, we need to make the node available again for scheduling new pods, i.e., undo the "unschedulable" state created during the drain.
+4. **Test in Non-Production**: If you have a test environment, validate
+   maintenance procedures there first.
 
-#### How to Uncordon a Node:
-To let Kubernetes know this node is now ready to schedule new pods again:
+5. **Document Changes**: Keep track of what maintenance was performed, when, and
+   any issues encountered.
 
-```bash
-kubectl uncordon <node-name>
-```
+6. **Monitor After Changes**: After any maintenance, closely monitor your
+   cluster for 24-48 hours to ensure stability.
 
-This command marks the node as "schedulable," meaning new pods can now be assigned to it.
+## Quick Reference
 
-### Verifying the Update
+| Task                | Frequency            | Documentation                                        |
+| ------------------- | -------------------- | ---------------------------------------------------- |
+| Update K3s          | Monthly or as needed | [Updating K3s](./k3s-maintenance-updates)            |
+| Health Checks       | Weekly               | [Health Checks](./k3s-maintenance-health)            |
+| Review Logs         | As needed            | [Troubleshooting](./k3s-maintenance-troubleshooting) |
+| Node Management     | As needed            | [Node Management](./k3s-maintenance-nodes)           |
+| Backup Verification | Weekly               | [Backup Strategy](../kubernetes/k3s-backup)          |
 
-Once the node is back online, verify the K3S version to confirm that the update was successful:
+## Related Documentation
 
-```bash
-k3s --version
-```
-
-Check that the output shows the latest version installed.
+- [K3s Backup Strategy](./k3s-backup) - Backup procedures and disaster recovery
+- [K3s Setup](./k3s-setup) - Initial cluster installation
+- [ArgoCD Setup](./setup-argocd) - GitOps configuration management

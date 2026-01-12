@@ -37,14 +37,16 @@ export const sections = [
     key: "apiVersion:",
     value: "v1",
     title: "apiVersion",
-    description: "The version of the Kubernetes API to use.",
+    description:
+      "Services use the core `v1` API version. This is part of Kubernetes' core API group, unlike Deployments which use `apps/v1`. Most basic resources (Pods, Services, ConfigMaps, Secrets) use `v1`.",
   },
   {
     id: "kind",
     key: "kind:",
     value: "Service",
     title: "kind",
-    description: "Specifies the object type, in this case, a Service.",
+    description:
+      "A Service provides a stable network endpoint for Pods. It acts as a load balancer, distributing traffic to matching Pods. Even when Pods are recreated (new IPs), the Service IP stays the same, providing reliable service discovery.",
   },
   {
     id: "metadata",
@@ -53,7 +55,7 @@ export const sections = [
   name: my-app-service`,
     title: "metadata",
     description:
-      "Data that helps uniquely identify the object, including a name.",
+      "The Service name is used by other Pods to connect via DNS. A Service named `my-app-service` in namespace `default` is accessible at `my-app-service.default.svc.cluster.local` or simply `my-app-service` from the same namespace.",
   },
   {
     id: "spec",
@@ -61,7 +63,7 @@ export const sections = [
     value: "",
     title: "spec",
     description:
-      "The desired state of the Service, defining how it exposes an application.",
+      "Defines how the Service selects Pods and exposes them. The `selector` finds Pods, and `ports` defines how traffic is routed. Service types include ClusterIP (default, internal), NodePort, and LoadBalancer.",
   },
   {
     id: "selector",
@@ -70,7 +72,7 @@ export const sections = [
     app: my-app`,
     title: "spec.selector",
     description:
-      "Selects the Pods to which this Service will route traffic, based on their labels.",
+      "Selects Pods by matching their labels. The Service finds all Pods with `app: my-app` and routes traffic to them. If Pods are recreated with the same labels, they're automatically included. The selector must match Pod labels exactly.",
     indent: 2,
   },
   {
@@ -82,7 +84,7 @@ export const sections = [
     targetPort: 8080`,
     title: "spec.ports",
     description:
-      "Defines the port mapping. It forwards traffic from port 80 on the Service to port 8080 on the Pods.",
+      "Port mapping configuration. `port` is the Service port (what clients connect to), `targetPort` is the container port (where the app listens). `protocol` is usually TCP (default) or UDP. You can define multiple ports for services that expose multiple endpoints.",
     indent: 2,
   },
 ];
