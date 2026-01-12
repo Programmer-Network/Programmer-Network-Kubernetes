@@ -141,8 +141,6 @@ sudo reboot
 
 [Ansible Playbook](/ansible/playbooks/disable-swap.yml)
 
-[Swap Memory](/terminology.md#swap-memory)
-
 Disabling swap in a K3s cluster is crucial because Kubernetes relies on precise
 memory management to allocate resources, schedule workloads, and handle
 potential memory limits. When swap is enabled, it introduces unpredictability in

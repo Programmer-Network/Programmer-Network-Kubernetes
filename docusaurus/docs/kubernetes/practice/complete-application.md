@@ -364,7 +364,8 @@ You've completed the practice exercises! You now understand:
 - Explore [K3s Maintenance](../k3s-maintenance) guides
 - Learn about [Backup Strategies](../k3s-backup)
 - Check out [ArgoCD Setup](../setup-argocd) for GitOps
-- Review [Common Kubernetes Commands](../common-kubernetes-commands) reference
+- Review [Anatomy of kubectl Command](../anatomy-of-kubectl-command.mdx) for
+  command reference
 
 ## Additional Practice Ideas
 
