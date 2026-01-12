@@ -42,35 +42,40 @@ export const sections = [
     key: "apiVersion:",
     value: "networking.k8s.io/v1",
     title: "apiVersion",
-    description: "The version of the Kubernetes API for Ingress resources.",
+    description:
+      "Ingress uses the `networking.k8s.io/v1` API group. Always use `v1` (not `v1beta1` which is deprecated). This API group contains networking-related resources like Ingress and NetworkPolicy.",
   },
   {
     id: "kind",
     key: "kind:",
     value: "Ingress",
     title: "kind",
-    description: "Specifies the object type, here it is an Ingress.",
+    description:
+      "An Ingress exposes HTTP and HTTPS routes from outside the cluster to Services within the cluster. It requires an Ingress Controller (like Traefik, NGINX, or cloud-provider load balancers) to function. Think of it as a reverse proxy configuration.",
   },
   {
     id: "metadata",
     key: "metadata:",
     value: `\n  name: my-app-ingress`,
     title: "metadata",
-    description: "Metadata for the Ingress, such as its name.",
+    description:
+      "The Ingress name and optional annotations. Annotations are crucial for Ingress—they configure the Ingress Controller (e.g., `cert-manager.io/cluster-issuer: letsencrypt-prod` for TLS certificates).",
   },
   {
     id: "spec",
     key: "spec:",
     value: "",
     title: "spec",
-    description: "The desired state of the Ingress resource.",
+    description:
+      "Defines routing rules and TLS configuration. The Ingress Controller reads this spec to configure routing. You can specify multiple hosts, paths, and TLS certificates here.",
   },
   {
     id: "rules",
     key: "rules:",
     value: "",
     title: "spec.rules",
-    description: "Defines the rules for routing traffic.",
+    description:
+      "Routing rules for the Ingress. Each rule can match a specific hostname (optional) and define paths. If no host is specified, the rule matches all hosts. Rules are evaluated in order.",
     indent: 2,
   },
   {
@@ -78,7 +83,8 @@ export const sections = [
     key: "http:",
     value: "",
     title: "spec.rules.http",
-    description: "HTTP-specific routing information.",
+    description:
+      "HTTP routing configuration for a rule. Contains the list of paths that should be routed to backend Services. You can also define TLS configuration at the rule level.",
     indent: 4,
   },
   {
@@ -86,7 +92,8 @@ export const sections = [
     key: "paths:",
     value: `\n      - path: /\n        pathType: Prefix\n        backend:\n          service:\n            name: my-app-service\n            port:\n              number: 80`,
     title: "spec.rules.http.paths",
-    description: "Defines the paths and backend services for the Ingress.",
+    description:
+      "Path-based routing rules. `path` is the URL path, `pathType` can be `Exact`, `Prefix`, or `ImplementationSpecific`. The `backend` references a Service by name and port. This routes `/` requests to `my-app-service:80`.",
     indent: 6,
   },
 ];

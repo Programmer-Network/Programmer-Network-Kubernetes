@@ -16,7 +16,7 @@ const CodeBlock = ({ code }: CodeBlockProps) => {
 
   return (
     <div className="relative group">
-      <Highlight theme={themes.gruvboxMaterialDark} language="bash" code={code}>
+      <Highlight theme={themes.nightOwl} language="bash" code={code}>
         {({ className, style, tokens, getLineProps, getTokenProps }) => (
           <pre className={`p-4 overflow-x-auto ${className}`} style={style}>
             {tokens.map((line, i) => (

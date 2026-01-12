@@ -58,7 +58,7 @@ export const sections = [
     value: "apps/v1",
     title: "apiVersion",
     description:
-      "Which Kubernetes API version to use. Essential for compatibility.",
+      "The API group and version. For Deployments, always use `apps/v1`. Different resources use different API groups (e.g., `networking.k8s.io/v1` for Ingress, `v1` for Services). Use `kubectl api-resources` to discover available API versions.",
   },
   {
     id: "kind",
@@ -66,7 +66,7 @@ export const sections = [
     value: "Deployment",
     title: "kind",
     description:
-      "The type of object to create (e.g., `Deployment`, `Service`).",
+      "The type of Kubernetes object. `Deployment` is a controller that manages Pod replicas. It ensures the desired number of Pods are running and handles rolling updates. Other common kinds include `Service`, `Ingress`, `ConfigMap`, and `Secret`.",
   },
   {
     id: "metadata",
@@ -75,7 +75,7 @@ export const sections = [
   name: my-app-deployment`,
     title: "metadata",
     description:
-      "Unique identifiers for the object, like its `name` and `labels`.",
+      "Unique identifiers for the object. The `name` is required and must be unique within a namespace. `labels` help organize and select resources. `namespace` defaults to 'default' if omitted. `annotations` store non-identifying metadata.",
   },
   {
     id: "spec",
@@ -84,7 +84,7 @@ export const sections = [
   replicas: 3`,
     title: "spec",
     description:
-      "The **desired state**. You tell Kubernetes what you want the object to look like.",
+      "The **desired state** of your Deployment. Kubernetes continuously reconciles the actual state with this desired state. If a Pod crashes, Kubernetes creates a new one to match `replicas: 3`. This is the reconciliation loop in action.",
   },
   {
     id: "selector",
@@ -94,7 +94,7 @@ export const sections = [
       app: my-app`,
     title: "spec.selector",
     description:
-      "How a controller (like a Deployment) finds which Pods to manage. It matches the Pods' labels.",
+      "How the Deployment finds which Pods to manage. The labels here **must match** the labels in `spec.template.metadata.labels`. This is how Kubernetes knows which Pods belong to this Deployment. If labels don't match, the Deployment won't manage the Pods.",
     indent: 2,
   },
   {
@@ -103,7 +103,7 @@ export const sections = [
     value: "",
     title: "spec.template",
     description:
-      "A blueprint for creating the Pods. It has its own `metadata` and `spec`.",
+      "A blueprint for creating Pods. This template is immutable—once a Pod is created, changes to the template don't affect existing Pods. To update running Pods, Kubernetes creates new ones with the updated template and terminates old ones (rolling update).",
     indent: 2,
   },
   {
@@ -113,7 +113,8 @@ export const sections = [
       labels:
         app: my-app`,
     title: "spec.template.metadata",
-    description: "Metadata for the Pods created by the template.",
+    description:
+      "Labels applied to Pods created from this template. These labels must match `spec.selector.matchLabels` so the Deployment can find and manage these Pods. Services also use these labels to route traffic to the Pods.",
     indent: 4,
   },
   {
@@ -121,7 +122,8 @@ export const sections = [
     key: "spec:",
     value: "",
     title: "spec.template.spec",
-    description: "Specification for the Pods created by the template.",
+    description:
+      "The Pod specification. This defines what runs inside each Pod: containers, volumes, environment variables, resource limits, and more. Each Pod created from this template will have this exact specification.",
     indent: 4,
   },
   {
@@ -134,7 +136,7 @@ export const sections = [
         - containerPort: 80`,
     title: "spec.template.spec.containers",
     description:
-      "The heart of the Pod. A list of one or more containers to run, specifying the `image`, `ports`, etc.",
+      "The containers to run in each Pod. You can run multiple containers in a Pod (sidecar pattern). Common fields include `image` (required), `ports`, `env`, `resources` (CPU/memory limits), `livenessProbe`, and `readinessProbe`. Always specify resource limits in production.",
     indent: 6,
   },
 ];

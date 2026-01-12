@@ -12,32 +12,36 @@
     "serve": "docusaurus serve",
     "write-translations": "docusaurus write-translations",
     "write-heading-ids": "docusaurus write-heading-ids",
-    "typecheck": "tsc"
+    "typecheck": "tsc",
+    "format": "prettier --write \"docs/**/*.{md,mdx}\"",
+    "format:check": "prettier --check \"docs/**/*.{md,mdx}\"",
+    "format:docs": "prettier --write \"docs/**/*.{md,mdx}\""
   },
   "dependencies": {
-    "@docusaurus/core": "3.8.1",
-    "@docusaurus/plugin-ideal-image": "3.8.1",
-    "@docusaurus/preset-classic": "3.8.1",
-    "@docusaurus/theme-mermaid": "3.8.1",
+    "@docusaurus/core": "3.9.2",
+    "@docusaurus/plugin-ideal-image": "3.9.2",
+    "@docusaurus/preset-classic": "3.9.2",
+    "@docusaurus/theme-mermaid": "3.9.2",
     "@heroicons/react": "2.2.0",
-    "@mdx-js/react": "3.1.0",
-    "chart.js": "4.5.0",
+    "@mdx-js/react": "3.1.1",
+    "chart.js": "4.5.1",
     "clsx": "2.1.1",
     "prism-react-renderer": "2.4.1",
-    "react": "19.1.0",
-    "react-dom": "19.1.0",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
     "react-image-gallery": "1.4.0",
-    "react-tooltip": "5.29.1",
-    "sharp": "0.34.2"
+    "react-tooltip": "5.30.0",
+    "sharp": "0.32.6"
   },
   "devDependencies": {
-    "@docusaurus/module-type-aliases": "3.8.1",
-    "@docusaurus/tsconfig": "3.8.1",
-    "@docusaurus/types": "3.8.1",
-    "@tailwindcss/postcss": "4.1.10",
+    "@docusaurus/module-type-aliases": "3.9.2",
+    "@docusaurus/tsconfig": "3.9.2",
+    "@docusaurus/types": "3.9.2",
+    "@tailwindcss/postcss": "4.1.18",
     "postcss": "8.5.6",
-    "tailwindcss": "4.1.10",
-    "typescript": "5.8.3"
+    "prettier": "3.7.4",
+    "tailwindcss": "4.1.18",
+    "typescript": "5.9.3"
   },
   "browserslist": {
     "production": [

@@ -1,253 +1,131 @@
 ---
-title: K3S Backup
+title: Production Backup Strategy Overview
 ---
 
-### **Part 1: Prerequisites , Cloudflare R2 Setup**
+## Overview
 
-Before we touch the cluster, let's prepare our backup destination.
+This production K3s cluster uses a comprehensive four-layer backup strategy to
+ensure data protection at different levels:
 
-1.  **Create an R2 Bucket:**
+1. **[K3s etcd Snapshots](./k3s-backup-etcd)** - Control plane database backups
+2. **[Longhorn Volume Backups](./k3s-backup-longhorn)** - Persistent volume
+   backups
+3. **[Velero Cluster Backups](./k3s-backup-velero)** - Application-aware cluster
+   backups
+4. **[CloudNative PG Backups](./k3s-backup-cloudnative-pg)** - PostgreSQL
+   database-consistent backups with point-in-time recovery
 
-    - In your Cloudflare dashboard, go to **R2** and click **Create bucket**.
-    - Give it a unique name (e.g., `k3s-backup-repository`). Note this name.
-    - Note your **S3 Endpoint URL** from the bucket's main page. It looks like: `https://<ACCOUNT_ID>.r2.cloudflarestorage.com`.
+All backups are stored in Cloudflare R2, providing off-site redundancy and
+disaster recovery capabilities.
 
-2.  **Create R2 API Credentials:**
+## Backup Schedule Summary
 
-    - On the main R2 page, click **Manage R2 API Tokens**.
-    - Click **Create API Token**.
-    - Give it a name (e.g., `k3s-backup-token`) and grant it **Object Read & Write** permissions.
-    - Click **Create API Token** and securely copy the **Access Key ID** and the **Secret Access Key**.
+| Layer            | Schedule               | Retention | Destination   |
+| ---------------- | ---------------------- | --------- | ------------- |
+| K3s etcd         | Daily at 1:00 AM       | 5 days    | Cloudflare R2 |
+| Longhorn Volumes | Daily at 2:00 AM       | 7 days    | Cloudflare R2 |
+| Velero Cluster   | Daily at 3:00 AM       | 14 days   | Cloudflare R2 |
+| CloudNative PG   | Every 6 hours (4x/day) | 30 days   | Cloudflare R2 |
 
-You now have four critical pieces of information:
+## Prerequisites: Cloudflare R2 Setup
 
-- Bucket Name
-- S3 Endpoint URL
-- Access Key ID
-- Secret Access Key
+Before configuring backups, you need a Cloudflare R2 bucket and API credentials:
 
-### **Part 2: The Foundation , K3s Installation**
+1. **Create an R2 Bucket:**
+   - In your Cloudflare dashboard, go to **R2** and click **Create bucket**
+   - Give it a unique name (e.g., `k3s-backup-repository`)
+   - Note your **S3 Endpoint URL** from the bucket's main page:
+     `https://<ACCOUNT_ID>.r2.cloudflarestorage.com`
 
-Install K3s on your server node. Using the default installation script is straightforward.
+2. **Create R2 API Credentials:**
+   - On the main R2 page, click **Manage R2 API Tokens**
+   - Click **Create API Token**
+   - Give it a name (e.g., `k3s-backup-token`) and grant it **Object Read &
+     Write** permissions
+   - Securely copy the **Access Key ID** and **Secret Access Key**
 
-```bash
-curl -sfL https://get.k3s.io | sh -
-# Wait a moment for it to start
-sudo k3s kubectl get nodes
-```
+You'll need these credentials for all three backup layers.
 
-### **Part 3: The Storage Layer , Longhorn Setup**
+## Why Four Layers?
 
-We will install Longhorn using Helm, the standard package manager for Kubernetes.
+Each backup layer serves a specific purpose:
 
-1.  **Add the Longhorn Helm Repository:**
+- **etcd Snapshots**: Protect the Kubernetes control plane state (API objects,
+  cluster configuration)
+- **Longhorn Backups**: Protect persistent volume data independently of cluster
+  state
+- **Velero Backups**: Provide application-aware backups that capture both
+  resources and volumes together
+- **CloudNative PG Backups**: Provide PostgreSQL-consistent backups with
+  point-in-time recovery capabilities
 
-    ```bash
-    helm repo add longhorn https://charts.longhorn.io
-    helm repo update
-    ```
+This multi-layer approach ensures you can recover from different types of
+failures:
 
-2.  **Install Longhorn:**
+- Control plane corruption → Restore from etcd snapshot
+- Volume data loss → Restore from Longhorn backup
+- Complete cluster failure → Restore from Velero backup
+- Database corruption/PITR → Restore from CloudNative PG backup
 
-    ```bash
-    helm install longhorn longhorn/longhorn \
-      --namespace longhorn-system \
-      --create-namespace \
-      --set persistence.defaultClass=true
-    ```
+## Quick Links
 
-    - `persistence.defaultClass=true`: This is crucial. It makes Longhorn the default storage provider for any `PersistentVolumeClaim` (PVC).
+- **[Setup etcd Snapshots](./k3s-backup-etcd)** - Configure control plane
+  backups
+- **[Setup Longhorn Backups](./k3s-backup-longhorn)** - Configure volume backups
+- **[Setup Velero Backups](./k3s-backup-velero)** - Configure cluster backups
+- **[Setup CloudNative PG Backups](./k3s-backup-cloudnative-pg)** - Configure
+  PostgreSQL backups
+- **[Disaster Recovery](./k3s-backup-disaster-recovery)** - Recovery procedures
 
-3.  **Verify the Installation:**
+## Monitoring and Maintenance
 
-    ```bash
-    kubectl get pods -n longhorn-system --watch
-    # Wait until all pods are Running. This can take several minutes.
-    ```
+### Check Backup Status
 
-4.  **Configure Longhorn's Native Backup (Secondary Protection):**
-
-    - Access the Longhorn UI. You can do this via port-forwarding:
-      ```bash
-      kubectl port-forward -n longhorn-system svc/longhorn-frontend 8080:80
-      ```
-      Now open `http://localhost:8080` in your browser.
-    - Navigate to **Settings \> Backup**.
-    - Set the **Backup Target** to your R2 endpoint and bucket: `s3://<BUCKET_NAME>@<REGION>/<PATH>` (for R2, region can be `auto`). For example: `s3://k3s-backup-repository@auto/longhorn`
-    - Create a Kubernetes secret containing your R2 credentials:
-      ```bash
-      kubectl create secret generic r2-longhorn-secret -n longhorn-system \
-        --from-literal=AWS_ACCESS_KEY_ID='YOUR_R2_ACCESS_KEY_ID' \
-        --from-literal=AWS_SECRET_ACCESS_KEY='YOUR_R2_SECRET_ACCESS_KEY'
-      ```
-    - Set the **Backup Target Credential Secret** in the Longhorn UI to `r2-longhorn-secret`.
-    - Click **Save**.
-
-### **Part 4: The Primary Backup Layer , Velero Setup**
-
-This is the core of our application recovery strategy.
-
-1.  **Create a Credentials File for Velero:**
-    Create a file named `credentials-velero`:
-
-    ```ini
-    [default]
-    aws_access_key_id = YOUR_R2_ACCESS_KEY_ID
-    aws_secret_access_key = YOUR_R2_SECRET_ACCESS_KEY
-    ```
-
-2.  **Install Velero with Helm:**
-    This command will install Velero and configure it to use R2 as the backup destination and enable the crucial CSI plugin for Longhorn snapshots.
-
-    ```bash
-    helm repo add vmware-tanzu https://vmware-tanzu.github.io/helm-charts
-    helm repo update
-
-    helm install velero vmware-tanzu/velero \
-      --namespace velero \
-      --create-namespace \
-      --set-file credentials.secretContents.cloud=credentials-velero \
-      --set configuration.provider=aws \
-      --set configuration.backupStorageLocation.name=default \
-      --set configuration.backupStorageLocation.bucket=<YOUR_BUCKET_NAME> \
-      --set configuration.backupStorageLocation.config.region=auto \
-      --set configuration.backupStorageLocation.config.s3Url=<YOUR_S3_ENDPOINT_URL> \
-      --set-string snapshotsEnabled=true \
-      --set-string deployRestic=false \
-      --set initContainers[0].name=velero-plugin-for-aws \
-      --set initContainers[0].image=velero/velero-plugin-for-aws:v1.10.0 \
-      --set initContainers[0].volumeMounts[0].mountPath=/target \
-      --set initContainers[0].volumeMounts[0].name=plugins \
-      --set initContainers[1].name=velero-plugin-for-csi \
-      --set initContainers[1].image=velero/velero-plugin-for-csi:v0.6.2 \
-      --set initContainers[1].volumeMounts[0].mountPath=/target \
-      --set initContainers[1].volumeMounts[0].name=plugins
-    ```
-
-3.  **Verify the Velero Installation:**
-
-    ```bash
-    kubectl get pods -n velero --watch
-    # Wait for the velero pod to be Running.
-    ```
-
-    You have now installed Velero and given it access to your R2 bucket.
-
-### **Part 5: The Test , Break and Rebuild**
-
-Now for the fun part. Let's prove the system works.
-
-**Step 1: Deploy a Stateful Application**
-
-Create a file `my-app.yaml`:
-
-```yaml
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: my-app-pvc
-spec:
-  accessModes:
-    - ReadWriteOnce
-  storageClassName: longhorn
-  resources:
-    requests:
-      storage: 1Gi
----
-apiVersion: v1
-kind: Pod
-metadata:
-  name: my-app-pod
-spec:
-  containers:
-    - name: my-app
-      image: busybox
-      command: ["/bin/sh", "-c"]
-      args:
-        - while true; do
-          echo "$(date)" >> /data/test.log;
-          sleep 5;
-          done
-      volumeMounts:
-        - name: data
-          mountPath: /data
-  volumes:
-    - name: data
-      persistentVolumeClaim:
-        claimName: my-app-pvc
-```
-
-Deploy it:
+**etcd Snapshots:**
 
 ```bash
-kubectl apply -f my-app.yaml
+sudo k3s etcd-snapshot list
 ```
 
-**Step 2: Create a Backup with Velero**
+**Longhorn Backups:**
 
 ```bash
-velero backup create my-first-backup --include-namespaces default
+kubectl get recurringjobs -n longhorn-system
+kubectl get jobs -n longhorn-system
 ```
 
-This command tells Velero to back up all resources in the `default` namespace. Because you enabled the CSI plugin, Velero automatically finds the PVC and triggers Longhorn to create a volume snapshot, which is then backed up alongside the Pod and PVC definitions.
-
-**Step 3: The Disaster , Destroy the Cluster**
-
-Let's simulate a total cluster failure. We will completely remove K3s.
+**Velero Backups:**
 
 ```bash
-# First, delete the application to simulate data loss
-kubectl delete -f my-app.yaml
-
-# Now, obliterate the cluster
-/usr/local/bin/k3s-uninstall.sh
+kubectl get schedules -n velero
+velero backup get
 ```
 
-Your cluster is now gone. All that remains is your R2 bucket.
+**CloudNative PG Backups:**
 
-**Step 4: The Recovery , Rebuild and Restore**
+```bash
+kubectl get backups -n <postgres-namespace>
+kubectl get cronjobs -n <postgres-namespace>
+```
 
-1.  **Re-install a Clean K3s Cluster:**
+### Backup Health Checks
 
-    ```bash
-    curl -sfL https://get.k3s.io | sh -
-    sudo k3s kubectl get nodes
-    ```
+Regularly verify that backups are completing successfully:
 
-2.  **Re-install Longhorn:** You must have the storage provider available before you can restore data to it.
+1. **Check R2 bucket** for recent backup files
+2. **Review Velero backup logs:**
+   ```bash
+   kubectl logs -n velero deployment/velero
+   ```
+3. **Check Longhorn backup jobs:**
+   ```bash
+   kubectl get jobs -n longhorn-system -l app=longhorn-manager
+   ```
 
-    ```bash
-    helm repo add longhorn https://charts.longhorn.io
-    helm repo update
-    helm install longhorn longhorn/longhorn --namespace longhorn-system --create-namespace --set persistence.defaultClass=true
-    # Wait for Longhorn pods to be running
-    kubectl get pods -n longhorn-system --watch
-    ```
+## References
 
-3.  **Re-install Velero with the EXACT same configuration:** Run the same Helm install command from Part 4 again. This is critical, as it reconnects Velero to your R2 bucket where the backups live.
-
-4.  **Verify Velero Sees Your Backup:**
-
-    ```bash
-    # It may take a minute for Velero to sync.
-    velero backup get
-    # You should see 'my-first-backup' in the list!
-    ```
-
-5.  **Restore Everything:**
-
-    ```bash
-    velero restore create --from-backup my-first-backup
-    ```
-
-6.  **Verify the Restore:**
-
-    ```bash
-    kubectl get pods --watch
-    # You will see 'my-app-pod' get created.
-
-    # Check the data that was restored
-    kubectl exec my-app-pod -- cat /data/test.log
-    ```
-
-You will see the log file with the timestamps from before you destroyed the cluster. You have successfully recovered your application and its persistent state from nothing but a backup file in Cloudflare R2.
+- **[etcd Snapshots](./k3s-backup-etcd)** - Control plane backup documentation
+- **[Longhorn Backups](./k3s-backup-longhorn)** - Volume backup documentation
+- **[Velero Backups](./k3s-backup-velero)** - Cluster backup documentation
+- **[CloudNative PG Backups](./k3s-backup-cloudnative-pg)** - PostgreSQL backup
+  documentation

@@ -27,27 +27,31 @@ export const sections = [
     key: "apiVersion:",
     value: "v1",
     title: "apiVersion",
-    description: "The version of the Kubernetes API for ConfigMap resources.",
+    description:
+      "ConfigMaps use the core `v1` API version. They're part of Kubernetes' core resources, so no special API group is needed. ConfigMaps have been stable since Kubernetes 1.2.",
   },
   {
     id: "kind",
     key: "kind:",
     value: "ConfigMap",
     title: "kind",
-    description: "Specifies the object type, here it is a ConfigMap.",
+    description:
+      "A ConfigMap stores non-sensitive configuration data as key-value pairs. Use it for environment variables, configuration files, or command-line arguments. ConfigMaps are mounted into Pods as volumes or environment variables.",
   },
   {
     id: "metadata",
     key: "metadata:",
     value: `\n  name: my-app-config`,
     title: "metadata",
-    description: "Metadata for the ConfigMap, such as its name.",
+    description:
+      "The ConfigMap name is referenced in Pod specs. Pods mount ConfigMaps via `spec.containers[].envFrom` or `spec.volumes[].configMap`. Changes to ConfigMap data don't automatically update running Pods—you may need to restart Pods or use a sidecar to watch for changes.",
   },
   {
     id: "data",
     key: "data:",
     value: `\n  APP_ENV: production\n  LOG_LEVEL: info`,
     title: "data",
-    description: "Key-value pairs of configuration data.",
+    description:
+      "Key-value pairs of configuration data. Values are plain strings (no base64 encoding needed, unlike Secrets). You can also use `binaryData` for binary content. Maximum size is 1MB. Use YAML multiline strings (`|` or `>`) for multi-line values.",
   },
 ];

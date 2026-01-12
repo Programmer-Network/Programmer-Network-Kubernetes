@@ -137,41 +137,40 @@ const sidebars: SidebarsConfig = {
       type: "category",
       label: "Kubernetes",
       items: [
+        // 1. Getting Started (Setup)
         {
           type: "doc",
           label: "K3s Setup",
           id: "kubernetes/k3s-setup",
         },
+        // 2. Core Concepts
         {
-          type: "doc",
-          label: "What Is Kubernetes",
-          id: "kubernetes/what-is-kubernetes",
+          type: "category",
+          label: "Core Concepts",
+          items: [
+            {
+              type: "doc",
+              label: "What Is Kubernetes",
+              id: "kubernetes/what-is-kubernetes",
+            },
+            {
+              type: "doc",
+              label: "Anatomy of a kubectl Command",
+              id: "kubernetes/anatomy-of-kubectl-command",
+            },
+            {
+              type: "doc",
+              label: "Anatomy of a Kubernetes YAML",
+              id: "kubernetes/anatomy-of-kubernetes-yaml",
+            },
+            {
+              type: "doc",
+              label: "Kubernetes 80/20 Rule",
+              id: "kubernetes/kubernetes-80-20-rule",
+            },
+          ],
         },
-        {
-          type: "doc",
-          label: "Anatomy of a kubectl Command",
-          id: "kubernetes/anatomy-of-kubectl-command",
-        },
-        {
-          type: "doc",
-          label: "Anatomy of a Kubernetes YAML",
-          id: "kubernetes/anatomy-of-kubernetes-yaml",
-        },
-        {
-          type: "doc",
-          label: "Kubernetes 80/20 Rule",
-          id: "kubernetes/kubernetes-80-20-rule",
-        },
-        {
-          type: "doc",
-          label: "K3s Backup",
-          id: "kubernetes/k3s-backup",
-        },
-        {
-          type: "doc",
-          label: "K3s Maintenance",
-          id: "kubernetes/k3s-maintenance",
-        },
+        // 3. Infrastructure Components
         {
           type: "category",
           label: "Storage",
@@ -190,22 +189,6 @@ const sidebars: SidebarsConfig = {
               type: "doc",
               label: "Setup Longhorn Dashboard",
               id: "storage/setup-longhorn-dashboard",
-            },
-          ],
-        },
-        {
-          type: "category",
-          label: "Databases",
-          items: [
-            {
-              type: "doc",
-              label: "Databases Within Kubernetes",
-              id: "databases/databases-within-kubernetes",
-            },
-            {
-              type: "doc",
-              label: "Setup CloudNative PG",
-              id: "databases/setup-cloudnative-pg",
             },
           ],
         },
@@ -237,7 +220,115 @@ const sidebars: SidebarsConfig = {
         },
         {
           type: "category",
-          label: "Exercises",
+          label: "GitOps",
+          items: [
+            {
+              type: "doc",
+              label: "Setup ArgoCD",
+              id: "kubernetes/setup-argocd",
+            },
+          ],
+        },
+        {
+          type: "category",
+          label: "Secrets Management",
+          items: [
+            {
+              type: "doc",
+              label: "Setup Vault",
+              id: "kubernetes/setup-vault",
+            },
+          ],
+        },
+        // 4. Operations
+        {
+          type: "category",
+          label: "K3s Backup",
+          items: [
+            {
+              type: "doc",
+              label: "Overview",
+              id: "kubernetes/k3s-backup",
+            },
+            {
+              type: "doc",
+              label: "etcd Snapshots",
+              id: "kubernetes/k3s-backup-etcd",
+            },
+            {
+              type: "doc",
+              label: "Longhorn Backups",
+              id: "kubernetes/k3s-backup-longhorn",
+            },
+            {
+              type: "doc",
+              label: "Velero Backups",
+              id: "kubernetes/k3s-backup-velero",
+            },
+            {
+              type: "doc",
+              label: "CloudNative PG Backups",
+              id: "kubernetes/k3s-backup-cloudnative-pg",
+            },
+            {
+              type: "doc",
+              label: "Disaster Recovery",
+              id: "kubernetes/k3s-backup-disaster-recovery",
+            },
+          ],
+        },
+        {
+          type: "category",
+          label: "K3s Maintenance",
+          items: [
+            {
+              type: "doc",
+              label: "Overview",
+              id: "kubernetes/k3s-maintenance",
+            },
+            {
+              type: "doc",
+              label: "Updating K3s",
+              id: "kubernetes/k3s-maintenance-updates",
+            },
+            {
+              type: "doc",
+              label: "Health Checks",
+              id: "kubernetes/k3s-maintenance-health",
+            },
+            {
+              type: "doc",
+              label: "Troubleshooting",
+              id: "kubernetes/k3s-maintenance-troubleshooting",
+            },
+            {
+              type: "doc",
+              label: "Node Management",
+              id: "kubernetes/k3s-maintenance-nodes",
+            },
+          ],
+        },
+        // 5. Applications
+        {
+          type: "category",
+          label: "Databases",
+          items: [
+            {
+              type: "doc",
+              label: "Databases Within Kubernetes",
+              id: "databases/databases-within-kubernetes",
+            },
+            {
+              type: "doc",
+              label: "Setup CloudNative PG",
+              id: "databases/setup-cloudnative-pg",
+            },
+          ],
+        },
+        // 6. Practice
+        {
+          type: "category",
+          label: "Practice",
           items: [
             {
               type: "doc",

@@ -11,29 +11,29 @@
 
 /* You can override the default Infima variables here. */
 :root {
-  --ifm-color-primary: #ffab00;
-  --ifm-color-primary-dark: #ffab00;
-  --ifm-color-primary-darker: #ffab00;
-  --ifm-color-primary-darkest: #ffab00;
-  --ifm-color-primary-light: #818cf8;
-  --ifm-color-primary-lighter: #a5b4fc;
-  --ifm-color-primary-lightest: #c7d2fe;
+  --ifm-color-primary: #326ce5;
+  --ifm-color-primary-dark: #2563eb;
+  --ifm-color-primary-darker: #1d4ed8;
+  --ifm-color-primary-darkest: #1e40af;
+  --ifm-color-primary-light: #60a5fa;
+  --ifm-color-primary-lighter: #93c5fd;
+  --ifm-color-primary-lightest: #bfdbfe;
   --ifm-code-font-size: 95%;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
 [data-theme="dark"] {
-  --ifm-color-primary: #ffab00;
-  --ifm-color-primary-dark: #ffab00;
-  --ifm-color-primary-darker: #ffab00;
-  --ifm-color-primary-darkest: #ffab00;
-  --ifm-color-primary-light: #818cf8;
-  --ifm-color-primary-lighter: #a5b4fc;
-  --ifm-color-primary-lightest: #c7d2fe;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
-  --ifm-background-color: #242323 !important;
-  --ifm-navbar-background-color: #242323 !important;
+  --ifm-color-primary: #3b82f6;
+  --ifm-color-primary-dark: #2563eb;
+  --ifm-color-primary-darker: #1d4ed8;
+  --ifm-color-primary-darkest: #1e40af;
+  --ifm-color-primary-light: #60a5fa;
+  --ifm-color-primary-lighter: #93c5fd;
+  --ifm-color-primary-lightest: #bfdbfe;
+  --docusaurus-highlighted-code-line-bg: rgba(59, 130, 246, 0.2);
+  --ifm-background-color: #1a1a1a !important;
+  --ifm-navbar-background-color: #1a1a1a !important;
 }
 
 .navbar__item.navbar__link svg {
@@ -50,4 +50,102 @@ ul:not(.menu__list) li {
 
 .table-of-contents li {
   list-style-type: none !important;
+}
+
+/* Code block styling - Dark theme */
+[data-theme="dark"] .prism-code,
+[data-theme="dark"] pre[class*="language-"],
+[data-theme="dark"] code[class*="language-"] {
+  background-color: #1e293b !important;
+  color: #e2e8f0 !important;
+}
+
+[data-theme="dark"] div[class*="codeBlockContainer"],
+[data-theme="dark"] div[class*="codeBlockContent"] {
+  background-color: #1e293b !important;
+}
+
+/* Syntax highlighting colors for dark theme - blue theme */
+[data-theme="dark"] .token.keyword,
+[data-theme="dark"] .token.operator,
+[data-theme="dark"] .token.boolean {
+  color: #60a5fa !important; /* Blue for keywords */
+}
+
+[data-theme="dark"] .token.string,
+[data-theme="dark"] .token.url {
+  color: #34d399 !important; /* Teal/cyan for strings */
+}
+
+[data-theme="dark"] .token.function,
+[data-theme="dark"] .token.class-name {
+  color: #93c5fd !important; /* Light blue for functions */
+}
+
+[data-theme="dark"] .token.comment {
+  color: #64748b !important; /* Gray for comments */
+}
+
+[data-theme="dark"] .token.number {
+  color: #fbbf24 !important; /* Amber for numbers */
+}
+
+[data-theme="dark"] .token.variable,
+[data-theme="dark"] .token.property {
+  color: #c084fc !important; /* Purple for variables */
+}
+
+[data-theme="dark"] .token.punctuation {
+  color: #cbd5e1 !important; /* Light gray for punctuation */
+}
+
+/* Code block styling - Light theme */
+:root:not([data-theme="dark"]) .prism-code,
+:root:not([data-theme="dark"]) pre[class*="language-"],
+:root:not([data-theme="dark"]) code[class*="language-"] {
+  background-color: #f8fafc !important;
+  color: #1e293b !important;
+}
+
+:root:not([data-theme="dark"]) div[class*="codeBlockContainer"],
+:root:not([data-theme="dark"]) div[class*="codeBlockContent"] {
+  background-color: #f8fafc !important;
+}
+
+/* Syntax highlighting colors for light theme - high contrast blue theme */
+:root:not([data-theme="dark"]) .token.keyword,
+:root:not([data-theme="dark"]) .token.operator,
+:root:not([data-theme="dark"]) .token.boolean {
+  color: #2563eb !important; /* Dark blue for keywords - high contrast */
+}
+
+:root:not([data-theme="dark"]) .token.string,
+:root:not([data-theme="dark"]) .token.url {
+  color: #059669 !important; /* Dark teal/green for strings - high contrast */
+}
+
+:root:not([data-theme="dark"]) .token.function,
+:root:not([data-theme="dark"]) .token.class-name {
+  color: #1d4ed8 !important; /* Darker blue for functions - high contrast */
+}
+
+:root:not([data-theme="dark"]) .token.comment {
+  color: #64748b !important; /* Medium gray for comments */
+}
+
+:root:not([data-theme="dark"]) .token.number {
+  color: #dc2626 !important; /* Red for numbers - high contrast */
+}
+
+:root:not([data-theme="dark"]) .token.variable,
+:root:not([data-theme="dark"]) .token.property {
+  color: #7c3aed !important; /* Dark purple for variables - high contrast */
+}
+
+:root:not([data-theme="dark"]) .token.punctuation {
+  color: #475569 !important; /* Dark gray for punctuation - high contrast */
+}
+
+:root:not([data-theme="dark"]) .token.plain {
+  color: #1e293b !important; /* Dark text for plain tokens - high contrast */
 }
