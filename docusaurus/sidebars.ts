@@ -393,6 +393,11 @@ const sidebars: SidebarsConfig = {
                 },
                 {
                   type: 'doc',
+                  label: 'Ingress with Traefik',
+                  id: 'kubernetes/practice/ingress-with-traefik',
+                },
+                {
+                  type: 'doc',
                   label: 'Complete Application',
                   id: 'kubernetes/practice/complete-application',
                 },

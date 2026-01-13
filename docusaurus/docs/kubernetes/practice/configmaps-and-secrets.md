@@ -10,8 +10,7 @@ and secure.
 
 ## Prerequisites
 
-- Completed
-  [Exercise 2: Namespaces and Resources](./namespaces-and-resources)
+- Completed [Exercise 2: Namespaces and Resources](./namespaces-and-resources)
 - Understanding of Deployments and Pods
 
 ## Exercise: Configure an Application

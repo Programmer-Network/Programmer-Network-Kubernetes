@@ -262,7 +262,7 @@ kubectl delete namespace practice-08
 
 ## Next Steps
 
-→ [Exercise 10: Complete Application](./complete-application)
+→ [Exercise 9: Ingress with Traefik](./ingress-with-traefik)
 
 ## Additional Practice
 

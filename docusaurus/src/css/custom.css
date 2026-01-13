@@ -149,3 +149,59 @@ ul:not(.menu__list) li {
 :root:not([data-theme="dark"]) .token.plain {
   color: #1e293b !important; /* Dark text for plain tokens - high contrast */
 }
+
+/* ============================================
+   Custom Table Styling - k3s.guide brand
+   ============================================ */
+
+/* Reset Infima table styles */
+table {
+  display: table;
+  width: auto;
+  margin: 1.5rem 0;
+  border-collapse: collapse;
+  border: none;
+  background: transparent !important;
+}
+
+table thead tr,
+table tbody tr {
+  background: transparent !important;
+  border: none !important;
+}
+
+table thead th,
+table tbody td {
+  background: transparent !important;
+  border: none !important;
+  padding: 0.5rem 1rem;
+  text-align: left;
+}
+
+/* Only style: bottom border on header */
+table thead th {
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--ifm-color-primary) !important;
+}
+
+[data-theme="dark"] table thead th {
+  color: #64748b;
+}
+
+/* Row separator */
+table tbody td {
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+
+[data-theme="dark"] table tbody tr:not(:last-child) td {
+  border-bottom: 1px solid #2d3748 !important;
+}
+
+:root:not([data-theme="dark"]) table tbody tr:not(:last-child) td {
+  border-bottom: 1px solid #e5e7eb !important;
+}

@@ -50,3 +50,88 @@ it will speed things up a lot.
       </div>
    </div>
 </div>
+
+## Quick Reference
+
+### Common Commands
+
+| Command        | What It Does               | Example                               |
+| -------------- | -------------------------- | ------------------------------------- |
+| `get`          | List resources             | `kubectl get pods`                    |
+| `describe`     | Show detailed info         | `kubectl describe pod my-pod`         |
+| `apply`        | Create or update from file | `kubectl apply -f deployment.yaml`    |
+| `delete`       | Remove resources           | `kubectl delete pod my-pod`           |
+| `logs`         | View container logs        | `kubectl logs my-pod`                 |
+| `exec`         | Run command in container   | `kubectl exec -it my-pod -- /bin/sh`  |
+| `port-forward` | Forward local port to pod  | `kubectl port-forward my-pod 8080:80` |
+
+### Resource Shortcuts
+
+Typing full resource names gets tedious. Use these shortcuts:
+
+| Full Name              | Short  | Example              |
+| ---------------------- | ------ | -------------------- |
+| pods                   | po     | `kubectl get po`     |
+| services               | svc    | `kubectl get svc`    |
+| deployments            | deploy | `kubectl get deploy` |
+| namespaces             | ns     | `kubectl get ns`     |
+| configmaps             | cm     | `kubectl get cm`     |
+| persistentvolumeclaims | pvc    | `kubectl get pvc`    |
+| nodes                  | no     | `kubectl get no`     |
+
+### Output Formats
+
+Control how results are displayed with `-o`:
+
+```bash
+kubectl get pods -o wide          # More columns (node, IP)
+kubectl get pod my-pod -o yaml    # Full YAML definition
+kubectl get pod my-pod -o json    # JSON format
+kubectl get pods -o name          # Just names (for scripting)
+```
+
+### Essential Flags
+
+| Flag               | Purpose                  | Example                                    |
+| ------------------ | ------------------------ | ------------------------------------------ |
+| `-n`               | Target namespace         | `kubectl get pods -n production`           |
+| `-A`               | All namespaces           | `kubectl get pods -A`                      |
+| `-l`               | Filter by label          | `kubectl get pods -l app=web`              |
+| `-w`               | Watch for changes        | `kubectl get pods -w`                      |
+| `-f`               | Use file                 | `kubectl apply -f manifest.yaml`           |
+| `--dry-run=client` | Preview without applying | `kubectl apply -f x.yaml --dry-run=client` |
+
+### Common Patterns
+
+**Check what's running:**
+
+```bash
+kubectl get pods
+kubectl get all                   # Pods, services, deployments, etc.
+```
+
+**Debug a failing pod:**
+
+```bash
+kubectl describe pod <name>       # Check events
+kubectl logs <name>               # Application logs
+kubectl logs <name> --previous    # Logs from crashed container
+```
+
+**Get into a container:**
+
+```bash
+kubectl exec -it <pod> -- /bin/sh
+```
+
+**Generate YAML templates:**
+
+```bash
+kubectl create deployment nginx --image=nginx --dry-run=client -o yaml
+```
+
+**Find available fields:**
+
+```bash
+kubectl explain pod.spec.containers
+```
