@@ -53,50 +53,100 @@ ul:not(.menu__list) li {
 }
 
 /* Code block styling - Dark theme */
+[data-theme="dark"] div[class*="codeBlockContainer"] {
+  background: rgba(59, 130, 246, 0.05) !important;
+  border-left: 3px solid #3b82f6 !important;
+  border-radius: 0 8px 8px 0 !important;
+  padding-left: 0 !important;
+}
+
+[data-theme="dark"] div[class*="codeBlockContent"] {
+  background: transparent !important;
+}
+
 [data-theme="dark"] .prism-code,
 [data-theme="dark"] pre[class*="language-"],
 [data-theme="dark"] code[class*="language-"] {
-  background-color: #1e293b !important;
-  color: #e2e8f0 !important;
+  background: transparent !important;
+  color: #cbd5e1 !important;
 }
 
-[data-theme="dark"] div[class*="codeBlockContainer"],
-[data-theme="dark"] div[class*="codeBlockContent"] {
-  background-color: #1e293b !important;
+/* Code block title bar */
+[data-theme="dark"] div[class*="codeBlockTitle"] {
+  background: transparent !important;
+  border-bottom: none !important;
+  color: #3b82f6 !important;
+  font-size: 0.7rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.1em !important;
+  padding-left: 1rem !important;
 }
 
-/* Syntax highlighting colors for dark theme - blue theme */
-[data-theme="dark"] .token.keyword,
-[data-theme="dark"] .token.operator,
-[data-theme="dark"] .token.boolean {
-  color: #60a5fa !important; /* Blue for keywords */
+/* Syntax highlighting - Dark theme */
+[data-theme="dark"] .token.comment,
+[data-theme="dark"] .token.prolog {
+  color: #6b7280 !important;
+  font-style: italic;
 }
 
 [data-theme="dark"] .token.string,
 [data-theme="dark"] .token.url {
-  color: #34d399 !important; /* Teal/cyan for strings */
+  color: #4ade80 !important;
+}
+
+[data-theme="dark"] .token.keyword {
+  color: #f472b6 !important;
 }
 
 [data-theme="dark"] .token.function,
+[data-theme="dark"] .token.builtin {
+  color: #60a5fa !important;
+}
+
 [data-theme="dark"] .token.class-name {
-  color: #93c5fd !important; /* Light blue for functions */
+  color: #fbbf24 !important;
 }
 
-[data-theme="dark"] .token.comment {
-  color: #64748b !important; /* Gray for comments */
+[data-theme="dark"] .token.number,
+[data-theme="dark"] .token.boolean {
+  color: #fb923c !important;
 }
 
-[data-theme="dark"] .token.number {
-  color: #fbbf24 !important; /* Amber for numbers */
+[data-theme="dark"] .token.operator {
+  color: #f472b6 !important;
+}
+
+[data-theme="dark"] .token.punctuation {
+  color: #9ca3af !important;
 }
 
 [data-theme="dark"] .token.variable,
 [data-theme="dark"] .token.property {
-  color: #c084fc !important; /* Purple for variables */
+  color: #c4b5fd !important;
 }
 
-[data-theme="dark"] .token.punctuation {
-  color: #cbd5e1 !important; /* Light gray for punctuation */
+[data-theme="dark"] .token.parameter {
+  color: #fcd34d !important;
+}
+
+/* Bash/shell specific */
+[data-theme="dark"] .language-bash .token.function,
+[data-theme="dark"] .language-shell .token.function,
+[data-theme="dark"] .language-sh .token.function {
+  color: #60a5fa !important;
+}
+
+[data-theme="dark"] .language-bash .token.parameter,
+[data-theme="dark"] .language-shell .token.parameter,
+[data-theme="dark"] .language-sh .token.parameter {
+  color: #cbd5e1 !important;
+}
+
+[data-theme="dark"] .language-bash .token.comment,
+[data-theme="dark"] .language-shell .token.comment,
+[data-theme="dark"] .language-sh .token.comment {
+  color: #6b7280 !important;
+  font-style: italic;
 }
 
 /* Code block styling - Light theme */
@@ -112,42 +162,56 @@ ul:not(.menu__list) li {
   background-color: #f8fafc !important;
 }
 
-/* Syntax highlighting colors for light theme - high contrast blue theme */
-:root:not([data-theme="dark"]) .token.keyword,
-:root:not([data-theme="dark"]) .token.operator,
-:root:not([data-theme="dark"]) .token.boolean {
-  color: #2563eb !important; /* Dark blue for keywords - high contrast */
+/* Syntax highlighting - Light theme - MINIMAL */
+:root:not([data-theme="dark"]) .token.comment,
+:root:not([data-theme="dark"]) .token.prolog {
+  color: #64748b !important;
+  font-style: italic;
 }
 
-:root:not([data-theme="dark"]) .token.string,
-:root:not([data-theme="dark"]) .token.url {
-  color: #059669 !important; /* Dark teal/green for strings - high contrast */
+:root:not([data-theme="dark"]) .token.string {
+  color: #059669 !important;
+}
+
+:root:not([data-theme="dark"]) .token.keyword {
+  color: #2563eb !important;
 }
 
 :root:not([data-theme="dark"]) .token.function,
-:root:not([data-theme="dark"]) .token.class-name {
-  color: #1d4ed8 !important; /* Darker blue for functions - high contrast */
+:root:not([data-theme="dark"]) .token.class-name,
+:root:not([data-theme="dark"]) .token.builtin {
+  color: #1e293b !important;
 }
 
-:root:not([data-theme="dark"]) .token.comment {
-  color: #64748b !important; /* Medium gray for comments */
+:root:not([data-theme="dark"]) .token.number,
+:root:not([data-theme="dark"]) .token.boolean {
+  color: #d97706 !important;
 }
 
-:root:not([data-theme="dark"]) .token.number {
-  color: #dc2626 !important; /* Red for numbers - high contrast */
+:root:not([data-theme="dark"]) .token.operator,
+:root:not([data-theme="dark"]) .token.punctuation {
+  color: #64748b !important;
 }
 
 :root:not([data-theme="dark"]) .token.variable,
-:root:not([data-theme="dark"]) .token.property {
-  color: #7c3aed !important; /* Dark purple for variables - high contrast */
-}
-
-:root:not([data-theme="dark"]) .token.punctuation {
-  color: #475569 !important; /* Dark gray for punctuation - high contrast */
-}
-
+:root:not([data-theme="dark"]) .token.property,
+:root:not([data-theme="dark"]) .token.parameter,
 :root:not([data-theme="dark"]) .token.plain {
-  color: #1e293b !important; /* Dark text for plain tokens - high contrast */
+  color: #1e293b !important;
+}
+
+/* Bash/shell specific - Light theme - keep it simple */
+:root:not([data-theme="dark"]) .language-bash .token,
+:root:not([data-theme="dark"]) .language-shell .token,
+:root:not([data-theme="dark"]) .language-sh .token {
+  color: #1e293b !important;
+}
+
+:root:not([data-theme="dark"]) .language-bash .token.comment,
+:root:not([data-theme="dark"]) .language-shell .token.comment,
+:root:not([data-theme="dark"]) .language-sh .token.comment {
+  color: #64748b !important;
+  font-style: italic;
 }
 
 /* ============================================
